@@ -33,23 +33,23 @@ export default function HomePage() {
           Underground Drift Culture · Street Racing · Pure Adrenaline
         </p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons - Flipped order */}
         <div className="flex flex-col sm:flex-row gap-6">
-          <Button
-            data-testid="view-events-btn"
-            onClick={() => navigate('/events')}
-            className="drift-button px-8 py-6 text-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-none border-2 border-blue-500"
-            style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-          >
-            VIEW EVENTS
-          </Button>
           <Button
             data-testid="shop-merch-btn"
             onClick={() => navigate('/store')}
-            className="drift-button px-8 py-6 text-lg bg-transparent hover:bg-white/10 text-white font-bold rounded-none border-2 border-white"
+            className="drift-button px-8 py-6 text-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-none border-2 border-blue-500"
             style={{ fontFamily: 'Bebas Neue, sans-serif' }}
           >
             SHOP MERCH
+          </Button>
+          <Button
+            data-testid="view-events-btn"
+            onClick={() => navigate('/events')}
+            className="drift-button px-8 py-6 text-lg bg-transparent hover:bg-white/10 text-white font-bold rounded-none border-2 border-white"
+            style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+          >
+            VIEW EVENTS
           </Button>
         </div>
 
@@ -65,16 +65,24 @@ export default function HomePage() {
       <div className="relative z-10 py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="drift-card p-8 rounded-lg text-center">
+            <button 
+              onClick={() => navigate('/events')}
+              className="drift-card p-8 rounded-lg text-center cursor-pointer transition-all hover:scale-105"
+              data-testid="about-events-btn"
+            >
               <div className="text-5xl mb-4 text-blue-500">🏁</div>
               <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>DRIFT EVENTS</h3>
               <p className="text-gray-400">Experience the thrill of professional drifting at our underground events</p>
-            </div>
-            <div className="drift-card p-8 rounded-lg text-center">
+            </button>
+            <button 
+              onClick={() => navigate('/store')}
+              className="drift-card p-8 rounded-lg text-center cursor-pointer transition-all hover:scale-105"
+              data-testid="about-merch-btn"
+            >
               <div className="text-5xl mb-4 text-cyan-500">👕</div>
               <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>EXCLUSIVE MERCH</h3>
               <p className="text-gray-400">Rep the team with our limited edition gear and accessories</p>
-            </div>
+            </button>
             <div className="drift-card p-8 rounded-lg text-center">
               <div className="text-5xl mb-4 text-yellow-500">🏆</div>
               <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>RACING CULTURE</h3>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function ContactModal({ open, onClose, inquiryType, eventId, eventName, prefilledMessage = '' }) {
+export default function ContactModal({ open, onClose, inquiryType, eventId, eventName, prefilledMessage = '', itemDetails = null }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,6 +18,12 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
     message: prefilledMessage
   });
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (prefilledMessage) {
+      setFormData(prev => ({ ...prev, message: prefilledMessage }));
+    }
+  }, [prefilledMessage]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +37,8 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
         phone: formData.phone,
         message: formData.message,
         event_id: eventId,
-        event_name: eventName
+        event_name: eventName,
+        item_details: itemDetails ? JSON.stringify(itemDetails) : null
       });
 
       toast.success('Inquiry submitted! We\'ll contact you soon.');
@@ -53,7 +60,7 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
             className="text-3xl font-bold text-blue-500"
             style={{ fontFamily: 'Bebas Neue, sans-serif' }}
           >
-            {inquiryType === 'ticket' ? 'GET TICKETS' : 'CONTACT US'}
+            {inquiryType === 'ticket' ? 'GET TICKETS' : inquiryType === 'order' ? 'PLACE ORDER' : 'CONTACT US'}
           </DialogTitle>
         </DialogHeader>
         
@@ -61,6 +68,15 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
           {eventName && (
             <div className="bg-blue-600/20 p-3 rounded border border-blue-500">
               <p className="text-sm text-gray-300">Event: <span className="font-bold">{eventName}</span></p>
+            </div>
+          )}
+
+          {itemDetails && (
+            <div className="bg-blue-600/20 p-3 rounded border border-blue-500">
+              <p className="text-sm text-gray-300">
+                <span className="font-bold">{itemDetails.name}</span><br/>
+                Size: {itemDetails.selectedSize} | ${itemDetails.price} CAD
+              </p>
             </div>
           )}
           

@@ -90,13 +90,15 @@ class ContactInquiry(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    inquiry_type: str  # 'ticket' or 'general'
+    inquiry_type: str  # 'ticket', 'order', or 'general'
     name: str
     email: EmailStr
     phone: str
     message: str
     event_id: Optional[str] = None
     event_name: Optional[str] = None
+    item_details: Optional[str] = None
+    status: str = 'pending'  # 'pending', 'contacted', 'completed', 'cancelled'
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class ContactInquiryCreate(BaseModel):
@@ -107,6 +109,10 @@ class ContactInquiryCreate(BaseModel):
     message: str
     event_id: Optional[str] = None
     event_name: Optional[str] = None
+    item_details: Optional[str] = None
+
+class InquiryStatusUpdate(BaseModel):
+    status: str
 
 class AdminLogin(BaseModel):
     username: str
@@ -255,6 +261,7 @@ async def submit_contact(inquiry: ContactInquiryCreate):
             <p><strong>Email:</strong> {inquiry.email}</p>
             <p><strong>Phone:</strong> {inquiry.phone}</p>
             {f'<p><strong>Event:</strong> {inquiry.event_name}</p>' if inquiry.event_name else ''}
+            {f'<p><strong>Item Details:</strong> {inquiry.item_details}</p>' if inquiry.item_details else ''}
             <p><strong>Message:</strong></p>
             <p>{inquiry.message}</p>
             """
@@ -278,6 +285,16 @@ async def get_inquiries(admin: bool = Depends(verify_admin)):
         if isinstance(inquiry.get('created_at'), str):
             inquiry['created_at'] = datetime.fromisoformat(inquiry['created_at'])
     return inquiries
+
+@api_router.patch("/inquiries/{inquiry_id}/status")
+async def update_inquiry_status(inquiry_id: str, status_update: InquiryStatusUpdate, admin: bool = Depends(verify_admin)):
+    result = await db.inquiries.update_one(
+        {"id": inquiry_id},
+        {"$set": {"status": status_update.status}}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Inquiry not found")
+    return {"message": "Status updated successfully"}
 
 # Include the router in the main app
 app.include_router(api_router)

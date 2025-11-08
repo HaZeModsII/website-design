@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import ContactModal from "@/components/ContactModal";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -13,6 +14,7 @@ export default function StorePage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedSize, setSelectedSize] = useState({});
 
   useEffect(() => {
     fetchMerch();
@@ -36,7 +38,12 @@ export default function StorePage() {
     : merchItems.filter(item => item.category === selectedCategory);
 
   const handlePurchase = (item) => {
-    setSelectedItem(item);
+    const size = selectedSize[item.id];
+    if (!size) {
+      toast.error('Please select a size');
+      return;
+    }
+    setSelectedItem({ ...item, selectedSize: size });
     setContactModalOpen(true);
   };
 
@@ -110,6 +117,28 @@ export default function StorePage() {
                     {item.name}
                   </h3>
                   <p className="text-gray-400 mb-4 text-sm">{item.description}</p>
+                  
+                  {/* Size Selector */}
+                  <div className="mb-4">
+                    <label className="text-sm text-gray-400 mb-2 block">Select Size:</label>
+                    <Select 
+                      value={selectedSize[item.id] || ''} 
+                      onValueChange={(value) => setSelectedSize({...selectedSize, [item.id]: value})}
+                    >
+                      <SelectTrigger className="bg-gray-800 border-gray-700 text-white" data-testid={`size-select-${item.id}`}>
+                        <SelectValue placeholder="Choose size" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                        <SelectItem value="XS">XS</SelectItem>
+                        <SelectItem value="S">S</SelectItem>
+                        <SelectItem value="M">M</SelectItem>
+                        <SelectItem value="L">L</SelectItem>
+                        <SelectItem value="XL">XL</SelectItem>
+                        <SelectItem value="XXL">XXL</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
                   <div className="flex items-center justify-between">
                     <span className="text-3xl font-bold text-blue-500">${item.price} CAD</span>
                     <Button
@@ -135,8 +164,9 @@ export default function StorePage() {
           setContactModalOpen(false);
           setSelectedItem(null);
         }}
-        inquiryType="general"
-        prefilledMessage={selectedItem ? `I'm interested in purchasing: ${selectedItem.name}` : ''}
+        inquiryType="order"
+        prefilledMessage={selectedItem ? `I'd like to order: ${selectedItem.name} - Size: ${selectedItem.selectedSize}` : ''}
+        itemDetails={selectedItem}
       />
     </div>
   );
