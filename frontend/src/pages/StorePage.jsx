@@ -43,7 +43,7 @@ export default function StorePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-2xl text-red-500 animate-pulse">LOADING...</div>
+        <div className="text-2xl text-blue-500 animate-pulse">LOADING...</div>
       </div>
     );
   }
@@ -74,8 +74,8 @@ export default function StorePage() {
               onClick={() => setSelectedCategory(category)}
               className={`drift-button px-6 py-2 rounded-none border-2 font-bold ${
                 selectedCategory === category
-                  ? 'bg-red-600 border-red-500 text-white'
-                  : 'bg-transparent border-gray-600 text-gray-400 hover:border-red-500 hover:text-white'
+                  ? 'bg-blue-600 border-blue-500 text-white'
+                  : 'bg-transparent border-gray-600 text-gray-400 hover:border-blue-500 hover:text-white'
               }`}
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
@@ -101,7 +101,7 @@ export default function StorePage() {
                   />
                   {item.stock === 0 && (
                     <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
-                      <span className="text-red-500 text-2xl font-bold">OUT OF STOCK</span>
+                      <span className="text-blue-500 text-2xl font-bold">OUT OF STOCK</span>
                     </div>
                   )}
                 </div>
@@ -111,12 +111,12 @@ export default function StorePage() {
                   </h3>
                   <p className="text-gray-400 mb-4 text-sm">{item.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-3xl font-bold text-red-500">${item.price}</span>
+                    <span className="text-3xl font-bold text-blue-500">${item.price}</span>
                     <Button
                       data-testid={`purchase-${item.id}-btn`}
                       onClick={() => handlePurchase(item)}
                       disabled={item.stock === 0}
-                      className="drift-button px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-none border-2 border-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{ fontFamily: 'Bebas Neue, sans-serif' }}
                     >
                       BUY NOW

@@ -202,7 +202,7 @@ export default function AdminPage() {
             <Button
               data-testid="admin-login-btn"
               type="submit"
-              className="w-full drift-button py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-none border-2 border-red-500"
+              className="w-full drift-button py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
               LOGIN
@@ -227,7 +227,7 @@ export default function AdminPage() {
           <Button
             data-testid="admin-logout-btn"
             onClick={handleLogout}
-            className="drift-button px-6 py-2 bg-transparent hover:bg-red-600 text-white font-bold rounded-none border-2 border-red-500"
+            className="drift-button px-6 py-2 bg-transparent hover:bg-blue-600 text-white font-bold rounded-none border-2 border-blue-500"
             style={{ fontFamily: 'Bebas Neue, sans-serif' }}
           >
             LOGOUT
@@ -236,9 +236,9 @@ export default function AdminPage() {
 
         <Tabs defaultValue="merch" className="space-y-6">
           <TabsList className="bg-gray-800 border-2 border-gray-700">
-            <TabsTrigger value="merch" data-testid="merch-tab" className="data-[state=active]:bg-red-600">Merchandise</TabsTrigger>
-            <TabsTrigger value="events" data-testid="events-tab" className="data-[state=active]:bg-red-600">Events</TabsTrigger>
-            <TabsTrigger value="inquiries" data-testid="inquiries-tab" className="data-[state=active]:bg-red-600">Inquiries</TabsTrigger>
+            <TabsTrigger value="merch" data-testid="merch-tab" className="data-[state=active]:bg-blue-600">Merchandise</TabsTrigger>
+            <TabsTrigger value="events" data-testid="events-tab" className="data-[state=active]:bg-blue-600">Events</TabsTrigger>
+            <TabsTrigger value="inquiries" data-testid="inquiries-tab" className="data-[state=active]:bg-blue-600">Inquiries</TabsTrigger>
           </TabsList>
 
           {/* Merch Tab */}
@@ -313,7 +313,7 @@ export default function AdminPage() {
                   <Button 
                     data-testid="add-merch-btn"
                     type="submit" 
-                    className="drift-button px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-none border-2 border-red-500"
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
                     style={{ fontFamily: 'Bebas Neue, sans-serif' }}
                   >
                     ADD ITEM
@@ -333,7 +333,7 @@ export default function AdminPage() {
                   <Button
                     data-testid={`delete-merch-${item.id}-btn`}
                     onClick={() => handleDeleteMerch(item.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     Delete
                   </Button>
@@ -414,7 +414,7 @@ export default function AdminPage() {
                   <Button 
                     data-testid="add-event-btn"
                     type="submit" 
-                    className="drift-button px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-none border-2 border-red-500"
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
                     style={{ fontFamily: 'Bebas Neue, sans-serif' }}
                   >
                     ADD EVENT
@@ -434,7 +434,7 @@ export default function AdminPage() {
                   <Button
                     data-testid={`delete-event-${event.id}-btn`}
                     onClick={() => handleDeleteEvent(event.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     Delete
                   </Button>
@@ -456,7 +456,7 @@ export default function AdminPage() {
                       <h3 className="text-xl font-bold">{inquiry.name}</h3>
                       <p className="text-gray-400">{inquiry.email} · {inquiry.phone}</p>
                     </div>
-                    <span className="px-3 py-1 bg-red-600 rounded text-sm font-bold">
+                    <span className="px-3 py-1 bg-blue-600 rounded text-sm font-bold">
                       {inquiry.inquiry_type.toUpperCase()}
                     </span>
                   </div>

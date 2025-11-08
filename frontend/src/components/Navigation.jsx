@@ -12,7 +12,7 @@ export default function Navigation() {
         {/* Logo */}
         <Link to="/" data-testid="nav-home-link">
           <h2 
-            className="text-2xl font-bold text-red-500 hover:text-red-400 transition-colors"
+            className="text-2xl font-bold text-blue-500 hover:text-blue-400 transition-colors"
             style={{ fontFamily: 'Bebas Neue, sans-serif' }}
           >
             TRIPLE BARREL RACING
@@ -25,8 +25,8 @@ export default function Navigation() {
             <Button
               className={`px-4 py-2 font-bold rounded-none border-2 transition-colors ${
                 isActive('/')
-                  ? 'bg-red-600 border-red-500 text-white'
-                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-red-500'
+                  ? 'bg-blue-600 border-blue-500 text-white'
+                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-blue-500'
               }`}
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
@@ -37,8 +37,8 @@ export default function Navigation() {
             <Button
               className={`px-4 py-2 font-bold rounded-none border-2 transition-colors ${
                 isActive('/events')
-                  ? 'bg-red-600 border-red-500 text-white'
-                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-red-500'
+                  ? 'bg-blue-600 border-blue-500 text-white'
+                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-blue-500'
               }`}
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
@@ -49,24 +49,12 @@ export default function Navigation() {
             <Button
               className={`px-4 py-2 font-bold rounded-none border-2 transition-colors ${
                 isActive('/store')
-                  ? 'bg-red-600 border-red-500 text-white'
-                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-red-500'
+                  ? 'bg-blue-600 border-blue-500 text-white'
+                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-blue-500'
               }`}
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
               STORE
-            </Button>
-          </Link>
-          <Link to="/admin" data-testid="nav-admin-btn">
-            <Button
-              className={`px-4 py-2 font-bold rounded-none border-2 transition-colors ${
-                isActive('/admin')
-                  ? 'bg-red-600 border-red-500 text-white'
-                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-red-500'
-              }`}
-              style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-            >
-              ADMIN
             </Button>
           </Link>
         </div>

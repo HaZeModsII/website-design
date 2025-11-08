@@ -37,7 +37,7 @@ export default function EventsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-2xl text-red-500 animate-pulse">LOADING...</div>
+        <div className="text-2xl text-blue-500 animate-pulse">LOADING...</div>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function EventsPage() {
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black pt-24 pb-16 px-4">
       <div className="tire-marks" />
       
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 
@@ -59,48 +59,55 @@ export default function EventsPage() {
           <p className="text-xl text-gray-400">Experience the Ultimate Adrenaline Rush</p>
         </div>
 
-        {/* Events Grid */}
+        {/* Events List - One per row */}
         {events.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-2xl text-gray-500">No upcoming events yet. Stay tuned!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-8">
             {events.map(event => (
               <div key={event.id} className="drift-card rounded-lg overflow-hidden" data-testid={`event-${event.id}`}>
-                <div className="aspect-video bg-gray-800 relative overflow-hidden">
-                  <img 
-                    src={event.image_url} 
-                    alt={event.name}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 right-4 bg-red-600 px-4 py-2 font-bold rounded-none border-2 border-white">
-                    <span style={{ fontFamily: 'Bebas Neue, sans-serif' }}>${event.ticket_price}</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-3xl font-bold mb-3" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
-                    {event.name}
-                  </h3>
-                  <div className="flex items-center gap-4 mb-4 text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <span>📅</span>
-                      <span>{event.date}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span>📍</span>
-                      <span>{event.location}</span>
+                <div className="grid md:grid-cols-2 gap-0">
+                  {/* Image Section */}
+                  <div className="aspect-video md:aspect-square bg-gray-800 relative overflow-hidden">
+                    <img 
+                      src={event.image_url} 
+                      alt={event.name}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 right-4 bg-blue-600 px-4 py-2 font-bold rounded-none border-2 border-white">
+                      <span style={{ fontFamily: 'Bebas Neue, sans-serif' }}>${event.ticket_price}</span>
                     </div>
                   </div>
-                  <p className="text-gray-400 mb-6">{event.description}</p>
-                  <Button
-                    data-testid={`get-tickets-${event.id}-btn`}
-                    onClick={() => handleTicketInquiry(event)}
-                    className="drift-button w-full py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white font-bold rounded-none border-2 border-red-500"
-                    style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-                  >
-                    GET TICKETS
-                  </Button>
+                  
+                  {/* Content Section */}
+                  <div className="p-6 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-3xl font-bold mb-3" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+                        {event.name}
+                      </h3>
+                      <div className="space-y-2 mb-4 text-gray-400">
+                        <div className="flex items-center gap-2">
+                          <span>📅</span>
+                          <span>{event.date}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span>📍</span>
+                          <span>{event.location}</span>
+                        </div>
+                      </div>
+                      <p className="text-gray-400 mb-6">{event.description}</p>
+                    </div>
+                    <Button
+                      data-testid={`get-tickets-${event.id}-btn`}
+                      onClick={() => handleTicketInquiry(event)}
+                      className="drift-button w-full py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-none border-2 border-blue-500"
+                      style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                    >
+                      GET TICKETS
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}

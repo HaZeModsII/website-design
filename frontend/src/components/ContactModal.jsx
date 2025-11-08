@@ -47,10 +47,10 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border-2 border-red-500 text-white max-w-md" data-testid="contact-modal">
+      <DialogContent className="bg-gray-900 border-2 border-blue-500 text-white max-w-md" data-testid="contact-modal">
         <DialogHeader>
           <DialogTitle 
-            className="text-3xl font-bold text-red-500"
+            className="text-3xl font-bold text-blue-500"
             style={{ fontFamily: 'Bebas Neue, sans-serif' }}
           >
             {inquiryType === 'ticket' ? 'GET TICKETS' : 'CONTACT US'}
@@ -59,7 +59,7 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
         
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           {eventName && (
-            <div className="bg-red-600/20 p-3 rounded border border-red-500">
+            <div className="bg-blue-600/20 p-3 rounded border border-blue-500">
               <p className="text-sm text-gray-300">Event: <span className="font-bold">{eventName}</span></p>
             </div>
           )}
@@ -119,7 +119,7 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
               data-testid="contact-submit-btn"
               type="submit"
               disabled={submitting}
-              className="flex-1 drift-button py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-none border-2 border-red-500"
+              className="flex-1 drift-button py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
               {submitting ? 'SUBMITTING...' : 'SUBMIT'}

@@ -6,6 +6,7 @@ import StorePage from "@/pages/StorePage";
 import EventsPage from "@/pages/EventsPage";
 import AdminPage from "@/pages/AdminPage";
 import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
       <Toaster />
     </div>
