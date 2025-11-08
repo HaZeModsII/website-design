@@ -257,7 +257,7 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
-                  <Label>Price</Label>
+                  <Label>Price (CAD)</Label>
                   <Input
                     data-testid="merch-price-input"
                     type="number"
@@ -328,7 +328,7 @@ export default function AdminPage() {
                 <div key={item.id} className="drift-card p-4 rounded-lg flex justify-between items-center">
                   <div>
                     <h3 className="text-xl font-bold">{item.name}</h3>
-                    <p className="text-gray-400">${item.price} - {item.category} - Stock: {item.stock}</p>
+                    <p className="text-gray-400">${item.price} CAD - {item.category} - Stock: {item.stock}</p>
                   </div>
                   <Button
                     data-testid={`delete-merch-${item.id}-btn`}
@@ -379,7 +379,7 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
-                  <Label>Ticket Price</Label>
+                  <Label>Ticket Price (CAD)</Label>
                   <Input
                     data-testid="event-price-input"
                     type="number"
@@ -429,7 +429,7 @@ export default function AdminPage() {
                 <div key={event.id} className="drift-card p-4 rounded-lg flex justify-between items-center">
                   <div>
                     <h3 className="text-xl font-bold">{event.name}</h3>
-                    <p className="text-gray-400">{event.date} - {event.location} - ${event.ticket_price}</p>
+                    <p className="text-gray-400">{event.date} - {event.location} - ${event.ticket_price} CAD</p>
                   </div>
                   <Button
                     data-testid={`delete-event-${event.id}-btn`}

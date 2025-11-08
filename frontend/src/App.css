@@ -23,18 +23,24 @@ body {
   position: relative;
 }
 
-/* Spinning Logo Animation */
-@keyframes spin-logo {
-  from {
-    transform: rotate(0deg);
+/* Floating Logo Animation */
+@keyframes float-logo {
+  0%, 100% {
+    transform: translateY(0);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: translateY(-20px);
   }
 }
 
-.logo-spin {
-  animation: spin-logo 4s linear infinite;
+.logo-float {
+  animation: float-logo 3s ease-in-out infinite;
+}
+
+.logo-glow {
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6))
+          drop-shadow(0 0 40px rgba(59, 130, 246, 0.4))
+          drop-shadow(0 0 60px rgba(59, 130, 246, 0.2));
 }
 
 /* Tire marks background effect */

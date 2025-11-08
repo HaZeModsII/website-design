@@ -77,7 +77,7 @@ export default function EventsPage() {
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute top-4 right-4 bg-blue-600 px-4 py-2 font-bold rounded-none border-2 border-white">
-                      <span style={{ fontFamily: 'Bebas Neue, sans-serif' }}>${event.ticket_price}</span>
+                      <span style={{ fontFamily: 'Bebas Neue, sans-serif' }}>${event.ticket_price} CAD</span>
                     </div>
                   </div>
                   

@@ -16,13 +16,13 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Logo with spinning animation */}
+        {/* Logo with floating animation and glow */}
         <div className="mb-12 relative">
-          <div className="logo-spin">
+          <div className="logo-float">
             <img 
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHUkxLbVJ7mwg28YYhrT6-GFSuIe7yCwrdgA&s"
               alt="Triple Barrel Racing Logo"
-              className="w-64 sm:w-80 lg:w-96 h-auto"
+              className="w-64 sm:w-80 lg:w-96 h-auto logo-glow"
               data-testid="logo-image"
             />
           </div>

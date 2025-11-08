@@ -111,7 +111,7 @@ export default function StorePage() {
                   </h3>
                   <p className="text-gray-400 mb-4 text-sm">{item.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-3xl font-bold text-blue-500">${item.price}</span>
+                    <span className="text-3xl font-bold text-blue-500">${item.price} CAD</span>
                     <Button
                       data-testid={`purchase-${item.id}-btn`}
                       onClick={() => handlePurchase(item)}
