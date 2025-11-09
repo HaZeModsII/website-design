@@ -311,6 +311,7 @@ export default function AdminPage() {
             <TabsTrigger value="merch" data-testid="merch-tab" className="data-[state=active]:bg-blue-600">Merchandise</TabsTrigger>
             <TabsTrigger value="events" data-testid="events-tab" className="data-[state=active]:bg-blue-600">Events</TabsTrigger>
             <TabsTrigger value="parts" data-testid="parts-tab" className="data-[state=active]:bg-blue-600">Parts</TabsTrigger>
+            <TabsTrigger value="orders" data-testid="orders-tab" className="data-[state=active]:bg-blue-600">Orders</TabsTrigger>
             <TabsTrigger value="inquiries" data-testid="inquiries-tab" className="data-[state=active]:bg-blue-600">Inquiries</TabsTrigger>
           </TabsList>
 
