@@ -86,6 +86,40 @@ class EventUpdate(BaseModel):
     image_url: Optional[str] = None
     ticket_price: Optional[float] = None
 
+class CarPart(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    description: str
+    price: float
+    car_model: str
+    year: str
+    condition: str  # 'new', 'used-excellent', 'used-good', 'used-fair'
+    image_url: str
+    stock: int = 1
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class CarPartCreate(BaseModel):
+    name: str
+    description: str
+    price: float
+    car_model: str
+    year: str
+    condition: str
+    image_url: str
+    stock: int = 1
+
+class CarPartUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    car_model: Optional[str] = None
+    year: Optional[str] = None
+    condition: Optional[str] = None
+    image_url: Optional[str] = None
+    stock: Optional[int] = None
+
 class ContactInquiry(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
