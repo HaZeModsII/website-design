@@ -91,9 +91,10 @@ export default function AdminPage() {
 
   const fetchAdminData = async (authToken) => {
     try {
-      const [merchRes, eventsRes, inquiriesRes] = await Promise.all([
+      const [merchRes, eventsRes, partsRes, inquiriesRes] = await Promise.all([
         axios.get(`${API}/merch`),
         axios.get(`${API}/events`),
+        axios.get(`${API}/parts`),
         axios.get(`${API}/inquiries`, {
           headers: { Authorization: `Bearer ${authToken}` }
         })
@@ -101,6 +102,7 @@ export default function AdminPage() {
       
       setMerchItems(merchRes.data);
       setEvents(eventsRes.data);
+      setParts(partsRes.data);
       setInquiries(inquiriesRes.data);
     } catch (error) {
       console.error('Error fetching admin data:', error);
