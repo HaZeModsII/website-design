@@ -445,7 +445,7 @@ export default function AdminPage() {
 
           {/* Inquiries Tab */}
           <TabsContent value="inquiries" className="space-y-4">
-            <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Contact Inquiries</h2>
+            <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Contact Inquiries & Orders</h2>
             {inquiries.length === 0 ? (
               <p className="text-gray-500">No inquiries yet</p>
             ) : (
@@ -456,12 +456,40 @@ export default function AdminPage() {
                       <h3 className="text-xl font-bold">{inquiry.name}</h3>
                       <p className="text-gray-400">{inquiry.email} · {inquiry.phone}</p>
                     </div>
-                    <span className="px-3 py-1 bg-blue-600 rounded text-sm font-bold">
-                      {inquiry.inquiry_type.toUpperCase()}
-                    </span>
+                    <div className="flex gap-2 items-center">
+                      <span className={`px-3 py-1 rounded text-sm font-bold ${
+                        inquiry.inquiry_type === 'order' ? 'bg-green-600' : 
+                        inquiry.inquiry_type === 'ticket' ? 'bg-purple-600' : 'bg-blue-600'
+                      }`}>
+                        {inquiry.inquiry_type.toUpperCase()}
+                      </span>
+                      <select
+                        value={inquiry.status || 'pending'}
+                        onChange={(e) => handleStatusUpdate(inquiry.id, e.target.value)}
+                        className={`px-3 py-1 rounded text-sm font-bold cursor-pointer ${
+                          inquiry.status === 'completed' ? 'bg-green-600' :
+                          inquiry.status === 'contacted' ? 'bg-yellow-600' :
+                          inquiry.status === 'cancelled' ? 'bg-red-600' :
+                          'bg-gray-600'
+                        }`}
+                        data-testid={`status-${inquiry.id}`}
+                      >
+                        <option value="pending">PENDING</option>
+                        <option value="contacted">CONTACTED</option>
+                        <option value="completed">COMPLETED</option>
+                        <option value="cancelled">CANCELLED</option>
+                      </select>
+                    </div>
                   </div>
                   {inquiry.event_name && (
                     <p className="text-sm text-gray-400 mb-2">Event: {inquiry.event_name}</p>
+                  )}
+                  {inquiry.item_details && (
+                    <div className="bg-blue-600/20 p-3 rounded border border-blue-500 mb-3">
+                      <p className="text-sm text-gray-300">
+                        <strong>Order Details:</strong> {inquiry.item_details}
+                      </p>
+                    </div>
                   )}
                   <p className="text-gray-300">{inquiry.message}</p>
                 </div>
