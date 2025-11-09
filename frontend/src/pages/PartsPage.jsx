@@ -75,21 +75,21 @@ export default function PartsPage() {
           <p className="text-xl text-gray-400">Quality Performance Parts from Our Builds</p>
         </div>
 
-        {/* Condition Filter */}
+        {/* Category Filter */}
         <div className="flex flex-wrap gap-4 justify-center mb-12">
-          {conditions.map(condition => (
+          {categories.map(category => (
             <Button
-              key={condition}
-              data-testid={`condition-${condition}-btn`}
-              onClick={() => setSelectedCondition(condition)}
+              key={category}
+              data-testid={`category-${category}-btn`}
+              onClick={() => setSelectedCategory(category)}
               className={`drift-button px-6 py-2 rounded-none border-2 font-bold ${
-                selectedCondition === condition
+                selectedCategory === category
                   ? 'bg-blue-600 border-blue-500 text-white'
                   : 'bg-transparent border-gray-600 text-gray-400 hover:border-blue-500 hover:text-white'
               }`}
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
-              {condition === 'all' ? 'ALL' : condition.toUpperCase().replace('-', ' ')}
+              {category.toUpperCase()}
             </Button>
           ))}
         </div>
