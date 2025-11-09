@@ -276,6 +276,47 @@ async def delete_event(event_id: str, admin: bool = Depends(verify_admin)):
         raise HTTPException(status_code=404, detail="Event not found")
     return {"message": "Event deleted successfully"}
 
+
+# Car Parts Routes
+@api_router.get("/parts", response_model=List[CarPart])
+async def get_parts():
+    parts = await db.parts.find({}, {"_id": 0}).to_list(1000)
+    for part in parts:
+        if isinstance(part.get('created_at'), str):
+            part['created_at'] = datetime.fromisoformat(part['created_at'])
+    return parts
+
+@api_router.post("/parts", response_model=CarPart)
+async def create_part(part: CarPartCreate, admin: bool = Depends(verify_admin)):
+    part_obj = CarPart(**part.model_dump())
+    doc = part_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.parts.insert_one(doc)
+    return part_obj
+
+@api_router.put("/parts/{part_id}", response_model=CarPart)
+async def update_part(part_id: str, part_update: CarPartUpdate, admin: bool = Depends(verify_admin)):
+    existing = await db.parts.find_one({"id": part_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Part not found")
+    
+    update_data = {k: v for k, v in part_update.model_dump().items() if v is not None}
+    if update_data:
+        await db.parts.update_one({"id": part_id}, {"$set": update_data})
+    
+    updated = await db.parts.find_one({"id": part_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    return CarPart(**updated)
+
+@api_router.delete("/parts/{part_id}")
+async def delete_part(part_id: str, admin: bool = Depends(verify_admin)):
+    result = await db.parts.delete_one({"id": part_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Part not found")
+    return {"message": "Part deleted successfully"}
+
+
 # Contact/Inquiry Routes
 @api_router.post("/contact")
 async def submit_contact(inquiry: ContactInquiryCreate):
