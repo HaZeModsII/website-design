@@ -667,6 +667,97 @@ export default function AdminPage() {
             </div>
           </TabsContent>
 
+
+          {/* Orders Tab */}
+          <TabsContent value="orders" className="space-y-4">
+            <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Order Management</h2>
+            <p className="text-gray-400 mb-6">Track and manage merchandise and parts orders</p>
+            
+            {inquiries.filter(i => i.inquiry_type === 'order' || i.inquiry_type === 'parts').length === 0 ? (
+              <p className="text-gray-500">No orders yet</p>
+            ) : (
+              <div className="space-y-4">
+                {inquiries
+                  .filter(i => i.inquiry_type === 'order' || i.inquiry_type === 'parts')
+                  .map(order => (
+                    <div key={order.id} className="drift-card p-6 rounded-lg" data-testid={`order-${order.id}`}>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {/* Order Info */}
+                        <div>
+                          <div className="flex items-center gap-3 mb-4">
+                            <span className={`px-3 py-1 rounded text-sm font-bold ${
+                              order.inquiry_type === 'order' ? 'bg-green-600' : 'bg-purple-600'
+                            }`}>
+                              {order.inquiry_type.toUpperCase()}
+                            </span>
+                            <span className="text-sm text-gray-400">
+                              {new Date(order.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                          
+                          <h3 className="text-xl font-bold mb-2">{order.name}</h3>
+                          <p className="text-sm text-gray-400 mb-1">{order.email}</p>
+                          <p className="text-sm text-gray-400 mb-3">{order.phone}</p>
+                          
+                          {order.item_details && (
+                            <div className="bg-blue-600/20 p-3 rounded border border-blue-500 mb-3">
+                              <p className="text-sm text-gray-300">
+                                <strong>Order Details:</strong><br/>
+                                {order.item_details}
+                              </p>
+                            </div>
+                          )}
+                          
+                          <div className="bg-gray-800 p-3 rounded">
+                            <p className="text-sm text-gray-300"><strong>Message:</strong></p>
+                            <p className="text-sm text-gray-400 mt-1">{order.message}</p>
+                          </div>
+                        </div>
+                        
+                        {/* Order Status Management */}
+                        <div className="space-y-4">
+                          <div>
+                            <Label className="text-gray-300 mb-2 block">Order Status</Label>
+                            <select
+                              value={order.status || 'pending'}
+                              onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                              className={`w-full px-4 py-3 rounded text-sm font-bold cursor-pointer ${
+                                order.status === 'completed' ? 'bg-green-600' :
+                                order.status === 'shipped' ? 'bg-blue-600' :
+                                order.status === 'processing' ? 'bg-yellow-600' :
+                                order.status === 'contacted' ? 'bg-cyan-600' :
+                                order.status === 'cancelled' ? 'bg-red-600' :
+                                'bg-gray-600'
+                              }`}
+                              data-testid={`order-status-${order.id}`}
+                            >
+                              <option value="pending">PENDING</option>
+                              <option value="contacted">CONTACTED</option>
+                              <option value="processing">PROCESSING</option>
+                              <option value="shipped">SHIPPED</option>
+                              <option value="completed">COMPLETED</option>
+                              <option value="cancelled">CANCELLED</option>
+                            </select>
+                          </div>
+                          
+                          {/* Status Guide */}
+                          <div className="bg-gray-800 p-4 rounded text-xs space-y-2">
+                            <p className="font-bold text-white mb-2">Status Guide:</p>
+                            <p><span className="text-gray-400">PENDING:</span> Order received, awaiting review</p>
+                            <p><span className="text-cyan-400">CONTACTED:</span> Customer contacted about order</p>
+                            <p><span className="text-yellow-400">PROCESSING:</span> Order being prepared</p>
+                            <p><span className="text-blue-400">SHIPPED:</span> Order shipped to customer</p>
+                            <p><span className="text-green-400">COMPLETED:</span> Order delivered/picked up</p>
+                            <p><span className="text-red-400">CANCELLED:</span> Order cancelled</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </TabsContent>
+
           {/* Inquiries Tab */}
           <TabsContent value="inquiries" className="space-y-4">
             <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Contact Inquiries & Orders</h2>
