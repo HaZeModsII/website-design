@@ -60,7 +60,10 @@ export default function ContactModal({ open, onClose, inquiryType, eventId, even
             className="text-3xl font-bold text-blue-500"
             style={{ fontFamily: 'Bebas Neue, sans-serif' }}
           >
-            {inquiryType === 'ticket' ? 'GET TICKETS' : inquiryType === 'order' ? 'PLACE ORDER' : 'CONTACT US'}
+            {inquiryType === 'ticket' ? 'GET TICKETS' : 
+             inquiryType === 'order' ? 'PLACE ORDER' : 
+             inquiryType === 'parts' ? 'INQUIRE ABOUT PART' : 
+             'CONTACT US'}
           </DialogTitle>
         </DialogHeader>
         
