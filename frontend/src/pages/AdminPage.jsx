@@ -46,6 +46,7 @@ export default function AdminPage() {
     price: '',
     car_model: '',
     year: '',
+    category: 'Engine',
     condition: 'used-good',
     image_url: '',
     stock: '1'
