@@ -652,7 +652,7 @@ export default function AdminPage() {
                 <div key={part.id} className="drift-card p-4 rounded-lg flex justify-between items-center">
                   <div>
                     <h3 className="text-xl font-bold">{part.name}</h3>
-                    <p className="text-gray-400">${part.price} CAD - {part.car_model} ({part.year}) - {part.condition} - Stock: {part.stock}</p>
+                    <p className="text-gray-400">${part.price} CAD - {part.category} - {part.car_model} ({part.year}) - {part.condition} - Stock: {part.stock}</p>
                   </div>
                   <Button
                     data-testid={`delete-part-${part.id}-btn`}
