@@ -515,6 +515,136 @@ export default function AdminPage() {
             </div>
           </TabsContent>
 
+
+
+          {/* Parts Tab */}
+          <TabsContent value="parts" className="space-y-6">
+            <div className="drift-card p-6 rounded-lg">
+              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Add New Part</h2>
+              <form onSubmit={handleAddPart} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Part Name</Label>
+                  <Input
+                    data-testid="part-name-input"
+                    value={newPart.name}
+                    onChange={(e) => setNewPart({...newPart, name: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Price (CAD)</Label>
+                  <Input
+                    data-testid="part-price-input"
+                    type="number"
+                    step="0.01"
+                    value={newPart.price}
+                    onChange={(e) => setNewPart({...newPart, price: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Car Model</Label>
+                  <Input
+                    data-testid="part-model-input"
+                    value={newPart.car_model}
+                    onChange={(e) => setNewPart({...newPart, car_model: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="e.g. Nissan 240SX"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Year</Label>
+                  <Input
+                    data-testid="part-year-input"
+                    value={newPart.year}
+                    onChange={(e) => setNewPart({...newPart, year: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="e.g. 1995-1998"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Condition</Label>
+                  <select
+                    data-testid="part-condition-input"
+                    value={newPart.condition}
+                    onChange={(e) => setNewPart({...newPart, condition: e.target.value})}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded"
+                    required
+                  >
+                    <option value="new">New</option>
+                    <option value="used-excellent">Used - Excellent</option>
+                    <option value="used-good">Used - Good</option>
+                    <option value="used-fair">Used - Fair</option>
+                  </select>
+                </div>
+                <div>
+                  <Label>Stock</Label>
+                  <Input
+                    data-testid="part-stock-input"
+                    type="number"
+                    value={newPart.stock}
+                    onChange={(e) => setNewPart({...newPart, stock: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Image URL</Label>
+                  <Input
+                    data-testid="part-image-input"
+                    value={newPart.image_url}
+                    onChange={(e) => setNewPart({...newPart, image_url: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Description</Label>
+                  <Textarea
+                    data-testid="part-description-input"
+                    value={newPart.description}
+                    onChange={(e) => setNewPart({...newPart, description: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Button 
+                    data-testid="add-part-btn"
+                    type="submit" 
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                    style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                  >
+                    ADD PART
+                  </Button>
+                </div>
+              </form>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Current Parts</h2>
+              {parts.map(part => (
+                <div key={part.id} className="drift-card p-4 rounded-lg flex justify-between items-center">
+                  <div>
+                    <h3 className="text-xl font-bold">{part.name}</h3>
+                    <p className="text-gray-400">${part.price} CAD - {part.car_model} ({part.year}) - {part.condition} - Stock: {part.stock}</p>
+                  </div>
+                  <Button
+                    data-testid={`delete-part-${part.id}-btn`}
+                    onClick={() => handleDeletePart(part.id)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
           {/* Inquiries Tab */}
           <TabsContent value="inquiries" className="space-y-4">
             <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Contact Inquiries & Orders</h2>
