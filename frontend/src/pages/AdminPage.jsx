@@ -18,6 +18,7 @@ export default function AdminPage() {
   
   const [merchItems, setMerchItems] = useState([]);
   const [events, setEvents] = useState([]);
+  const [parts, setParts] = useState([]);
   const [inquiries, setInquiries] = useState([]);
   
   const [newMerch, setNewMerch] = useState({
