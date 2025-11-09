@@ -163,7 +163,7 @@ export default function AdminPage() {
       });
       
       toast.success('Part added');
-      setNewPart({ name: '', description: '', price: '', car_model: '', year: '', condition: 'used-good', image_url: '', stock: '1' });
+      setNewPart({ name: '', description: '', price: '', car_model: '', year: '', category: 'Engine', condition: 'used-good', image_url: '', stock: '1' });
       fetchAdminData(token);
     } catch (error) {
       console.error('Error adding part:', error);
