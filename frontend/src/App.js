@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "@/pages/HomePage";
 import StorePage from "@/pages/StorePage";
 import EventsPage from "@/pages/EventsPage";
+import PartsPage from "@/pages/PartsPage";
 import AdminPage from "@/pages/AdminPage";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
