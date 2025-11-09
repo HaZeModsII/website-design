@@ -568,6 +568,26 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
+                  <Label>Category</Label>
+                  <select
+                    data-testid="part-category-input"
+                    value={newPart.category}
+                    onChange={(e) => setNewPart({...newPart, category: e.target.value})}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded"
+                    required
+                  >
+                    <option value="Engine">Engine</option>
+                    <option value="Suspension">Suspension</option>
+                    <option value="Drivetrain">Drivetrain</option>
+                    <option value="Exterior">Exterior</option>
+                    <option value="Interior">Interior</option>
+                    <option value="Brakes">Brakes</option>
+                    <option value="Wheels">Wheels</option>
+                    <option value="Exhaust">Exhaust</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
                   <Label>Condition</Label>
                   <select
                     data-testid="part-condition-input"
