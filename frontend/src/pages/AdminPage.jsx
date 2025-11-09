@@ -163,6 +163,22 @@ export default function AdminPage() {
     }
   };
 
+  const handleStatusUpdate = async (inquiryId, newStatus) => {
+    try {
+      await axios.patch(`${API}/inquiries/${inquiryId}/status`, {
+        status: newStatus
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Order status updated');
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast.error('Failed to update status');
+    }
+  };
+
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black flex items-center justify-center px-4">
