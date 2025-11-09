@@ -39,6 +39,19 @@ export default function AdminPage() {
     ticket_price: ''
   });
 
+  
+  const [newPart, setNewPart] = useState({
+    name: '',
+    description: '',
+    price: '',
+    car_model: '',
+    year: '',
+    condition: 'used-good',
+    image_url: '',
+    stock: '1'
+  });
+
+
   useEffect(() => {
     const savedToken = localStorage.getItem('admin_token');
     if (savedToken) {
