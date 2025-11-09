@@ -10,7 +10,7 @@ const API = `${BACKEND_URL}/api`;
 export default function PartsPage() {
   const [parts, setParts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCondition, setSelectedCondition] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [selectedPart, setSelectedPart] = useState(null);
 
@@ -30,10 +30,10 @@ export default function PartsPage() {
     }
   };
 
-  const conditions = ['all', 'new', 'used-excellent', 'used-good', 'used-fair'];
-  const filteredParts = selectedCondition === 'all' 
+  const categories = ['all', ...new Set(parts.map(part => part.category || 'Other'))];
+  const filteredParts = selectedCategory === 'all' 
     ? parts 
-    : parts.filter(part => part.condition === selectedCondition);
+    : parts.filter(part => (part.category || 'Other') === selectedCategory);
 
   const getConditionBadge = (condition) => {
     const badges = {
