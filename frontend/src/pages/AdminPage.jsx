@@ -201,6 +201,23 @@ export default function AdminPage() {
     }
   };
 
+
+  const handleDeletePart = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this part?')) return;
+    
+    try {
+      await axios.delete(`${API}/parts/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Part deleted');
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error deleting part:', error);
+      toast.error('Failed to delete part');
+    }
+  };
+
+
   const handleStatusUpdate = async (inquiryId, newStatus) => {
     try {
       await axios.patch(`${API}/inquiries/${inquiryId}/status`, {
