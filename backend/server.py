@@ -95,6 +95,7 @@ class CarPart(BaseModel):
     price: float
     car_model: str
     year: str
+    category: str  # 'Engine', 'Suspension', 'Drivetrain', 'Exterior', 'Interior', 'Brakes', 'Other'
     condition: str  # 'new', 'used-excellent', 'used-good', 'used-fair'
     image_url: str
     stock: int = 1
@@ -106,6 +107,7 @@ class CarPartCreate(BaseModel):
     price: float
     car_model: str
     year: str
+    category: str
     condition: str
     image_url: str
     stock: int = 1
@@ -116,6 +118,7 @@ class CarPartUpdate(BaseModel):
     price: Optional[float] = None
     car_model: Optional[str] = None
     year: Optional[str] = None
+    category: Optional[str] = None
     condition: Optional[str] = None
     image_url: Optional[str] = None
     stock: Optional[int] = None
