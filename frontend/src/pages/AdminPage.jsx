@@ -149,6 +149,28 @@ export default function AdminPage() {
     }
   };
 
+
+  const handleAddPart = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`${API}/parts`, {
+        ...newPart,
+        price: parseFloat(newPart.price),
+        stock: parseInt(newPart.stock)
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success('Part added');
+      setNewPart({ name: '', description: '', price: '', car_model: '', year: '', condition: 'used-good', image_url: '', stock: '1' });
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error adding part:', error);
+      toast.error('Failed to add part');
+    }
+  };
+
+
   const handleDeleteMerch = async (id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
     
