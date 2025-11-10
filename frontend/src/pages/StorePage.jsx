@@ -48,14 +48,22 @@ export default function StorePage() {
 
   const handlePurchase = (item) => {
     // Only check for size if item has sizes defined
-    if (item.sizes && item.sizes.length > 0) {
+    if (item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0) {
       const size = selectedSize[item.id];
       if (!size) {
         toast.error('Please select a size');
         return;
       }
+      if (item.sizes[size] === 0) {
+        toast.error('Selected size is out of stock');
+        return;
+      }
       setSelectedItem({ ...item, selectedSize: size });
     } else {
+      if (item.stock === 0) {
+        toast.error('Item is out of stock');
+        return;
+      }
       setSelectedItem(item);
     }
     setContactModalOpen(true);
