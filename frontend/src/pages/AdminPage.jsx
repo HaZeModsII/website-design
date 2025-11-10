@@ -1464,7 +1464,7 @@ export default function AdminPage() {
               <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Current Drivers</h2>
               {drivers.map(driver => (
                 <div key={driver.id} className="drift-card p-4 rounded-lg flex gap-4">
-                  <img src={driver.image_url} alt={driver.name} className="w-20 h-20 object-cover rounded" />
+                  <img src={getImageUrl(driver.image_url)} alt={driver.name} className="w-20 h-20 object-cover rounded" />
                   <div className="flex-1">
                     <h3 className="text-xl font-bold">{driver.name}</h3>
                     <p className="text-gray-400 text-sm">{driver.email}</p>
