@@ -57,15 +57,16 @@ export default function StorePage() {
         toast.error('Selected size is out of stock');
         return;
       }
-      setSelectedItem({ ...item, selectedSize: size });
+      // Navigate to checkout with item and selected size
+      navigate('/checkout', { state: { item, selectedSize: size } });
     } else {
       if (item.stock === 0) {
         toast.error('Item is out of stock');
         return;
       }
-      setSelectedItem(item);
+      // Navigate to checkout with item (no size)
+      navigate('/checkout', { state: { item } });
     }
-    setContactModalOpen(true);
   };
 
   if (loading) {
