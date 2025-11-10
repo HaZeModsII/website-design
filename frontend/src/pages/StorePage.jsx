@@ -81,6 +81,21 @@ export default function StorePage() {
           <p className="text-xl text-gray-400">Official Triple Barrel Racing Gear</p>
         </div>
 
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto mb-8">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Input
+              type="text"
+              placeholder="Search merchandise..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 py-6 bg-gray-800 border-gray-700 text-white placeholder-gray-400 text-lg"
+              data-testid="search-input"
+            />
+          </div>
+        </div>
+
         {/* Category Filter */}
         <div className="flex flex-wrap gap-4 justify-center mb-12">
           {categories.map(category => (
