@@ -993,7 +993,12 @@ export default function AdminPage() {
                 return (
                   <div key={item.id} className="drift-card p-4 rounded-lg flex justify-between items-center">
                     <div>
-                      <h3 className="text-xl font-bold">{item.name}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-xl font-bold">{item.name}</h3>
+                        {item.featured && (
+                          <span className="px-2 py-1 bg-yellow-600 text-white text-xs font-bold rounded">FEATURED</span>
+                        )}
+                      </div>
                       <p className="text-gray-400">${item.price} CAD - {item.category} - Total Stock: {totalStock}</p>
                       {item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 && (
                         <p className="text-blue-400 text-sm mt-1">
