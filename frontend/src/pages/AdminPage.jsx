@@ -764,7 +764,20 @@ export default function AdminPage() {
           {/* Merch Tab */}
           <TabsContent value="merch" className="space-y-6">
             <div className="drift-card p-6 rounded-lg">
-              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Add New Item</h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+                  {editingMerch ? 'Edit Item' : 'Add New Item'}
+                </h2>
+                {editingMerch && (
+                  <Button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    className="bg-gray-600 hover:bg-gray-700 text-white"
+                  >
+                    Cancel Edit
+                  </Button>
+                )}
+              </div>
               <form onSubmit={handleAddMerch} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label>Name</Label>
