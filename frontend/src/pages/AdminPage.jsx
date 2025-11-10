@@ -393,6 +393,33 @@ export default function AdminPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
+                  <Label className="mb-3 block">Sizes (Optional - for clothing items)</Label>
+                  <div className="flex flex-wrap gap-4" data-testid="size-checkboxes">
+                    {['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'].map(size => (
+                      <div key={size} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`size-${size}`}
+                          checked={newMerch.sizes.includes(size)}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              setNewMerch({...newMerch, sizes: [...newMerch.sizes, size]});
+                            } else {
+                              setNewMerch({...newMerch, sizes: newMerch.sizes.filter(s => s !== size)});
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor={`size-${size}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-300 cursor-pointer"
+                        >
+                          {size}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">Leave unchecked if item doesn't require size selection</p>
+                </div>
+                <div className="md:col-span-2">
                   <Button 
                     data-testid="add-merch-btn"
                     type="submit" 
