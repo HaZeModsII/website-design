@@ -223,7 +223,7 @@ export default function AboutPage() {
             {cars.map(car => (
               <div key={car.id} className="drift-card rounded-lg overflow-hidden">
                 <img 
-                  src={car.image_url} 
+                  src={getImageUrl(car.image_url)} 
                   alt={car.name}
                   className="w-full h-64 object-cover"
                 />
