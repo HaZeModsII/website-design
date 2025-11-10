@@ -78,7 +78,7 @@ export default function HomePage() {
                   className="drift-card rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform"
                 >
                   <img 
-                    src={product.image_url} 
+                    src={getImageUrl(product.image_url)} 
                     alt={product.name}
                     className="w-full h-48 object-cover"
                   />
