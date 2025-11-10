@@ -760,6 +760,7 @@ export default function AdminPage() {
         <Tabs defaultValue="merch" className="space-y-6">
           <TabsList className="bg-gray-800 border-2 border-gray-700">
             <TabsTrigger value="merch" data-testid="merch-tab" className="data-[state=active]:bg-blue-600">Merchandise</TabsTrigger>
+            <TabsTrigger value="sales" data-testid="sales-tab" className="data-[state=active]:bg-blue-600">Sales</TabsTrigger>
             <TabsTrigger value="events" data-testid="events-tab" className="data-[state=active]:bg-blue-600">Events</TabsTrigger>
             <TabsTrigger value="parts" data-testid="parts-tab" className="data-[state=active]:bg-blue-600">Parts</TabsTrigger>
             <TabsTrigger value="drivers" data-testid="drivers-tab" className="data-[state=active]:bg-blue-600">Drivers</TabsTrigger>
