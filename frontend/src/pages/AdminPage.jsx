@@ -439,6 +439,9 @@ export default function AdminPage() {
                   <div>
                     <h3 className="text-xl font-bold">{item.name}</h3>
                     <p className="text-gray-400">${item.price} CAD - {item.category} - Stock: {item.stock}</p>
+                    {item.sizes && item.sizes.length > 0 && (
+                      <p className="text-blue-400 text-sm mt-1">Sizes: {item.sizes.join(', ')}</p>
+                    )}
                   </div>
                   <Button
                     data-testid={`delete-merch-${item.id}-btn`}
