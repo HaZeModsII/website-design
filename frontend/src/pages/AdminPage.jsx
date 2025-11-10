@@ -29,7 +29,7 @@ export default function AdminPage() {
     image_url: '',
     category: '',
     stock: '',
-    sizes: []
+    sizes: {}  // Object mapping size to stock: { "S": 10, "M": 15 }
   });
   
   const [newEvent, setNewEvent] = useState({
