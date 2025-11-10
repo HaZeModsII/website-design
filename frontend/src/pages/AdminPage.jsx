@@ -27,10 +27,14 @@ export default function AdminPage() {
     description: '',
     price: '',
     image_url: '',
-    category: '',
+    category: 'T-Shirts',
     stock: '',
     sizes: {}  // Object mapping size to stock: { "S": 10, "M": 15 }
   });
+  
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
   
   const [newEvent, setNewEvent] = useState({
     name: '',
