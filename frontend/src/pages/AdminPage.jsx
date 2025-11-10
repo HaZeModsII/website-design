@@ -811,6 +811,18 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
+                  <Label>Sale Price (Optional)</Label>
+                  <Input
+                    data-testid="merch-sale-price-input"
+                    type="number"
+                    step="0.01"
+                    value={newMerch.sale_price || ''}
+                    onChange={(e) => setNewMerch({...newMerch, sale_price: e.target.value ? parseFloat(e.target.value) : null})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="Leave empty for no sale"
+                  />
+                </div>
+                <div>
                   <Label>Category</Label>
                   <select
                     data-testid="merch-category-input"
