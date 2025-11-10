@@ -147,26 +147,25 @@ export default function StorePage() {
                   </h3>
                   <p className="text-gray-400 mb-4 text-sm">{item.description}</p>
                   
-                  {/* Size Selector */}
-                  <div className="mb-4">
-                    <label className="text-sm text-gray-400 mb-2 block">Select Size:</label>
-                    <Select 
-                      value={selectedSize[item.id] || ''} 
-                      onValueChange={(value) => setSelectedSize({...selectedSize, [item.id]: value})}
-                    >
-                      <SelectTrigger className="bg-gray-800 border-gray-700 text-white" data-testid={`size-select-${item.id}`}>
-                        <SelectValue placeholder="Choose size" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                        <SelectItem value="XS">XS</SelectItem>
-                        <SelectItem value="S">S</SelectItem>
-                        <SelectItem value="M">M</SelectItem>
-                        <SelectItem value="L">L</SelectItem>
-                        <SelectItem value="XL">XL</SelectItem>
-                        <SelectItem value="XXL">XXL</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  {/* Size Selector - Only show if item has sizes */}
+                  {item.sizes && item.sizes.length > 0 && (
+                    <div className="mb-4">
+                      <label className="text-sm text-gray-400 mb-2 block">Select Size:</label>
+                      <Select 
+                        value={selectedSize[item.id] || ''} 
+                        onValueChange={(value) => setSelectedSize({...selectedSize, [item.id]: value})}
+                      >
+                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white" data-testid={`size-select-${item.id}`}>
+                          <SelectValue placeholder="Choose size" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                          {item.sizes.map(size => (
+                            <SelectItem key={size} value={size}>{size}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-between">
                     <span className="text-3xl font-bold text-blue-500">${item.price} CAD</span>
