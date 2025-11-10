@@ -108,7 +108,7 @@ export default function BlogPostPage() {
             {post.images.map((image, index) => (
               <img 
                 key={index}
-                src={image} 
+                src={getImageUrl(image)} 
                 alt={`${post.title} - ${index + 1}`}
                 className="w-full h-64 object-cover rounded-lg"
               />
