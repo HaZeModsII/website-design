@@ -6,6 +6,7 @@ import StorePage from "@/pages/StorePage";
 import EventsPage from "@/pages/EventsPage";
 import PartsPage from "@/pages/PartsPage";
 import AdminPage from "@/pages/AdminPage";
+import NotFoundPage from "@/pages/NotFoundPage";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
