@@ -3,6 +3,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "@/pages/HomePage";
 import StorePage from "@/pages/StorePage";
+import CheckoutPage from "@/pages/CheckoutPage";
 import EventsPage from "@/pages/EventsPage";
 import PartsPage from "@/pages/PartsPage";
 import AdminPage from "@/pages/AdminPage";
