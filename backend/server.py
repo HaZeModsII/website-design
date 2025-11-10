@@ -196,6 +196,125 @@ class PaymentRequest(BaseModel):
     order_id: str
     source_id: str  # Token from Square Web Payments SDK
 
+# Driver Models
+class Driver(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    bio: str
+    car_name: Optional[str] = None
+    image_url: str
+    email: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class DriverCreate(BaseModel):
+    name: str
+    bio: str
+    car_name: Optional[str] = None
+    image_url: str
+    email: str
+
+class DriverUpdate(BaseModel):
+    name: Optional[str] = None
+    bio: Optional[str] = None
+    car_name: Optional[str] = None
+    image_url: Optional[str] = None
+    email: Optional[str] = None
+
+class DriverContactForm(BaseModel):
+    driver_id: str
+    sender_name: str
+    sender_email: EmailStr
+    message: str
+
+# Car Models
+class Car(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    year: str
+    make: str
+    model: str
+    specs: str
+    image_url: str
+    driver_name: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class CarCreate(BaseModel):
+    name: str
+    year: str
+    make: str
+    model: str
+    specs: str
+    image_url: str
+    driver_name: Optional[str] = None
+
+class CarUpdate(BaseModel):
+    name: Optional[str] = None
+    year: Optional[str] = None
+    make: Optional[str] = None
+    model: Optional[str] = None
+    specs: Optional[str] = None
+    image_url: Optional[str] = None
+    driver_name: Optional[str] = None
+
+# Blog Post Models
+class BlogPost(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    content: str  # Markdown content
+    category: str
+    images: List[str] = []
+    author: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class BlogPostCreate(BaseModel):
+    title: str
+    content: str
+    category: str
+    images: List[str] = []
+    author: str
+
+class BlogPostUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    category: Optional[str] = None
+    images: Optional[List[str]] = None
+    author: Optional[str] = None
+
+# Sponsor Models
+class Sponsor(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    logo_url: str
+    website_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    facebook_url: Optional[str] = None
+    description: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class SponsorCreate(BaseModel):
+    name: str
+    logo_url: str
+    website_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    facebook_url: Optional[str] = None
+    description: Optional[str] = None
+
+class SponsorUpdate(BaseModel):
+    name: Optional[str] = None
+    logo_url: Optional[str] = None
+    website_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    facebook_url: Optional[str] = None
+    description: Optional[str] = None
+
 
 # Admin verification
 async def verify_admin(authorization: Optional[str] = Header(None)):
