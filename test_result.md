@@ -111,7 +111,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
@@ -122,6 +122,21 @@ backend:
       - working: true
         agent: "main"
         comment: "Changed sizes from List[str] to dict (size -> stock mapping). For clothing items, sizes field is { 'S': 10, 'M': 15, 'L': 5 }. For non-clothing items, use regular stock field. This allows individual stock tracking per size."
+  
+  - task: "Sale price functionality for merch items"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Initial testing failed - effective_price and discount_percent fields were missing from API responses due to Pydantic model configuration (extra='ignore') filtering out dynamically added fields."
+      - working: true
+        agent: "testing"
+        comment: "Fixed by adding effective_price and discount_percent fields to MerchItem model. All sale price functionality now working correctly: ✅ Individual item sale_percent calculation ✅ Effective price calculation (price * (1 - sale_percent/100)) ✅ Sales priority logic (Individual > Category > Site-wide) ✅ Sales settings endpoint ✅ All existing items show correct calculations. 6/6 tests passed (100% success rate)."
 
 frontend:
   - task: "Add size selection with per-size stock inputs in Admin Panel"
