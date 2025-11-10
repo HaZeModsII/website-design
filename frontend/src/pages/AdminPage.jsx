@@ -301,9 +301,20 @@ export default function AdminPage() {
 
   const handleAddPart = async (e) => {
     e.preventDefault();
+    
+    if (!partImageFile) {
+      toast.error('Please select an image');
+      return;
+    }
+    
     try {
+      // Upload image first
+      const imageUrl = await handleImageUpload(partImageFile);
+      if (!imageUrl) return;
+      
       await axios.post(`${API}/parts`, {
         ...newPart,
+        image_url: imageUrl,
         price: parseFloat(newPart.price),
         stock: parseInt(newPart.stock)
       }, {
@@ -312,6 +323,8 @@ export default function AdminPage() {
       
       toast.success('Part added');
       setNewPart({ name: '', description: '', price: '', car_model: '', year: '', category: 'Engine', condition: 'used-good', image_url: '', stock: '1' });
+      setPartImageFile(null);
+      setPartImagePreview(null);
       fetchAdminData(token);
     } catch (error) {
       console.error('Error adding part:', error);
