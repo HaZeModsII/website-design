@@ -350,7 +350,7 @@ export default function AdminPage() {
         toast.success('Merch item added');
       }
       
-      setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {} });
+      setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false });
       setImageFile(null);
       setImagePreview(null);
       fetchAdminData(token);
@@ -369,7 +369,8 @@ export default function AdminPage() {
       image_url: item.image_url,
       category: item.category,
       stock: item.stock.toString(),
-      sizes: item.sizes || {}
+      sizes: item.sizes || {},
+      featured: item.featured || false
     });
     setImagePreview(item.image_url);
     setImageFile(null);
