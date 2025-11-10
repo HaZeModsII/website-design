@@ -320,6 +320,195 @@ async def delete_part(part_id: str, admin: bool = Depends(verify_admin)):
     return {"message": "Part deleted successfully"}
 
 
+# Email Helper Functions
+async def send_customer_confirmation_email(inquiry: ContactInquiry):
+    """Send confirmation email to customer"""
+    try:
+        if not resend.api_key:
+            return
+        
+        from_email = os.environ.get('FROM_EMAIL', 'Triple Barrel Racing <onboarding@resend.dev>')
+        
+        if inquiry.inquiry_type in ['order', 'parts']:
+            subject = f"Order Confirmation - Triple Barrel Racing #{inquiry.id[:8]}"
+            html = f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #3b82f6;">Order Received!</h2>
+                <p>Hi {inquiry.name},</p>
+                <p>Thank you for your order! We've received your request and will process it shortly.</p>
+                
+                <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0;">Order Details:</h3>
+                    <p><strong>Order ID:</strong> #{inquiry.id[:8]}</p>
+                    {f'<p><strong>Item:</strong> {inquiry.item_details}</p>' if inquiry.item_details else ''}
+                    <p><strong>Status:</strong> Pending</p>
+                </div>
+                
+                <p><strong>Your Message:</strong><br/>{inquiry.message}</p>
+                
+                <p>We'll contact you at <strong>{inquiry.email}</strong> or <strong>{inquiry.phone}</strong> to confirm details and arrange payment/shipping.</p>
+                
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
+                <p style="color: #6b7280; font-size: 14px;">
+                    Triple Barrel Racing<br/>
+                    Underground Drift Culture · Street Racing · Pure Adrenaline
+                </p>
+            </div>
+            """
+        else:
+            subject = f"Inquiry Confirmation - Triple Barrel Racing"
+            html = f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #3b82f6;">Thank You For Contacting Us!</h2>
+                <p>Hi {inquiry.name},</p>
+                <p>We've received your {inquiry.inquiry_type} inquiry and will get back to you as soon as possible.</p>
+                
+                <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="margin-top: 0;">Your Inquiry:</h3>
+                    {f'<p><strong>Event:</strong> {inquiry.event_name}</p>' if inquiry.event_name else ''}
+                    <p>{inquiry.message}</p>
+                </div>
+                
+                <p>We'll respond to <strong>{inquiry.email}</strong> or call you at <strong>{inquiry.phone}</strong> within 24 hours.</p>
+                
+                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
+                <p style="color: #6b7280; font-size: 14px;">
+                    Triple Barrel Racing<br/>
+                    Underground Drift Culture · Street Racing · Pure Adrenaline
+                </p>
+            </div>
+            """
+        
+        resend.Emails.send({
+            "from": from_email,
+            "to": [inquiry.email],
+            "subject": subject,
+            "html": html
+        })
+        logger.info(f"Confirmation email sent to {inquiry.email}")
+    except Exception as e:
+        logger.error(f"Failed to send customer confirmation email: {str(e)}")
+
+async def send_admin_notification_email(inquiry: ContactInquiry):
+    """Send notification email to admin"""
+    try:
+        if not resend.api_key:
+            return
+        
+        from_email = os.environ.get('FROM_EMAIL', 'Triple Barrel Racing <onboarding@resend.dev>')
+        admin_email = os.environ.get('ADMIN_EMAIL', 'admin@triplebarrelracing.com')
+        
+        subject = f"New {inquiry.inquiry_type.title()} from {inquiry.name}"
+        html = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #3b82f6;">New Customer {inquiry.inquiry_type.title()}</h2>
+            
+            <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Customer Details:</h3>
+                <p><strong>Name:</strong> {inquiry.name}</p>
+                <p><strong>Email:</strong> {inquiry.email}</p>
+                <p><strong>Phone:</strong> {inquiry.phone}</p>
+                <p><strong>Type:</strong> {inquiry.inquiry_type.title()}</p>
+                <p><strong>Order ID:</strong> #{inquiry.id[:8]}</p>
+            </div>
+            
+            {f'<p><strong>Event:</strong> {inquiry.event_name}</p>' if inquiry.event_name else ''}
+            {f'<div style="background-color: #dbeafe; padding: 15px; border-radius: 8px; margin: 15px 0;"><strong>Order Details:</strong><br/>{inquiry.item_details}</div>' if inquiry.item_details else ''}
+            
+            <p><strong>Customer Message:</strong><br/>{inquiry.message}</p>
+            
+            <p style="margin-top: 30px;">
+                <a href="#" style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+                    View in Admin Panel
+                </a>
+            </p>
+        </div>
+        """
+        
+        resend.Emails.send({
+            "from": from_email,
+            "to": [admin_email],
+            "subject": subject,
+            "html": html
+        })
+        logger.info(f"Admin notification sent for inquiry {inquiry.id}")
+    except Exception as e:
+        logger.error(f"Failed to send admin notification email: {str(e)}")
+
+async def send_order_status_email(inquiry: ContactInquiry, old_status: str, new_status: str):
+    """Send email to customer when order status changes"""
+    try:
+        if not resend.api_key or inquiry.inquiry_type not in ['order', 'parts']:
+            return
+        
+        from_email = os.environ.get('FROM_EMAIL', 'Triple Barrel Racing <onboarding@resend.dev>')
+        
+        status_messages = {
+            'contacted': {
+                'subject': 'We\'ve Contacted You About Your Order',
+                'title': 'Order Update - We Reached Out!',
+                'message': 'We\'ve attempted to contact you regarding your order. Please check your email and phone for our message.'
+            },
+            'processing': {
+                'subject': 'Your Order is Being Processed',
+                'title': 'Order Processing Started!',
+                'message': 'Great news! Your order is now being prepared. We\'ll notify you once it\'s ready to ship.'
+            },
+            'shipped': {
+                'subject': 'Your Order Has Been Shipped!',
+                'title': 'Order Shipped! 🚚',
+                'message': 'Your order is on its way! You should receive it within 3-5 business days. We\'ll send you tracking information shortly.'
+            },
+            'completed': {
+                'subject': 'Order Completed - Thank You!',
+                'title': 'Order Delivered Successfully! ✅',
+                'message': 'Your order has been completed. We hope you\'re satisfied! If you have any issues, please contact us.'
+            },
+            'cancelled': {
+                'subject': 'Order Cancelled',
+                'title': 'Order Cancelled',
+                'message': 'Your order has been cancelled. If this was done in error, please contact us immediately.'
+            }
+        }
+        
+        if new_status not in status_messages:
+            return
+        
+        status_info = status_messages[new_status]
+        
+        html = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #3b82f6;">{status_info['title']}</h2>
+            <p>Hi {inquiry.name},</p>
+            <p>{status_info['message']}</p>
+            
+            <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="margin-top: 0;">Order Details:</h3>
+                <p><strong>Order ID:</strong> #{inquiry.id[:8]}</p>
+                {f'<p><strong>Item:</strong> {inquiry.item_details}</p>' if inquiry.item_details else ''}
+                <p><strong>Status:</strong> <span style="color: #3b82f6; font-weight: bold;">{new_status.upper()}</span></p>
+            </div>
+            
+            <p>If you have any questions, feel free to reply to this email or call us.</p>
+            
+            <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;">
+            <p style="color: #6b7280; font-size: 14px;">
+                Triple Barrel Racing<br/>
+                Underground Drift Culture · Street Racing · Pure Adrenaline
+            </p>
+        </div>
+        """
+        
+        resend.Emails.send({
+            "from": from_email,
+            "to": [inquiry.email],
+            "subject": status_info['subject'],
+            "html": html
+        })
+        logger.info(f"Status update email sent to {inquiry.email} for order {inquiry.id}")
+    except Exception as e:
+        logger.error(f"Failed to send status update email: {str(e)}")
+
 # Contact/Inquiry Routes
 @api_router.post("/contact")
 async def submit_contact(inquiry: ContactInquiryCreate):
@@ -328,31 +517,9 @@ async def submit_contact(inquiry: ContactInquiryCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     await db.inquiries.insert_one(doc)
     
-    # Send email via Resend
-    try:
-        if resend.api_key:
-            email_subject = f"New {inquiry.inquiry_type.title()} Inquiry from {inquiry.name}"
-            email_html = f"""
-            <h2>New Contact Inquiry - Triple Barrel Racing</h2>
-            <p><strong>Type:</strong> {inquiry.inquiry_type.title()}</p>
-            <p><strong>Name:</strong> {inquiry.name}</p>
-            <p><strong>Email:</strong> {inquiry.email}</p>
-            <p><strong>Phone:</strong> {inquiry.phone}</p>
-            {f'<p><strong>Event:</strong> {inquiry.event_name}</p>' if inquiry.event_name else ''}
-            {f'<p><strong>Item Details:</strong> {inquiry.item_details}</p>' if inquiry.item_details else ''}
-            <p><strong>Message:</strong></p>
-            <p>{inquiry.message}</p>
-            """
-            
-            resend.Emails.send({
-                "from": "Triple Barrel Racing <onboarding@resend.dev>",
-                "to": [os.environ.get('ADMIN_EMAIL', 'admin@triplebarrelracing.com')],
-                "subject": email_subject,
-                "html": email_html
-            })
-    except Exception as e:
-        logger.error(f"Failed to send email: {str(e)}")
-        # Don't fail the request if email fails
+    # Send emails asynchronously
+    await send_customer_confirmation_email(inquiry_obj)
+    await send_admin_notification_email(inquiry_obj)
     
     return {"message": "Inquiry submitted successfully", "id": inquiry_obj.id}
 
