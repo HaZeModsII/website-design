@@ -104,7 +104,7 @@ export default function BlogPage() {
                 {/* Featured Image */}
                 {post.images && post.images.length > 0 && (
                   <img 
-                    src={post.images[0]} 
+                    src={getImageUrl(post.images[0])} 
                     alt={post.title}
                     className="w-full h-48 object-cover"
                   />
