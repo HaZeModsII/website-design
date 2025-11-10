@@ -193,7 +193,7 @@ export default function StorePage() {
           setSelectedItem(null);
         }}
         inquiryType="order"
-        prefilledMessage={selectedItem ? `I'd like to order: ${selectedItem.name} - Size: ${selectedItem.selectedSize}` : ''}
+        prefilledMessage={selectedItem ? `I'd like to order: ${selectedItem.name}${selectedItem.selectedSize ? ` - Size: ${selectedItem.selectedSize}` : ''}` : ''}
         itemDetails={selectedItem}
       />
     </div>
