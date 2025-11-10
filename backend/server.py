@@ -40,7 +40,7 @@ class MerchItem(BaseModel):
     image_url: str
     category: str
     stock: int = 0
-    sizes: Optional[List[str]] = None
+    sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class MerchItemCreate(BaseModel):
@@ -50,7 +50,7 @@ class MerchItemCreate(BaseModel):
     image_url: str
     category: str
     stock: int = 0
-    sizes: Optional[List[str]] = None
+    sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
 
 class MerchItemUpdate(BaseModel):
     name: Optional[str] = None
@@ -59,7 +59,7 @@ class MerchItemUpdate(BaseModel):
     image_url: Optional[str] = None
     category: Optional[str] = None
     stock: Optional[int] = None
-    sizes: Optional[List[str]] = None
+    sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
 
 class Event(BaseModel):
     model_config = ConfigDict(extra="ignore")
