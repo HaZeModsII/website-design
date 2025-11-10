@@ -1103,14 +1103,20 @@ export default function AdminPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label>Image URL</Label>
+                  <Label>Part Image</Label>
                   <Input
                     data-testid="part-image-input"
-                    value={newPart.image_url}
-                    onChange={(e) => setNewPart({...newPart, image_url: e.target.value})}
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePartImageChange}
                     className="bg-gray-800 border-gray-700 text-white"
                     required
                   />
+                  {partImagePreview && (
+                    <div className="mt-3">
+                      <img src={partImagePreview} alt="Preview" className="w-32 h-32 object-cover rounded border-2 border-gray-700" />
+                    </div>
+                  )}
                 </div>
                 <div className="md:col-span-2">
                   <Label>Description</Label>
