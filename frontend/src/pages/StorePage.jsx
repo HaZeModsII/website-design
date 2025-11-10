@@ -14,7 +14,7 @@ const API = `${BACKEND_URL}/api`;
 const getImageUrl = (imageUrl) => {
   if (!imageUrl) return '';
   if (imageUrl.startsWith('http')) return imageUrl;
-  if (imageUrl.startsWith('/uploads')) return `${BACKEND_URL}${imageUrl}`;
+  if (imageUrl.startsWith('/uploads') || imageUrl.startsWith('/api/uploads')) return `${BACKEND_URL}${imageUrl}`;
   return imageUrl;
 };
 
