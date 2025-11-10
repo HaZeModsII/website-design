@@ -10,7 +10,7 @@ import sys
 from typing import Dict, Any, Optional, List
 
 # Configuration
-BASE_URL = "https://missing-size-field.preview.emergentagent.com/api"
+BASE_URL = "https://size-selector-1.preview.emergentagent.com/api"
 ADMIN_USERNAME = "admin"
 ADMIN_PASSWORD = "admin123"
 
