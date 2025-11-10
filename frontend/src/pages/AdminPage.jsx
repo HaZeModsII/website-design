@@ -364,17 +364,20 @@ export default function AdminPage() {
                     required
                   />
                 </div>
-                <div>
-                  <Label>Stock</Label>
-                  <Input
-                    data-testid="merch-stock-input"
-                    type="number"
-                    value={newMerch.stock}
-                    onChange={(e) => setNewMerch({...newMerch, stock: e.target.value})}
-                    className="bg-gray-800 border-gray-700 text-white"
-                    required
-                  />
-                </div>
+                {/* Stock field - only show if no sizes selected */}
+                {Object.keys(newMerch.sizes).length === 0 && (
+                  <div>
+                    <Label>Stock</Label>
+                    <Input
+                      data-testid="merch-stock-input"
+                      type="number"
+                      value={newMerch.stock}
+                      onChange={(e) => setNewMerch({...newMerch, stock: e.target.value})}
+                      className="bg-gray-800 border-gray-700 text-white"
+                      required
+                    />
+                  </div>
+                )}
                 <div className="md:col-span-2">
                   <Label>Image URL</Label>
                   <Input
@@ -396,18 +399,19 @@ export default function AdminPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label className="mb-3 block">Sizes (Optional - for clothing items)</Label>
-                  <div className="flex flex-wrap gap-4" data-testid="size-checkboxes">
+                  <Label className="mb-3 block">Sizes & Stock (Optional - for clothing items)</Label>
+                  <div className="space-y-3" data-testid="size-checkboxes">
                     {['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'].map(size => (
-                      <div key={size} className="flex items-center space-x-2">
+                      <div key={size} className="flex items-center gap-4">
                         <Checkbox
                           id={`size-${size}`}
-                          checked={newMerch.sizes.includes(size)}
+                          checked={size in newMerch.sizes}
                           onCheckedChange={(checked) => {
+                            const newSizes = {...newMerch.sizes};
                             if (checked) {
-                              setNewMerch({...newMerch, sizes: [...newMerch.sizes, size]});
+                              newSizes[size] = 0;
                             } else {
-                              setNewMerch({...newMerch, sizes: newMerch.sizes.filter(s => s !== size)});
+                              delete newSizes[size];
                             }
                           }}
                         />
