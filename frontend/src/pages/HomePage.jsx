@@ -56,25 +56,45 @@ export default function HomePage() {
           Underground Drift Culture · Street Racing · Pure Adrenaline
         </p>
 
-        {/* CTA Buttons - Flipped order */}
-        <div className="flex flex-col sm:flex-row gap-6">
-          <Button
-            data-testid="shop-merch-btn"
-            onClick={() => navigate('/store')}
-            className="drift-button px-8 py-6 text-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-none border-2 border-blue-500"
-            style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-          >
-            SHOP MERCH
-          </Button>
-          <Button
-            data-testid="view-events-btn"
-            onClick={() => navigate('/events')}
-            className="drift-button px-8 py-6 text-lg bg-transparent hover:bg-white/10 text-white font-bold rounded-none border-2 border-white"
-            style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-          >
-            VIEW EVENTS
-          </Button>
-        </div>
+        {/* Featured Products */}
+        {featuredProducts.length > 0 && (
+          <div className="w-full max-w-6xl mb-12">
+            <h2 className="text-3xl font-bold mb-8 text-center" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+              FEATURED PRODUCTS
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProducts.slice(0, 3).map(product => (
+                <div 
+                  key={product.id}
+                  onClick={() => navigate('/store')}
+                  className="drift-card rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+                >
+                  <img 
+                    src={product.image_url} 
+                    alt={product.name}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+                      {product.name}
+                    </h3>
+                    <div className="flex justify-between items-center">
+                      {product.effective_price && product.effective_price < product.price ? (
+                        <div>
+                          <span className="text-lg text-gray-400 line-through mr-2">${product.price}</span>
+                          <span className="text-2xl font-bold text-red-500">${product.effective_price}</span>
+                        </div>
+                      ) : (
+                        <span className="text-2xl font-bold text-blue-500">${product.price}</span>
+                      )}
+                      <span className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded">FEATURED</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Scroll indicator */}
         <div className="absolute bottom-10 flex flex-col items-center animate-bounce">
