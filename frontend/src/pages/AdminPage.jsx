@@ -332,6 +332,178 @@ export default function AdminPage() {
     }
   };
 
+  // Driver handlers
+  const handleAddDriver = async (e) => {
+    e.preventDefault();
+    if (!driverImageFile) {
+      toast.error('Please select an image');
+      return;
+    }
+    
+    try {
+      const imageUrl = await handleImageUpload(driverImageFile);
+      if (!imageUrl) return;
+      
+      await axios.post(`${API}/drivers`, {
+        ...newDriver,
+        image_url: imageUrl
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success('Driver added');
+      setNewDriver({ name: '', bio: '', car_name: '', email: '' });
+      setDriverImageFile(null);
+      setDriverImagePreview(null);
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error adding driver:', error);
+      toast.error('Failed to add driver');
+    }
+  };
+
+  const handleDeleteDriver = async (id) => {
+    try {
+      await axios.delete(`${API}/drivers/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Driver deleted');
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error deleting driver:', error);
+      toast.error('Failed to delete driver');
+    }
+  };
+
+  // Car handlers
+  const handleAddCar = async (e) => {
+    e.preventDefault();
+    if (!carImageFile) {
+      toast.error('Please select an image');
+      return;
+    }
+    
+    try {
+      const imageUrl = await handleImageUpload(carImageFile);
+      if (!imageUrl) return;
+      
+      await axios.post(`${API}/cars`, {
+        ...newCar,
+        image_url: imageUrl
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success('Car added');
+      setNewCar({ name: '', year: '', make: '', model: '', specs: '', driver_name: '' });
+      setCarImageFile(null);
+      setCarImagePreview(null);
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error adding car:', error);
+      toast.error('Failed to add car');
+    }
+  };
+
+  const handleDeleteCar = async (id) => {
+    try {
+      await axios.delete(`${API}/cars/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Car deleted');
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error deleting car:', error);
+      toast.error('Failed to delete car');
+    }
+  };
+
+  // Blog post handlers
+  const handleAddBlogPost = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Upload all images
+      const imageUrls = [];
+      for (const file of blogImageFiles) {
+        const url = await handleImageUpload(file);
+        if (url) imageUrls.push(url);
+      }
+      
+      await axios.post(`${API}/blog`, {
+        ...newBlogPost,
+        images: imageUrls
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success('Blog post added');
+      setNewBlogPost({ title: '', content: '', category: 'events', author: '' });
+      setBlogImageFiles([]);
+      setBlogImagePreviews([]);
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error adding blog post:', error);
+      toast.error('Failed to add blog post');
+    }
+  };
+
+  const handleDeleteBlogPost = async (id) => {
+    try {
+      await axios.delete(`${API}/blog/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Blog post deleted');
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error deleting blog post:', error);
+      toast.error('Failed to delete blog post');
+    }
+  };
+
+  // Sponsor handlers
+  const handleAddSponsor = async (e) => {
+    e.preventDefault();
+    if (!sponsorImageFile) {
+      toast.error('Please select a logo image');
+      return;
+    }
+    
+    try {
+      const imageUrl = await handleImageUpload(sponsorImageFile);
+      if (!imageUrl) return;
+      
+      await axios.post(`${API}/sponsors`, {
+        ...newSponsor,
+        logo_url: imageUrl
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      toast.success('Sponsor added');
+      setNewSponsor({ name: '', website_url: '', instagram_url: '', facebook_url: '', description: '' });
+      setSponsorImageFile(null);
+      setSponsorImagePreview(null);
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error adding sponsor:', error);
+      toast.error('Failed to add sponsor');
+    }
+  };
+
+  const handleDeleteSponsor = async (id) => {
+    try {
+      await axios.delete(`${API}/sponsors/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Sponsor deleted');
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error deleting sponsor:', error);
+      toast.error('Failed to delete sponsor');
+    }
+  };
+
 
   const handleDeleteMerch = async (id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
