@@ -40,7 +40,7 @@ class MerchItem(BaseModel):
     name: str
     description: str
     price: float
-    sale_price: Optional[float] = None  # Individual item sale price
+    sale_percent: Optional[float] = None  # Individual item sale percentage (e.g., 20 for 20% off)
     image_url: str
     category: str
     stock: int = 0
@@ -52,7 +52,7 @@ class MerchItemCreate(BaseModel):
     name: str
     description: str
     price: float
-    sale_price: Optional[float] = None
+    sale_percent: Optional[float] = None
     image_url: str
     category: str
     stock: int = 0
@@ -63,7 +63,7 @@ class MerchItemUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     price: Optional[float] = None
-    sale_price: Optional[float] = None
+    sale_percent: Optional[float] = None
     image_url: Optional[str] = None
     category: Optional[str] = None
     stock: Optional[int] = None
