@@ -96,8 +96,8 @@ export default function HomePage() {
                     <div className="flex justify-between items-center">
                       {product.effective_price && product.effective_price < product.price ? (
                         <div>
-                          <span className="text-lg text-gray-400 line-through mr-2">${product.price}</span>
-                          <span className="text-2xl font-bold text-red-500">${product.effective_price}</span>
+                          <div className="text-2xl font-bold text-red-500">${product.effective_price}</div>
+                          <div className="text-xs text-gray-400 line-through">${product.price}</div>
                         </div>
                       ) : (
                         <span className="text-2xl font-bold text-blue-500">${product.price}</span>
