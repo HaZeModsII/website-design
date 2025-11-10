@@ -166,6 +166,36 @@ class AdminResponse(BaseModel):
     message: str
     token: Optional[str] = None
 
+# Order Models
+class OrderLineItem(BaseModel):
+    product_id: str
+    product_name: str
+    variant_id: Optional[str] = None
+    size: Optional[str] = None
+    quantity: int
+    unit_price: float
+
+class OrderCreate(BaseModel):
+    customer_email: EmailStr
+    customer_name: str
+    line_items: List[OrderLineItem]
+
+class Order(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    customer_email: EmailStr
+    customer_name: str
+    line_items: List[OrderLineItem]
+    total_amount: float
+    status: str = "pending"  # pending, completed, failed, cancelled
+    square_payment_id: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class PaymentRequest(BaseModel):
+    order_id: str
+    source_id: str  # Token from Square Web Payments SDK
+
 
 # Admin verification
 async def verify_admin(authorization: Optional[str] = Header(None)):
