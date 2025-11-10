@@ -25,6 +25,9 @@ function App() {
           <Route path="/store" element={<StorePage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:postId" element={<BlogPostPage />} />
           <Route path="/parts" element={<PartsPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
