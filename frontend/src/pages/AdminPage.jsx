@@ -380,7 +380,8 @@ export default function AdminPage() {
       sizes: item.sizes || {},
       featured: item.featured || false
     });
-    setImagePreview(item.image_url);
+    // Use getImageUrl to show the correct preview
+    setImagePreview(getImageUrl(item.image_url));
     setImageFile(null);
     
     // Scroll to form
