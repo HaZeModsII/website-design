@@ -292,17 +292,22 @@ export default function AdminPage() {
   const handleAddMerch = async (e) => {
     e.preventDefault();
     
-    if (!imageFile) {
+    // For edit mode, image is optional. For add mode, image is required
+    if (!editingMerch && !imageFile) {
       toast.error('Please select an image');
       return;
     }
     
     try {
-      // Upload image first
-      const imageUrl = await handleImageUpload(imageFile);
-      if (!imageUrl) {
-        toast.error('Failed to upload image');
-        return;
+      let imageUrl = newMerch.image_url; // Keep existing image if editing
+      
+      // Upload new image if file is selected
+      if (imageFile) {
+        imageUrl = await handleImageUpload(imageFile);
+        if (!imageUrl) {
+          toast.error('Failed to upload image');
+          return;
+        }
       }
       
       const payload = {
@@ -320,19 +325,54 @@ export default function AdminPage() {
         payload.stock = parseInt(newMerch.stock);
       }
       
-      await axios.post(`${API}/merch`, payload, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      if (editingMerch) {
+        // Update existing item
+        await axios.put(`${API}/merch/${editingMerch.id}`, payload, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        toast.success('Merch item updated');
+        setEditingMerch(null);
+      } else {
+        // Add new item
+        await axios.post(`${API}/merch`, payload, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        toast.success('Merch item added');
+      }
       
-      toast.success('Merch item added');
       setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {} });
       setImageFile(null);
       setImagePreview(null);
       fetchAdminData(token);
     } catch (error) {
-      console.error('Error adding merch:', error);
-      toast.error('Failed to add item');
+      console.error('Error saving merch:', error);
+      toast.error('Failed to save item');
     }
+  };
+
+  const handleEditMerch = (item) => {
+    setEditingMerch(item);
+    setNewMerch({
+      name: item.name,
+      description: item.description,
+      price: item.price.toString(),
+      image_url: item.image_url,
+      category: item.category,
+      stock: item.stock.toString(),
+      sizes: item.sizes || {}
+    });
+    setImagePreview(item.image_url);
+    setImageFile(null);
+    
+    // Scroll to form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMerch(null);
+    setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {} });
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   const handleAddEvent = async (e) => {
