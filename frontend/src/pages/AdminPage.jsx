@@ -1681,7 +1681,7 @@ export default function AdminPage() {
               {blogPosts.map(post => (
                 <div key={post.id} className="drift-card p-4 rounded-lg flex gap-4">
                   {post.images && post.images.length > 0 && (
-                    <img src={post.images[0]} alt={post.title} className="w-24 h-24 object-cover rounded" />
+                    <img src={getImageUrl(post.images[0])} alt={post.title} className="w-24 h-24 object-cover rounded" />
                   )}
                   <div className="flex-1">
                     <span className="inline-block px-2 py-1 bg-blue-600 text-white text-xs rounded mb-2">{post.category}</span>
