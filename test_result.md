@@ -116,6 +116,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Added optional sizes field (List[str]) to MerchItem, MerchItemCreate, and MerchItemUpdate models"
+      - working: true
+        agent: "testing"
+        comment: "Backend API testing completed successfully. All core functionality verified: ✅ Create merch WITH sizes ✅ Create merch WITHOUT sizes ✅ Create merch with null sizes ✅ Update item to add sizes ✅ Update item to remove sizes (using empty array []) ✅ Backward compatibility ✅ Various size formats. Minor: PUT with sizes: null doesn't work due to backend filtering None values, but PUT with sizes: [] works correctly for removing sizes. All critical scenarios working as expected."
 
 frontend:
   - task: "Add size selection checkboxes in Admin Panel"
