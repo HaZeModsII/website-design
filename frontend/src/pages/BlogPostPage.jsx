@@ -10,6 +10,14 @@ import { Calendar, User, ArrowLeft } from "lucide-react";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Helper function to get full image URL
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return '';
+  if (imageUrl.startsWith('http')) return imageUrl;
+  if (imageUrl.startsWith('/uploads')) return `${BACKEND_URL}${imageUrl}`;
+  return imageUrl;
+};
+
 export default function BlogPostPage() {
   const { postId } = useParams();
   const navigate = useNavigate();
