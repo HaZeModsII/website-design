@@ -147,7 +147,7 @@ export default function StorePage() {
               <div key={item.id} className="drift-card rounded-lg overflow-hidden" data-testid={`merch-item-${item.id}`}>
                 <div className="aspect-square bg-gray-800 relative overflow-hidden">
                   <img 
-                    src={item.image_url} 
+                    src={getImageUrl(item.image_url)} 
                     alt={item.name}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
