@@ -36,9 +36,15 @@ export default function StorePage() {
   };
 
   const categories = ['all', ...new Set(merchItems.map(item => item.category))];
-  const filteredItems = selectedCategory === 'all' 
-    ? merchItems 
-    : merchItems.filter(item => item.category === selectedCategory);
+  
+  // Filter by category and search
+  const filteredItems = merchItems.filter(item => {
+    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+    const matchesSearch = searchQuery === '' || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const handlePurchase = (item) => {
     const size = selectedSize[item.id];
