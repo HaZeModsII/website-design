@@ -73,6 +73,13 @@ export default function AdminPage() {
   const [blogPosts, setBlogPosts] = useState([]);
   const [sponsors, setSponsors] = useState([]);
   
+  // Sales settings state
+  const [salesSettings, setSalesSettings] = useState({
+    site_wide_sale: false,
+    site_wide_discount_percent: 0,
+    category_sales: {}
+  });
+  
   // Driver state and image
   const [driverImageFile, setDriverImageFile] = useState(null);
   const [driverImagePreview, setDriverImagePreview] = useState(null);
