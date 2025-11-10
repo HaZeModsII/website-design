@@ -177,8 +177,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Add size selection checkboxes in Admin Panel"
-    - "Update Store Page to show dynamic sizes"
+    - "Sale price functionality testing completed"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
