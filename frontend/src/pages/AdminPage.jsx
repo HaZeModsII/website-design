@@ -117,11 +117,63 @@ export default function AdminPage() {
     }
   };
 
+  const handleImageUpload = async (file) => {
+    if (!file) return null;
+    
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await axios.post(`${API}/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      return response.data.image_url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Failed to upload image');
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+  
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddMerch = async (e) => {
     e.preventDefault();
+    
+    if (!imageFile) {
+      toast.error('Please select an image');
+      return;
+    }
+    
     try {
+      // Upload image first
+      const imageUrl = await handleImageUpload(imageFile);
+      if (!imageUrl) {
+        toast.error('Failed to upload image');
+        return;
+      }
+      
       const payload = {
         ...newMerch,
+        image_url: imageUrl,
         price: parseFloat(newMerch.price)
       };
       
@@ -139,7 +191,9 @@ export default function AdminPage() {
       });
       
       toast.success('Merch item added');
-      setNewMerch({ name: '', description: '', price: '', image_url: '', category: '', stock: '', sizes: {} });
+      setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {} });
+      setImageFile(null);
+      setImagePreview(null);
       fetchAdminData(token);
     } catch (error) {
       console.error('Error adding merch:', error);
