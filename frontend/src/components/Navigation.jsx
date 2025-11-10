@@ -68,6 +68,18 @@ export default function Navigation() {
               MERCH
             </Button>
           </Link>
+          <Link to="/blog" data-testid="nav-blog-btn">
+            <Button
+              className={`px-4 py-2 font-bold rounded-none border-2 transition-colors ${
+                isActive('/blog')
+                  ? 'bg-blue-600 border-blue-500 text-white'
+                  : 'bg-transparent border-transparent text-gray-400 hover:text-white hover:border-blue-500'
+              }`}
+              style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+            >
+              BLOG
+            </Button>
+          </Link>
           <Link to="/parts" data-testid="nav-parts-btn">
             <Button
               className={`px-4 py-2 font-bold rounded-none border-2 transition-colors ${
