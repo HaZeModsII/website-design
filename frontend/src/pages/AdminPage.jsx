@@ -310,7 +310,7 @@ export default function AdminPage() {
   const handleAddMerch = async (e) => {
     e.preventDefault();
     
-    // For edit mode, image is optional. For add mode, image is required
+    // For add mode, image is required. For edit mode, it's optional
     if (!editingMerch && !imageFile) {
       toast.error('Please select an image');
       return;
@@ -326,6 +326,10 @@ export default function AdminPage() {
           toast.error('Failed to upload image');
           return;
         }
+      } else if (!editingMerch) {
+        // If adding new item and no file selected (shouldn't happen due to check above)
+        toast.error('Please select an image');
+        return;
       }
       
       const payload = {
