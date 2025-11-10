@@ -27,7 +27,8 @@ export default function AdminPage() {
     price: '',
     image_url: '',
     category: '',
-    stock: ''
+    stock: '',
+    sizes: []
   });
   
   const [newEvent, setNewEvent] = useState({
