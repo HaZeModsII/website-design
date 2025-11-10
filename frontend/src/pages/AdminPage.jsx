@@ -50,6 +50,10 @@ export default function AdminPage() {
   });
 
   
+  // Part image state
+  const [partImageFile, setPartImageFile] = useState(null);
+  const [partImagePreview, setPartImagePreview] = useState(null);
+  
   const [newPart, setNewPart] = useState({
     name: '',
     description: '',
@@ -60,6 +64,55 @@ export default function AdminPage() {
     condition: 'used-good',
     image_url: '',
     stock: '1'
+  });
+  
+  // New entity states
+  const [drivers, setDrivers] = useState([]);
+  const [cars, setCars] = useState([]);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
+  
+  // Driver state and image
+  const [driverImageFile, setDriverImageFile] = useState(null);
+  const [driverImagePreview, setDriverImagePreview] = useState(null);
+  const [newDriver, setNewDriver] = useState({
+    name: '',
+    bio: '',
+    car_name: '',
+    email: ''
+  });
+  
+  // Car state and image
+  const [carImageFile, setCarImageFile] = useState(null);
+  const [carImagePreview, setCarImagePreview] = useState(null);
+  const [newCar, setNewCar] = useState({
+    name: '',
+    year: '',
+    make: '',
+    model: '',
+    specs: '',
+    driver_name: ''
+  });
+  
+  // Blog post state and images (multiple)
+  const [blogImageFiles, setBlogImageFiles] = useState([]);
+  const [blogImagePreviews, setBlogImagePreviews] = useState([]);
+  const [newBlogPost, setNewBlogPost] = useState({
+    title: '',
+    content: '',
+    category: 'events',
+    author: ''
+  });
+  
+  // Sponsor state and image
+  const [sponsorImageFile, setSponsorImageFile] = useState(null);
+  const [sponsorImagePreview, setSponsorImagePreview] = useState(null);
+  const [newSponsor, setNewSponsor] = useState({
+    name: '',
+    website_url: '',
+    instagram_url: '',
+    facebook_url: '',
+    description: ''
   });
 
 
