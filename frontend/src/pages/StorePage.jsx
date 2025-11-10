@@ -11,12 +11,11 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function StorePage() {
+  const navigate = useNavigate();
   const [merchItems, setMerchItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [contactModalOpen, setContactModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
   const [selectedSize, setSelectedSize] = useState({});
 
   useEffect(() => {
