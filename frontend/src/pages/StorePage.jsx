@@ -202,10 +202,12 @@ export default function StorePage() {
                     <div>
                       {item.effective_price && item.effective_price < item.price ? (
                         <div>
-                          <span className="text-xl font-bold text-gray-400 line-through mr-2">${item.price} CAD</span>
                           <span className="text-3xl font-bold text-red-500">${item.effective_price} CAD</span>
-                          <div className="text-sm text-red-400 mt-1">
-                            SAVE ${(item.price - item.effective_price).toFixed(2)}!
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-sm text-gray-400 line-through">${item.price} CAD</span>
+                            <span className="text-sm text-red-400 font-bold">
+                              SAVE ${(item.price - item.effective_price).toFixed(2)}!
+                            </span>
                           </div>
                         </div>
                       ) : (
