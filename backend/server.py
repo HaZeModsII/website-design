@@ -1098,6 +1098,45 @@ async def delete_sponsor(sponsor_id: str, admin: bool = Depends(verify_admin)):
         raise HTTPException(status_code=404, detail="Sponsor not found")
     return {"message": "Sponsor deleted successfully"}
 
+# Sales Settings Routes
+@api_router.get("/sales-settings", response_model=SaleSettings)
+async def get_sales_settings():
+    """Get current sales settings."""
+    settings = await db.sales_settings.find_one({"id": "sales_settings"}, {"_id": 0})
+    if not settings:
+        # Create default settings if not exists
+        default_settings = SaleSettings()
+        doc = default_settings.model_dump()
+        doc['updated_at'] = doc['updated_at'].isoformat()
+        await db.sales_settings.insert_one(doc)
+        return default_settings
+    
+    if isinstance(settings.get('updated_at'), str):
+        settings['updated_at'] = datetime.fromisoformat(settings['updated_at'])
+    return SaleSettings(**settings)
+
+@api_router.put("/sales-settings", response_model=SaleSettings)
+async def update_sales_settings(settings_update: SaleSettingsUpdate, admin: bool = Depends(verify_admin)):
+    """Update sales settings."""
+    existing = await db.sales_settings.find_one({"id": "sales_settings"}, {"_id": 0})
+    if not existing:
+        # Create if doesn't exist
+        default_settings = SaleSettings()
+        doc = default_settings.model_dump()
+        doc['updated_at'] = datetime.now(timezone.utc).isoformat()
+        await db.sales_settings.insert_one(doc)
+        existing = doc
+    
+    update_data = {k: v for k, v in settings_update.model_dump().items() if v is not None}
+    if update_data:
+        update_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+        await db.sales_settings.update_one({"id": "sales_settings"}, {"$set": update_data})
+    
+    updated = await db.sales_settings.find_one({"id": "sales_settings"}, {"_id": 0})
+    if isinstance(updated.get('updated_at'), str):
+        updated['updated_at'] = datetime.fromisoformat(updated['updated_at'])
+    return SaleSettings(**updated)
+
 # Include the router in the main app
 app.include_router(api_router)
 
