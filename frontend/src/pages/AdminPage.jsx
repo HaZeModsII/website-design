@@ -877,7 +877,7 @@ export default function AdminPage() {
                     value={newMerch.category}
                     onChange={(e) => setNewMerch({...newMerch, category: e.target.value})}
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded"
-                    required
+                    required={!editingMerch}
                   >
                     <option value="T-Shirts">T-Shirts</option>
                     <option value="Sweaters">Sweaters</option>
@@ -896,7 +896,7 @@ export default function AdminPage() {
                       value={newMerch.stock}
                       onChange={(e) => setNewMerch({...newMerch, stock: e.target.value})}
                       className="bg-gray-800 border-gray-700 text-white"
-                      required
+                      required={!editingMerch}
                     />
                   </div>
                 )}
