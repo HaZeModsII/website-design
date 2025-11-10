@@ -1785,7 +1785,7 @@ export default function AdminPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {sponsors.map(sponsor => (
                   <div key={sponsor.id} className="drift-card p-4 rounded-lg">
-                    <img src={sponsor.logo_url} alt={sponsor.name} className="w-full h-24 object-contain mb-3 bg-white p-2 rounded" />
+                    <img src={getImageUrl(sponsor.logo_url)} alt={sponsor.name} className="w-full h-24 object-contain mb-3 bg-white p-2 rounded" />
                     <h3 className="text-lg font-bold mb-2">{sponsor.name}</h3>
                     {sponsor.description && <p className="text-gray-400 text-sm mb-3">{sponsor.description}</p>}
                     <div className="flex gap-2 mb-3">
