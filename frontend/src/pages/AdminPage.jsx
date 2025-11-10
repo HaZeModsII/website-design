@@ -847,6 +847,16 @@ export default function AdminPage() {
                     placeholder="Leave empty for no sale"
                   />
                 </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="featured-checkbox"
+                    checked={newMerch.featured || false}
+                    onCheckedChange={(checked) => setNewMerch({...newMerch, featured: checked})}
+                  />
+                  <Label htmlFor="featured-checkbox" className="text-gray-300 cursor-pointer">
+                    Feature on Home Page
+                  </Label>
+                </div>
                 <div>
                   <Label>Category</Label>
                   <select
