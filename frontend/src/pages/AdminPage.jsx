@@ -901,14 +901,14 @@ export default function AdminPage() {
                   </div>
                 )}
                 <div className="md:col-span-2">
-                  <Label>Product Image</Label>
+                  <Label>Product Image {editingMerch && '(Optional - leave empty to keep current)'}</Label>
                   <Input
                     data-testid="merch-image-input"
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
                     className="bg-gray-800 border-gray-700 text-white"
-                    required
+                    required={!editingMerch}
                   />
                   {imagePreview && (
                     <div className="mt-3">
@@ -923,7 +923,7 @@ export default function AdminPage() {
                     value={newMerch.description}
                     onChange={(e) => setNewMerch({...newMerch, description: e.target.value})}
                     className="bg-gray-800 border-gray-700 text-white"
-                    required
+                    required={!editingMerch}
                   />
                 </div>
                 <div className="md:col-span-2">
