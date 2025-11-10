@@ -212,6 +212,68 @@ export default function CheckoutPage() {
     );
   }
 
+  // Check if Square credentials are configured
+  const squareAppId = process.env.REACT_APP_SQUARE_APPLICATION_ID;
+  const squareLocationId = process.env.REACT_APP_SQUARE_LOCATION_ID;
+  const isSquareConfigured = squareAppId && squareLocationId && 
+    !squareAppId.includes('your_') && !squareLocationId.includes('your_');
+
+  if (!isSquareConfigured) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black pt-24 pb-16 px-4">
+        <div className="max-w-2xl mx-auto">
+          <h1 
+            className="text-5xl font-bold mb-8 neon-glow text-center"
+            style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+          >
+            PAYMENT SETUP REQUIRED
+          </h1>
+
+          <div className="drift-card p-8 rounded-lg text-center">
+            <svg className="w-20 h-20 mx-auto mb-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            
+            <h2 className="text-2xl font-bold mb-4 text-white" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+              SQUARE CREDENTIALS NOT CONFIGURED
+            </h2>
+            
+            <p className="text-gray-300 mb-6">
+              Please add your Square payment credentials to the environment variables to enable checkout.
+            </p>
+
+            <div className="bg-gray-800 p-4 rounded text-left mb-6">
+              <p className="text-sm text-gray-400 mb-2">Add to <code className="text-blue-400">/app/frontend/.env</code>:</p>
+              <pre className="text-xs text-green-400 overflow-x-auto">
+{`REACT_APP_SQUARE_APPLICATION_ID=your_app_id
+REACT_APP_SQUARE_LOCATION_ID=your_location_id`}
+              </pre>
+            </div>
+
+            <div className="bg-gray-800 p-4 rounded text-left mb-6">
+              <p className="text-sm text-gray-400 mb-2">Add to <code className="text-blue-400">/app/backend/.env</code>:</p>
+              <pre className="text-xs text-green-400 overflow-x-auto">
+{`SQUARE_ACCESS_TOKEN=your_access_token
+SQUARE_APPLICATION_ID=your_app_id
+SQUARE_LOCATION_ID=your_location_id`}
+              </pre>
+            </div>
+
+            <div className="space-y-3">
+              <Button
+                onClick={() => navigate('/store')}
+                className="drift-button w-full px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+              >
+                BACK TO STORE
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black pt-24 pb-16 px-4">
       <div className="max-w-2xl mx-auto">
@@ -231,8 +293,8 @@ export default function CheckoutPage() {
 
         <div className="drift-card p-6 rounded-lg">
           <PaymentForm
-            applicationId={process.env.REACT_APP_SQUARE_APPLICATION_ID}
-            locationId={process.env.REACT_APP_SQUARE_LOCATION_ID}
+            applicationId={squareAppId}
+            locationId={squareLocationId}
             cardTokenizeResponseReceived={(token, buyer) => {
               handlePaymentSuccess(token, buyer);
             }}
