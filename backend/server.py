@@ -595,6 +595,147 @@ async def update_inquiry_status(inquiry_id: str, status_update: InquiryStatusUpd
     
     return {"message": "Status updated successfully"}
 
+# Square Client Setup
+from square.client import Client as SquareClient
+
+def get_square_client():
+    """Initialize Square client with environment credentials."""
+    return SquareClient(
+        access_token=os.environ.get('SQUARE_ACCESS_TOKEN', ''),
+        environment=os.environ.get('SQUARE_ENVIRONMENT', 'sandbox')
+    )
+
+# Order Routes
+@api_router.post("/orders", response_model=Order)
+async def create_order(order_data: OrderCreate):
+    """Create an order before payment processing."""
+    # Calculate total amount
+    total_amount = sum(item.unit_price * item.quantity for item in order_data.line_items)
+    
+    # Create order object
+    order = Order(
+        customer_email=order_data.customer_email,
+        customer_name=order_data.customer_name,
+        line_items=order_data.line_items,
+        total_amount=total_amount
+    )
+    
+    # Save to database
+    order_doc = order.model_dump()
+    order_doc['created_at'] = order_doc['created_at'].isoformat()
+    order_doc['line_items'] = [item.model_dump() for item in order.line_items]
+    
+    await db.orders.insert_one(order_doc)
+    
+    logger.info(f"Order created: {order.id} for {order.customer_email}")
+    return order
+
+@api_router.post("/payments/process")
+async def process_payment(payment_request: PaymentRequest):
+    """Process a payment using Square Payments API."""
+    # Retrieve order from database
+    order_doc = await db.orders.find_one({"id": payment_request.order_id}, {"_id": 0})
+    if not order_doc:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    if order_doc['status'] != "pending":
+        raise HTTPException(status_code=400, detail="Order is not in pending state")
+    
+    # Reconstruct order object
+    if isinstance(order_doc.get('created_at'), str):
+        order_doc['created_at'] = datetime.fromisoformat(order_doc['created_at'])
+    order = Order(**order_doc)
+    
+    try:
+        # Initialize Square client
+        square_client = get_square_client()
+        
+        # Create payment with Square Payments API
+        amount_money = {
+            "amount": int(order.total_amount * 100),  # Convert to cents
+            "currency": "USD"
+        }
+        
+        body = {
+            "source_id": payment_request.source_id,
+            "idempotency_key": str(uuid.uuid4()),
+            "amount_money": amount_money,
+            "location_id": os.environ.get('SQUARE_LOCATION_ID', ''),
+            "reference_id": order.id,
+            "note": f"Order {order.id} - {order.customer_name}"
+        }
+        
+        result = square_client.payments.create_payment(body=body)
+        
+        if result.is_success():
+            payment = result.body['payment']
+            
+            # Update order with payment information
+            await db.orders.update_one(
+                {"id": order.id},
+                {"$set": {
+                    "square_payment_id": payment['id'],
+                    "status": "completed"
+                }}
+            )
+            
+            # Update inventory - reduce stock for each line item
+            for line_item in order.line_items:
+                merch = await db.merch.find_one({"id": line_item.product_id}, {"_id": 0})
+                if merch and merch.get('sizes'):
+                    # Update size-specific stock
+                    if line_item.size in merch['sizes']:
+                        new_stock = max(0, merch['sizes'][line_item.size] - line_item.quantity)
+                        await db.merch.update_one(
+                            {"id": line_item.product_id},
+                            {"$set": {f"sizes.{line_item.size}": new_stock}}
+                        )
+                elif merch:
+                    # Update regular stock for non-sized items
+                    new_stock = max(0, merch.get('stock', 0) - line_item.quantity)
+                    await db.merch.update_one(
+                        {"id": line_item.product_id},
+                        {"$set": {"stock": new_stock}}
+                    )
+            
+            logger.info(f"Payment {payment['id']} processed successfully for order {order.id}")
+            
+            return {
+                "success": True,
+                "payment_id": payment['id'],
+                "order_id": order.id,
+                "amount": order.total_amount,
+                "status": payment['status']
+            }
+        
+        elif result.is_error():
+            error_detail = result.errors[0]['detail'] if result.errors else "Unknown error"
+            logger.warning(f"Error processing payment: {error_detail}")
+            
+            # Update order status to failed
+            await db.orders.update_one(
+                {"id": order.id},
+                {"$set": {"status": "failed"}}
+            )
+            
+            raise HTTPException(status_code=400, detail=error_detail)
+    
+    except Exception as e:
+        logger.error(f"Exception processing payment: {str(e)}")
+        raise HTTPException(status_code=500, detail="Payment processing failed")
+
+@api_router.get("/orders/{order_id}")
+async def get_order(order_id: str):
+    """Retrieve order details."""
+    order_doc = await db.orders.find_one({"id": order_id}, {"_id": 0})
+    if not order_doc:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    if isinstance(order_doc.get('created_at'), str):
+        order_doc['created_at'] = datetime.fromisoformat(order_doc['created_at'])
+    
+    return order_doc
+
 # File Upload Endpoint
 UPLOAD_DIR = ROOT_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
