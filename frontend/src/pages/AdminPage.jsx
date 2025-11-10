@@ -811,7 +811,7 @@ export default function AdminPage() {
                     required
                   >
                     <option value="T-Shirts">T-Shirts</option>
-                    <option value="Hoodies">Hoodies</option>
+                    <option value="Sweaters">Sweaters</option>
                     <option value="Hats">Hats</option>
                     <option value="Stickers">Stickers</option>
                     <option value="Accessories">Accessories</option>
