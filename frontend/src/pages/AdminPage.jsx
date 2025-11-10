@@ -1165,6 +1165,434 @@ export default function AdminPage() {
             </div>
           </TabsContent>
 
+          {/* Drivers Tab */}
+          <TabsContent value="drivers" className="space-y-6">
+            <div className="drift-card p-6 rounded-lg">
+              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Add New Driver</h2>
+              <form onSubmit={handleAddDriver} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Name</Label>
+                  <Input
+                    value={newDriver.name}
+                    onChange={(e) => setNewDriver({...newDriver, name: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Email (@triplebarrelracing.ca)</Label>
+                  <Input
+                    type="email"
+                    value={newDriver.email}
+                    onChange={(e) => setNewDriver({...newDriver, email: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="alexw@triplebarrelracing.ca"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Car Name (Optional)</Label>
+                  <Input
+                    value={newDriver.car_name}
+                    onChange={(e) => setNewDriver({...newDriver, car_name: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Driver Photo</Label>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleDriverImageChange}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                  {driverImagePreview && (
+                    <div className="mt-3">
+                      <img src={driverImagePreview} alt="Preview" className="w-32 h-32 object-cover rounded border-2 border-gray-700" />
+                    </div>
+                  )}
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Bio</Label>
+                  <Textarea
+                    value={newDriver.bio}
+                    onChange={(e) => setNewDriver({...newDriver, bio: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    rows={4}
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Button 
+                    type="submit" 
+                    disabled={uploadingImage}
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                    style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                  >
+                    {uploadingImage ? 'UPLOADING...' : 'ADD DRIVER'}
+                  </Button>
+                </div>
+              </form>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Current Drivers</h2>
+              {drivers.map(driver => (
+                <div key={driver.id} className="drift-card p-4 rounded-lg flex gap-4">
+                  <img src={driver.image_url} alt={driver.name} className="w-20 h-20 object-cover rounded" />
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold">{driver.name}</h3>
+                    <p className="text-gray-400 text-sm">{driver.email}</p>
+                    {driver.car_name && <p className="text-blue-400 text-sm">Drives: {driver.car_name}</p>}
+                  </div>
+                  <Button
+                    onClick={() => handleDeleteDriver(driver.id)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Cars Tab */}
+          <TabsContent value="cars" className="space-y-6">
+            <div className="drift-card p-6 rounded-lg">
+              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Add New Car</h2>
+              <form onSubmit={handleAddCar} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Car Name</Label>
+                  <Input
+                    value={newCar.name}
+                    onChange={(e) => setNewCar({...newCar, name: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="The Beast"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Year</Label>
+                  <Input
+                    value={newCar.year}
+                    onChange={(e) => setNewCar({...newCar, year: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="2015"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Make</Label>
+                  <Input
+                    value={newCar.make}
+                    onChange={(e) => setNewCar({...newCar, make: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="Nissan"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Model</Label>
+                  <Input
+                    value={newCar.model}
+                    onChange={(e) => setNewCar({...newCar, model: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="240SX"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Driver Name (Optional)</Label>
+                  <Input
+                    value={newCar.driver_name}
+                    onChange={(e) => setNewCar({...newCar, driver_name: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Car Photo</Label>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCarImageChange}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                  {carImagePreview && (
+                    <div className="mt-3">
+                      <img src={carImagePreview} alt="Preview" className="w-32 h-32 object-cover rounded border-2 border-gray-700" />
+                    </div>
+                  )}
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Specs</Label>
+                  <Textarea
+                    value={newCar.specs}
+                    onChange={(e) => setNewCar({...newCar, specs: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    rows={4}
+                    placeholder="SR20DET swap, GT3076R turbo, 450HP..."
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Button 
+                    type="submit" 
+                    disabled={uploadingImage}
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                    style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                  >
+                    {uploadingImage ? 'UPLOADING...' : 'ADD CAR'}
+                  </Button>
+                </div>
+              </form>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Current Cars</h2>
+              {cars.map(car => (
+                <div key={car.id} className="drift-card p-4 rounded-lg flex gap-4">
+                  <img src={car.image_url} alt={car.name} className="w-24 h-24 object-cover rounded" />
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold">{car.name}</h3>
+                    <p className="text-blue-400">{car.year} {car.make} {car.model}</p>
+                    {car.driver_name && <p className="text-gray-400 text-sm">Driver: {car.driver_name}</p>}
+                  </div>
+                  <Button
+                    onClick={() => handleDeleteCar(car.id)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Blog Tab */}
+          <TabsContent value="blog" className="space-y-6">
+            <div className="drift-card p-6 rounded-lg">
+              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Create New Blog Post</h2>
+              <form onSubmit={handleAddBlogPost} className="grid grid-cols-1 gap-4">
+                <div>
+                  <Label>Title</Label>
+                  <Input
+                    value={newBlogPost.title}
+                    onChange={(e) => setNewBlogPost({...newBlogPost, title: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Category</Label>
+                  <select
+                    value={newBlogPost.category}
+                    onChange={(e) => setNewBlogPost({...newBlogPost, category: e.target.value})}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded"
+                    required
+                  >
+                    <option value="events">Events</option>
+                    <option value="new merch">New Merch</option>
+                    <option value="new sponsors">New Sponsors</option>
+                    <option value="announcements">Announcements</option>
+                    <option value="team updates">Team Updates</option>
+                  </select>
+                </div>
+                <div>
+                  <Label>Author</Label>
+                  <Input
+                    value={newBlogPost.author}
+                    onChange={(e) => setNewBlogPost({...newBlogPost, author: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Images (Multiple)</Label>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleBlogImagesChange}
+                    className="bg-gray-800 border-gray-700 text-white"
+                  />
+                  {blogImagePreviews.length > 0 && (
+                    <div className="mt-3 grid grid-cols-4 gap-2">
+                      {blogImagePreviews.map((preview, idx) => (
+                        <img key={idx} src={preview} alt={`Preview ${idx + 1}`} className="w-full h-24 object-cover rounded border-2 border-gray-700" />
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <Label>Content (Markdown Supported)</Label>
+                  <Textarea
+                    value={newBlogPost.content}
+                    onChange={(e) => setNewBlogPost({...newBlogPost, content: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    rows={12}
+                    placeholder="# Heading&#10;&#10;This is a **bold** text.&#10;&#10;- List item 1&#10;- List item 2"
+                    required
+                  />
+                  <p className="text-xs text-gray-500 mt-2">
+                    Supports Markdown: **bold**, *italic*, # headings, - lists, [links](url), etc.
+                  </p>
+                </div>
+                <div>
+                  <Button 
+                    type="submit" 
+                    disabled={uploadingImage}
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                    style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                  >
+                    {uploadingImage ? 'PUBLISHING...' : 'PUBLISH POST'}
+                  </Button>
+                </div>
+              </form>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Published Posts</h2>
+              {blogPosts.map(post => (
+                <div key={post.id} className="drift-card p-4 rounded-lg flex gap-4">
+                  {post.images && post.images.length > 0 && (
+                    <img src={post.images[0]} alt={post.title} className="w-24 h-24 object-cover rounded" />
+                  )}
+                  <div className="flex-1">
+                    <span className="inline-block px-2 py-1 bg-blue-600 text-white text-xs rounded mb-2">{post.category}</span>
+                    <h3 className="text-xl font-bold">{post.title}</h3>
+                    <p className="text-gray-400 text-sm">By {post.author}</p>
+                  </div>
+                  <Button
+                    onClick={() => handleDeleteBlogPost(post.id)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Sponsors Tab */}
+          <TabsContent value="sponsors" className="space-y-6">
+            <div className="drift-card p-6 rounded-lg">
+              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Add New Sponsor</h2>
+              <form onSubmit={handleAddSponsor} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Sponsor Name</Label>
+                  <Input
+                    value={newSponsor.name}
+                    onChange={(e) => setNewSponsor({...newSponsor, name: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label>Website URL (Optional)</Label>
+                  <Input
+                    type="url"
+                    value={newSponsor.website_url}
+                    onChange={(e) => setNewSponsor({...newSponsor, website_url: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="https://example.com"
+                  />
+                </div>
+                <div>
+                  <Label>Instagram URL (Optional)</Label>
+                  <Input
+                    type="url"
+                    value={newSponsor.instagram_url}
+                    onChange={(e) => setNewSponsor({...newSponsor, instagram_url: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="https://instagram.com/..."
+                  />
+                </div>
+                <div>
+                  <Label>Facebook URL (Optional)</Label>
+                  <Input
+                    type="url"
+                    value={newSponsor.facebook_url}
+                    onChange={(e) => setNewSponsor({...newSponsor, facebook_url: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    placeholder="https://facebook.com/..."
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Sponsor Logo</Label>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleSponsorImageChange}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    required
+                  />
+                  {sponsorImagePreview && (
+                    <div className="mt-3">
+                      <img src={sponsorImagePreview} alt="Preview" className="w-32 h-32 object-contain rounded border-2 border-gray-700 bg-white p-2" />
+                    </div>
+                  )}
+                </div>
+                <div className="md:col-span-2">
+                  <Label>Description (Optional)</Label>
+                  <Textarea
+                    value={newSponsor.description}
+                    onChange={(e) => setNewSponsor({...newSponsor, description: e.target.value})}
+                    className="bg-gray-800 border-gray-700 text-white"
+                    rows={3}
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Button 
+                    type="submit" 
+                    disabled={uploadingImage}
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                    style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                  >
+                    {uploadingImage ? 'UPLOADING...' : 'ADD SPONSOR'}
+                  </Button>
+                </div>
+              </form>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Current Sponsors</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {sponsors.map(sponsor => (
+                  <div key={sponsor.id} className="drift-card p-4 rounded-lg">
+                    <img src={sponsor.logo_url} alt={sponsor.name} className="w-full h-24 object-contain mb-3 bg-white p-2 rounded" />
+                    <h3 className="text-lg font-bold mb-2">{sponsor.name}</h3>
+                    {sponsor.description && <p className="text-gray-400 text-sm mb-3">{sponsor.description}</p>}
+                    <div className="flex gap-2 mb-3">
+                      {sponsor.website_url && (
+                        <a href={sponsor.website_url} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-xs hover:underline">
+                          Website
+                        </a>
+                      )}
+                      {sponsor.instagram_url && (
+                        <a href={sponsor.instagram_url} target="_blank" rel="noopener noreferrer" className="text-pink-400 text-xs hover:underline">
+                          Instagram
+                        </a>
+                      )}
+                      {sponsor.facebook_url && (
+                        <a href={sponsor.facebook_url} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-xs hover:underline">
+                          Facebook
+                        </a>
+                      )}
+                    </div>
+                    <Button
+                      onClick={() => handleDeleteSponsor(sponsor.id)}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
 
           {/* Orders Tab */}
           <TabsContent value="orders" className="space-y-4">
