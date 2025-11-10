@@ -118,13 +118,16 @@ export default function AdminPage() {
     try {
       const payload = {
         ...newMerch,
-        price: parseFloat(newMerch.price),
-        stock: parseInt(newMerch.stock)
+        price: parseFloat(newMerch.price)
       };
       
-      // Only include sizes if array is not empty
-      if (payload.sizes && payload.sizes.length === 0) {
+      // Only include sizes if object has keys, otherwise use stock
+      if (payload.sizes && Object.keys(payload.sizes).length > 0) {
+        payload.sizes = payload.sizes;
+        payload.stock = 0;  // Stock not used for sized items
+      } else {
         payload.sizes = null;
+        payload.stock = parseInt(newMerch.stock);
       }
       
       await axios.post(`${API}/merch`, payload, {
@@ -132,7 +135,7 @@ export default function AdminPage() {
       });
       
       toast.success('Merch item added');
-      setNewMerch({ name: '', description: '', price: '', image_url: '', category: '', stock: '', sizes: [] });
+      setNewMerch({ name: '', description: '', price: '', image_url: '', category: '', stock: '', sizes: {} });
       fetchAdminData(token);
     } catch (error) {
       console.error('Error adding merch:', error);
