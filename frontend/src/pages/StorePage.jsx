@@ -185,7 +185,19 @@ export default function StorePage() {
                   )}
 
                   <div className="flex items-center justify-between">
-                    <span className="text-3xl font-bold text-blue-500">${item.price} CAD</span>
+                    <div>
+                      {item.effective_price && item.effective_price < item.price ? (
+                        <div>
+                          <span className="text-xl font-bold text-gray-400 line-through mr-2">${item.price} CAD</span>
+                          <span className="text-3xl font-bold text-red-500">${item.effective_price} CAD</span>
+                          <div className="text-sm text-red-400 mt-1">
+                            SAVE ${(item.price - item.effective_price).toFixed(2)}!
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-3xl font-bold text-blue-500">${item.price} CAD</span>
+                      )}
+                    </div>
                     <Button
                       data-testid={`purchase-${item.id}-btn`}
                       onClick={() => handlePurchase(item)}
