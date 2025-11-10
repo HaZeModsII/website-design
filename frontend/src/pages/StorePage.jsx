@@ -176,7 +176,7 @@ export default function StorePage() {
                               value={size}
                               disabled={stock === 0}
                             >
-                              {size} {stock === 0 ? '(Out of Stock)' : `(${stock} available)`}
+                              {size} {stock === 0 ? '(Out of Stock)' : ''}
                             </SelectItem>
                           ))}
                         </SelectContent>
