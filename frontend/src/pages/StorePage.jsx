@@ -47,12 +47,17 @@ export default function StorePage() {
   });
 
   const handlePurchase = (item) => {
-    const size = selectedSize[item.id];
-    if (!size) {
-      toast.error('Please select a size');
-      return;
+    // Only check for size if item has sizes defined
+    if (item.sizes && item.sizes.length > 0) {
+      const size = selectedSize[item.id];
+      if (!size) {
+        toast.error('Please select a size');
+        return;
+      }
+      setSelectedItem({ ...item, selectedSize: size });
+    } else {
+      setSelectedItem(item);
     }
-    setSelectedItem({ ...item, selectedSize: size });
     setContactModalOpen(true);
   };
 
