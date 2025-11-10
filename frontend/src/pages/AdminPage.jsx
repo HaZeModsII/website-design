@@ -36,6 +36,10 @@ export default function AdminPage() {
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   
+  // Event image state
+  const [eventImageFile, setEventImageFile] = useState(null);
+  const [eventImagePreview, setEventImagePreview] = useState(null);
+  
   const [newEvent, setNewEvent] = useState({
     name: '',
     description: '',
