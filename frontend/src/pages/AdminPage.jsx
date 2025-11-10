@@ -526,10 +526,11 @@ export default function AdminPage() {
                   <Button 
                     data-testid="add-merch-btn"
                     type="submit" 
-                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                    disabled={uploadingImage}
+                    className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500 disabled:opacity-50"
                     style={{ fontFamily: 'Bebas Neue, sans-serif' }}
                   >
-                    ADD ITEM
+                    {uploadingImage ? 'UPLOADING...' : 'ADD ITEM'}
                   </Button>
                 </div>
               </form>
