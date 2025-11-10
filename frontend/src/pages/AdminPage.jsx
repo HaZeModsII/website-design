@@ -859,15 +859,17 @@ export default function AdminPage() {
                   />
                 </div>
                 <div>
-                  <Label>Sale Price (Optional)</Label>
+                  <Label>Sale Discount % (Optional)</Label>
                   <Input
-                    data-testid="merch-sale-price-input"
+                    data-testid="merch-sale-percent-input"
                     type="number"
                     step="0.01"
-                    value={newMerch.sale_price || ''}
-                    onChange={(e) => setNewMerch({...newMerch, sale_price: e.target.value ? parseFloat(e.target.value) : null})}
+                    min="0"
+                    max="100"
+                    value={newMerch.sale_percent || ''}
+                    onChange={(e) => setNewMerch({...newMerch, sale_percent: e.target.value ? parseFloat(e.target.value) : null})}
                     className="bg-gray-800 border-gray-700 text-white"
-                    placeholder="Leave empty for no sale"
+                    placeholder="e.g., 20 for 20% off"
                   />
                 </div>
                 <div className="flex items-center space-x-2">
