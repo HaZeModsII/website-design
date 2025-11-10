@@ -565,8 +565,38 @@ async def update_inquiry_status(inquiry_id: str, status_update: InquiryStatusUpd
     
     return {"message": "Status updated successfully"}
 
+# File Upload Endpoint
+UPLOAD_DIR = ROOT_DIR / "uploads"
+UPLOAD_DIR.mkdir(exist_ok=True)
+
+@api_router.post("/upload")
+async def upload_file(file: UploadFile = File(...), admin: bool = Depends(verify_admin)):
+    """Upload an image file and return its URL."""
+    # Validate file type
+    allowed_types = ["image/jpeg", "image/png", "image/jpg", "image/webp", "image/gif"]
+    if file.content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Only image files are allowed")
+    
+    # Generate unique filename
+    file_extension = file.filename.split(".")[-1]
+    unique_filename = f"{uuid.uuid4()}.{file_extension}"
+    file_path = UPLOAD_DIR / unique_filename
+    
+    # Save file
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
+    
+    # Return the URL path
+    return {"image_url": f"/uploads/{unique_filename}"}
+
 # Include the router in the main app
 app.include_router(api_router)
+
+# Mount uploads directory for static file serving
+app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,
