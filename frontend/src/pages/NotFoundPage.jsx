@@ -56,7 +56,7 @@ export default function NotFoundPage() {
             </button>
             <span className="text-gray-700">|</span>
             <button onClick={() => navigate('/store')} className="text-blue-400 hover:text-blue-300 transition-colors">
-              Store
+              Merch
             </button>
             <span className="text-gray-700">|</span>
             <button onClick={() => navigate('/parts')} className="text-blue-400 hover:text-blue-300 transition-colors">
