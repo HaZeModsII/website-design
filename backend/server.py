@@ -533,12 +533,30 @@ async def get_inquiries(admin: bool = Depends(verify_admin)):
 
 @api_router.patch("/inquiries/{inquiry_id}/status")
 async def update_inquiry_status(inquiry_id: str, status_update: InquiryStatusUpdate, admin: bool = Depends(verify_admin)):
+    # Get the inquiry before updating
+    inquiry_doc = await db.inquiries.find_one({"id": inquiry_id}, {"_id": 0})
+    if not inquiry_doc:
+        raise HTTPException(status_code=404, detail="Inquiry not found")
+    
+    old_status = inquiry_doc.get('status', 'pending')
+    new_status = status_update.status
+    
+    # Update the status
     result = await db.inquiries.update_one(
         {"id": inquiry_id},
-        {"$set": {"status": status_update.status}}
+        {"$set": {"status": new_status}}
     )
-    if result.matched_count == 0:
-        raise HTTPException(status_code=404, detail="Inquiry not found")
+    
+    # Create inquiry object for email
+    if isinstance(inquiry_doc.get('created_at'), str):
+        inquiry_doc['created_at'] = datetime.fromisoformat(inquiry_doc['created_at'])
+    inquiry_obj = ContactInquiry(**inquiry_doc)
+    inquiry_obj.status = new_status
+    
+    # Send status update email if status changed
+    if old_status != new_status:
+        await send_order_status_email(inquiry_obj, old_status, new_status)
+    
     return {"message": "Status updated successfully"}
 
 # Include the router in the main app
