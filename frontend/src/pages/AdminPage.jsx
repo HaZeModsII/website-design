@@ -32,6 +32,7 @@ export default function AdminPage() {
     sizes: {}  // Object mapping size to stock: { "S": 10, "M": 15 }
   });
   
+  const [editingMerch, setEditingMerch] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
