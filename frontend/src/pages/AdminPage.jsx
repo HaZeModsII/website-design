@@ -943,13 +943,22 @@ export default function AdminPage() {
                         </p>
                       )}
                     </div>
-                    <Button
-                      data-testid={`delete-merch-${item.id}-btn`}
-                      onClick={() => handleDeleteMerch(item.id)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                      Delete
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        data-testid={`edit-merch-${item.id}-btn`}
+                        onClick={() => handleEditMerch(item)}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        data-testid={`delete-merch-${item.id}-btn`}
+                        onClick={() => handleDeleteMerch(item.id)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
                 );
               })}
