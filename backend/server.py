@@ -882,6 +882,204 @@ async def upload_file(file: UploadFile = File(...), admin: bool = Depends(verify
     # Return the URL path
     return {"image_url": f"/uploads/{unique_filename}"}
 
+# Driver Routes
+@api_router.get("/drivers", response_model=List[Driver])
+async def get_drivers():
+    drivers = await db.drivers.find({}, {"_id": 0}).to_list(1000)
+    for driver in drivers:
+        if isinstance(driver.get('created_at'), str):
+            driver['created_at'] = datetime.fromisoformat(driver['created_at'])
+    return drivers
+
+@api_router.post("/drivers", response_model=Driver)
+async def create_driver(driver: DriverCreate, admin: bool = Depends(verify_admin)):
+    driver_obj = Driver(**driver.model_dump())
+    doc = driver_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.drivers.insert_one(doc)
+    return driver_obj
+
+@api_router.put("/drivers/{driver_id}", response_model=Driver)
+async def update_driver(driver_id: str, driver_update: DriverUpdate, admin: bool = Depends(verify_admin)):
+    existing = await db.drivers.find_one({"id": driver_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Driver not found")
+    
+    update_data = {k: v for k, v in driver_update.model_dump().items() if v is not None}
+    if update_data:
+        await db.drivers.update_one({"id": driver_id}, {"$set": update_data})
+    
+    updated = await db.drivers.find_one({"id": driver_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    return Driver(**updated)
+
+@api_router.delete("/drivers/{driver_id}")
+async def delete_driver(driver_id: str, admin: bool = Depends(verify_admin)):
+    result = await db.drivers.delete_one({"id": driver_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Driver not found")
+    return {"message": "Driver deleted successfully"}
+
+@api_router.post("/drivers/contact")
+async def contact_driver(contact_form: DriverContactForm):
+    """Send an inquiry to a specific driver."""
+    driver = await db.drivers.find_one({"id": contact_form.driver_id}, {"_id": 0})
+    if not driver:
+        raise HTTPException(status_code=404, detail="Driver not found")
+    
+    # Send email to driver
+    if resend.api_key:
+        try:
+            from_email = os.environ.get('FROM_EMAIL', 'Triple Barrel Racing <noreply@triplebarrelracing.com>')
+            
+            resend.Emails.send({
+                "from": from_email,
+                "to": [driver['email']],
+                "subject": f"New Question from {contact_form.sender_name}",
+                "html": f"""
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #3b82f6;">New Question from a Fan</h2>
+                    <p><strong>From:</strong> {contact_form.sender_name} ({contact_form.sender_email})</p>
+                    <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p>{contact_form.message}</p>
+                    </div>
+                    <p style="color: #6b7280; font-size: 14px;">Reply directly to this email to respond.</p>
+                </div>
+                """
+            })
+        except Exception as e:
+            logger.error(f"Failed to send driver contact email: {str(e)}")
+    
+    return {"message": "Message sent successfully"}
+
+# Car Routes
+@api_router.get("/cars", response_model=List[Car])
+async def get_cars():
+    cars = await db.cars.find({}, {"_id": 0}).to_list(1000)
+    for car in cars:
+        if isinstance(car.get('created_at'), str):
+            car['created_at'] = datetime.fromisoformat(car['created_at'])
+    return cars
+
+@api_router.post("/cars", response_model=Car)
+async def create_car(car: CarCreate, admin: bool = Depends(verify_admin)):
+    car_obj = Car(**car.model_dump())
+    doc = car_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.cars.insert_one(doc)
+    return car_obj
+
+@api_router.put("/cars/{car_id}", response_model=Car)
+async def update_car(car_id: str, car_update: CarUpdate, admin: bool = Depends(verify_admin)):
+    existing = await db.cars.find_one({"id": car_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Car not found")
+    
+    update_data = {k: v for k, v in car_update.model_dump().items() if v is not None}
+    if update_data:
+        await db.cars.update_one({"id": car_id}, {"$set": update_data})
+    
+    updated = await db.cars.find_one({"id": car_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    return Car(**updated)
+
+@api_router.delete("/cars/{car_id}")
+async def delete_car(car_id: str, admin: bool = Depends(verify_admin)):
+    result = await db.cars.delete_one({"id": car_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Car not found")
+    return {"message": "Car deleted successfully"}
+
+# Blog Post Routes
+@api_router.get("/blog", response_model=List[BlogPost])
+async def get_blog_posts(category: Optional[str] = None):
+    query = {"category": category} if category else {}
+    posts = await db.blog_posts.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    for post in posts:
+        if isinstance(post.get('created_at'), str):
+            post['created_at'] = datetime.fromisoformat(post['created_at'])
+    return posts
+
+@api_router.get("/blog/{post_id}", response_model=BlogPost)
+async def get_blog_post(post_id: str):
+    post = await db.blog_posts.find_one({"id": post_id}, {"_id": 0})
+    if not post:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    if isinstance(post.get('created_at'), str):
+        post['created_at'] = datetime.fromisoformat(post['created_at'])
+    return BlogPost(**post)
+
+@api_router.post("/blog", response_model=BlogPost)
+async def create_blog_post(post: BlogPostCreate, admin: bool = Depends(verify_admin)):
+    post_obj = BlogPost(**post.model_dump())
+    doc = post_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.blog_posts.insert_one(doc)
+    return post_obj
+
+@api_router.put("/blog/{post_id}", response_model=BlogPost)
+async def update_blog_post(post_id: str, post_update: BlogPostUpdate, admin: bool = Depends(verify_admin)):
+    existing = await db.blog_posts.find_one({"id": post_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    
+    update_data = {k: v for k, v in post_update.model_dump().items() if v is not None}
+    if update_data:
+        await db.blog_posts.update_one({"id": post_id}, {"$set": update_data})
+    
+    updated = await db.blog_posts.find_one({"id": post_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    return BlogPost(**updated)
+
+@api_router.delete("/blog/{post_id}")
+async def delete_blog_post(post_id: str, admin: bool = Depends(verify_admin)):
+    result = await db.blog_posts.delete_one({"id": post_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    return {"message": "Blog post deleted successfully"}
+
+# Sponsor Routes
+@api_router.get("/sponsors", response_model=List[Sponsor])
+async def get_sponsors():
+    sponsors = await db.sponsors.find({}, {"_id": 0}).to_list(1000)
+    for sponsor in sponsors:
+        if isinstance(sponsor.get('created_at'), str):
+            sponsor['created_at'] = datetime.fromisoformat(sponsor['created_at'])
+    return sponsors
+
+@api_router.post("/sponsors", response_model=Sponsor)
+async def create_sponsor(sponsor: SponsorCreate, admin: bool = Depends(verify_admin)):
+    sponsor_obj = Sponsor(**sponsor.model_dump())
+    doc = sponsor_obj.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.sponsors.insert_one(doc)
+    return sponsor_obj
+
+@api_router.put("/sponsors/{sponsor_id}", response_model=Sponsor)
+async def update_sponsor(sponsor_id: str, sponsor_update: SponsorUpdate, admin: bool = Depends(verify_admin)):
+    existing = await db.sponsors.find_one({"id": sponsor_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Sponsor not found")
+    
+    update_data = {k: v for k, v in sponsor_update.model_dump().items() if v is not None}
+    if update_data:
+        await db.sponsors.update_one({"id": sponsor_id}, {"$set": update_data})
+    
+    updated = await db.sponsors.find_one({"id": sponsor_id}, {"_id": 0})
+    if isinstance(updated.get('created_at'), str):
+        updated['created_at'] = datetime.fromisoformat(updated['created_at'])
+    return Sponsor(**updated)
+
+@api_router.delete("/sponsors/{sponsor_id}")
+async def delete_sponsor(sponsor_id: str, admin: bool = Depends(verify_admin)):
+    result = await db.sponsors.delete_one({"id": sponsor_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Sponsor not found")
+    return {"message": "Sponsor deleted successfully"}
+
 # Include the router in the main app
 app.include_router(api_router)
 
