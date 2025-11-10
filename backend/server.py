@@ -45,6 +45,7 @@ class MerchItem(BaseModel):
     category: str
     stock: int = 0
     sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
+    featured: bool = False  # Display on home page
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class MerchItemCreate(BaseModel):
@@ -56,6 +57,7 @@ class MerchItemCreate(BaseModel):
     category: str
     stock: int = 0
     sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
+    featured: bool = False
 
 class MerchItemUpdate(BaseModel):
     name: Optional[str] = None
@@ -66,6 +68,7 @@ class MerchItemUpdate(BaseModel):
     category: Optional[str] = None
     stock: Optional[int] = None
     sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
+    featured: Optional[bool] = None
 
 # Sales Settings Models
 class SaleSettings(BaseModel):
