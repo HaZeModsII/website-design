@@ -77,11 +77,18 @@ export default function HomePage() {
                   onClick={() => navigate('/store')}
                   className="drift-card rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform"
                 >
-                  <img 
-                    src={getImageUrl(product.image_url)} 
-                    alt={product.name}
-                    className="w-full h-48 object-cover"
-                  />
+                  <div className="relative">
+                    <img 
+                      src={getImageUrl(product.image_url)} 
+                      alt={product.name}
+                      className="w-full h-48 object-cover"
+                    />
+                    {product.discount_percent > 0 && (
+                      <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
+                        {product.discount_percent}% OFF
+                      </div>
+                    )}
+                  </div>
                   <div className="p-4">
                     <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
                       {product.name}
