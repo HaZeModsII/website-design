@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend API Testing for Triple Barrel Racing - Sizes Field Implementation
-Tests the new optional sizes field for merch items
+Backend API Testing for Triple Barrel Racing - Size-Specific Stock Management
+Tests the restructured sizes field as dict (size -> stock mapping)
 """
 
 import requests
