@@ -40,6 +40,7 @@ class MerchItem(BaseModel):
     image_url: str
     category: str
     stock: int = 0
+    sizes: Optional[List[str]] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class MerchItemCreate(BaseModel):
@@ -49,6 +50,7 @@ class MerchItemCreate(BaseModel):
     image_url: str
     category: str
     stock: int = 0
+    sizes: Optional[List[str]] = None
 
 class MerchItemUpdate(BaseModel):
     name: Optional[str] = None
@@ -57,6 +59,7 @@ class MerchItemUpdate(BaseModel):
     image_url: Optional[str] = None
     category: Optional[str] = None
     stock: Optional[int] = None
+    sizes: Optional[List[str]] = None
 
 class Event(BaseModel):
     model_config = ConfigDict(extra="ignore")
