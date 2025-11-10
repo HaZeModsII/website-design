@@ -29,7 +29,8 @@ export default function AdminPage() {
     image_url: '',
     category: 'T-Shirts',
     stock: '',
-    sizes: {}  // Object mapping size to stock: { "S": 10, "M": 15 }
+    sizes: {},  // Object mapping size to stock: { "S": 10, "M": 15 }
+    featured: false
   });
   
   const [editingMerch, setEditingMerch] = useState(null);
