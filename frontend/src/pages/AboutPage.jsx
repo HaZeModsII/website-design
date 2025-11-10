@@ -253,7 +253,7 @@ export default function AboutPage() {
             {sponsors.map(sponsor => (
               <div key={sponsor.id} className="drift-card p-6 rounded-lg flex flex-col items-center justify-center hover:scale-105 transition-transform">
                 <img 
-                  src={sponsor.logo_url} 
+                  src={getImageUrl(sponsor.logo_url)} 
                   alt={sponsor.name}
                   className="w-full h-24 object-contain mb-4"
                 />
