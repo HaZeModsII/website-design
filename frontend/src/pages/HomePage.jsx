@@ -18,11 +18,11 @@ export default function HomePage() {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         {/* Logo with floating animation and glow */}
         <div className="mb-12 relative flex flex-col items-center">
-          <div className="logo-float mb-4">
+          <div className="logo-float mb-1">
             <img 
               src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ka2d0c5n_colourskull.png"
               alt="Triple Barrel Racing Logo"
-              className="w-64 sm:w-80 lg:w-96 h-auto logo-glow"
+              className="w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow"
               data-testid="logo-image"
             />
           </div>
