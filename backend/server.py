@@ -930,6 +930,14 @@ async def upload_file(file: UploadFile = File(...), admin: bool = Depends(verify
     # Return the URL path (with /api prefix for proper routing)
     return {"image_url": f"/api/uploads/{unique_filename}"}
 
+@api_router.get("/uploads/{filename}")
+async def get_uploaded_file(filename: str):
+    """Serve uploaded files."""
+    file_path = UPLOAD_DIR / filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(file_path)
+
 # Driver Routes
 @api_router.get("/drivers", response_model=List[Driver])
 async def get_drivers():
