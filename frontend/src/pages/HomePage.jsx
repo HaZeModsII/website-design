@@ -58,10 +58,11 @@ export default function HomePage() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-10 animate-bounce">
-          <div className="w-6 h-10 border-2 border-blue-500 rounded-full flex items-start justify-center p-2">
-            <div className="w-1 h-3 bg-blue-500 rounded-full animate-pulse" />
-          </div>
+        <div className="absolute bottom-10 flex flex-col items-center animate-bounce">
+          <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+          <p className="text-blue-500 text-xs mt-2 font-bold">SCROLL</p>
         </div>
       </div>
 
