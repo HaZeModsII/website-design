@@ -1011,6 +1011,96 @@ export default function AdminPage() {
             </div>
           </TabsContent>
 
+          {/* Sales Tab */}
+          <TabsContent value="sales" className="space-y-6">
+            <div className="drift-card p-6 rounded-lg">
+              <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Sales Management</h2>
+              
+              {/* Site-Wide Sale */}
+              <div className="mb-8 p-4 bg-gray-800 rounded-lg">
+                <h3 className="text-xl font-bold mb-4">Site-Wide Sale</h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <Checkbox
+                    id="site-wide-sale"
+                    checked={salesSettings.site_wide_sale}
+                    onCheckedChange={(checked) => setSalesSettings({...salesSettings, site_wide_sale: checked})}
+                  />
+                  <Label htmlFor="site-wide-sale" className="text-gray-300 cursor-pointer">
+                    Enable Site-Wide Sale
+                  </Label>
+                </div>
+                {salesSettings.site_wide_sale && (
+                  <div>
+                    <Label>Discount Percentage</Label>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max="100"
+                      value={salesSettings.site_wide_discount_percent}
+                      onChange={(e) => setSalesSettings({...salesSettings, site_wide_discount_percent: parseFloat(e.target.value) || 0})}
+                      className="bg-gray-800 border-gray-700 text-white mt-2"
+                      placeholder="e.g., 20 for 20% off"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Category Sales */}
+              <div className="mb-8 p-4 bg-gray-800 rounded-lg">
+                <h3 className="text-xl font-bold mb-4">Category Sales</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {['T-Shirts', 'Sweaters', 'Hats', 'Stickers', 'Accessories'].map(category => (
+                    <div key={category}>
+                      <Label>{category} Discount %</Label>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="100"
+                        value={salesSettings.category_sales[category] || ''}
+                        onChange={(e) => handleCategorySaleChange(category, e.target.value)}
+                        className="bg-gray-800 border-gray-700 text-white mt-2"
+                        placeholder="0 = no discount"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-4">
+                  Category sales override site-wide sales. Individual item sale prices override everything.
+                </p>
+              </div>
+
+              <Button
+                onClick={handleUpdateSalesSettings}
+                className="drift-button px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+              >
+                SAVE SALES SETTINGS
+              </Button>
+            </div>
+
+            {/* Current Sales Summary */}
+            <div className="drift-card p-6 rounded-lg">
+              <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Active Sales</h3>
+              <div className="space-y-2">
+                {salesSettings.site_wide_sale && (
+                  <div className="p-3 bg-blue-900/30 rounded">
+                    <p className="text-blue-400 font-bold">Site-Wide: {salesSettings.site_wide_discount_percent}% OFF</p>
+                  </div>
+                )}
+                {Object.entries(salesSettings.category_sales || {}).map(([category, discount]) => (
+                  <div key={category} className="p-3 bg-green-900/30 rounded">
+                    <p className="text-green-400 font-bold">{category}: {discount}% OFF</p>
+                  </div>
+                ))}
+                {!salesSettings.site_wide_sale && Object.keys(salesSettings.category_sales || {}).length === 0 && (
+                  <p className="text-gray-400">No active sales</p>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+
           {/* Events Tab */}
           <TabsContent value="events" className="space-y-6">
             <div className="drift-card p-6 rounded-lg">
