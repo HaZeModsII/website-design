@@ -330,9 +330,13 @@ export default function AdminPage() {
       
       const payload = {
         ...newMerch,
-        image_url: imageUrl,
-        price: parseFloat(newMerch.price)
+        image_url: imageUrl
       };
+      
+      // Only include price if it's set
+      if (newMerch.price) {
+        payload.price = parseFloat(newMerch.price);
+      }
       
       // Only include sizes if object has keys, otherwise use stock
       if (payload.sizes && Object.keys(payload.sizes).length > 0) {
@@ -340,7 +344,9 @@ export default function AdminPage() {
         payload.stock = 0;  // Stock not used for sized items
       } else {
         payload.sizes = null;
-        payload.stock = parseInt(newMerch.stock);
+        if (newMerch.stock) {
+          payload.stock = parseInt(newMerch.stock);
+        }
       }
       
       if (editingMerch) {
