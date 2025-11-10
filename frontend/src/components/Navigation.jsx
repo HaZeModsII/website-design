@@ -53,7 +53,7 @@ export default function Navigation() {
               }`}
               style={{ fontFamily: 'Bebas Neue, sans-serif' }}
             >
-              STORE
+              MERCH
             </Button>
           </Link>
           <Link to="/parts" data-testid="nav-parts-btn">
