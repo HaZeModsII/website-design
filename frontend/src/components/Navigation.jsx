@@ -12,9 +12,9 @@ export default function Navigation() {
         {/* Logo */}
         <Link to="/" data-testid="nav-home-link" className="flex items-center">
           <img 
-            src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
+            src="https://customer-assets.emergentagent.com/job_missing-size-field/artifacts/dqsi2jet_lrg%20white%20text.png.png"
             alt="Triple Barrel Racing"
-            className="h-16 w-auto hover:opacity-80 transition-opacity"
+            className="h-20 w-auto hover:opacity-80 transition-opacity"
           />
         </Link>
 
