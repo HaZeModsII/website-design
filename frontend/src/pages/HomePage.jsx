@@ -91,11 +91,15 @@ export default function HomePage() {
               <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>EXCLUSIVE MERCH</h3>
               <p className="text-gray-400">Rep the team with our limited edition gear and accessories</p>
             </button>
-            <div className="drift-card p-8 rounded-lg text-center">
-              <div className="text-5xl mb-4 text-yellow-500">🏆</div>
-              <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>RACING CULTURE</h3>
-              <p className="text-gray-400">Join the community of street racing enthusiasts and drift lovers</p>
-            </div>
+            <button 
+              onClick={() => navigate('/parts')}
+              className="drift-card p-8 rounded-lg text-center cursor-pointer transition-all hover:scale-105"
+              data-testid="about-parts-btn"
+            >
+              <div className="text-5xl mb-4 text-yellow-500">🔧</div>
+              <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>PART OUTS</h3>
+              <p className="text-gray-400">Quality performance parts from our drift builds and projects</p>
+            </button>
           </div>
         </div>
       </div>
