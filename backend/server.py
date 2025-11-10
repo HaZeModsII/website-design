@@ -378,9 +378,36 @@ async def admin_login(credentials: AdminLogin):
 @api_router.get("/merch", response_model=List[MerchItem])
 async def get_merch():
     items = await db.merch.find({}, {"_id": 0}).to_list(1000)
+    
+    # Get sales settings
+    sales_settings = await db.sales_settings.find_one({"id": "sales_settings"}, {"_id": 0})
+    
     for item in items:
         if isinstance(item.get('created_at'), str):
             item['created_at'] = datetime.fromisoformat(item['created_at'])
+        
+        # Calculate effective price based on sales
+        if sales_settings:
+            original_price = item['price']
+            effective_price = original_price
+            
+            # Check individual item sale price first (highest priority)
+            if item.get('sale_price') and item['sale_price'] < original_price:
+                effective_price = item['sale_price']
+            # Check category sale
+            elif sales_settings.get('category_sales', {}).get(item['category']):
+                discount = sales_settings['category_sales'][item['category']]
+                effective_price = original_price * (1 - discount / 100)
+            # Check site-wide sale
+            elif sales_settings.get('site_wide_sale') and sales_settings.get('site_wide_discount_percent'):
+                discount = sales_settings['site_wide_discount_percent']
+                effective_price = original_price * (1 - discount / 100)
+            
+            # Add computed effective price to response
+            item['effective_price'] = round(effective_price, 2)
+        else:
+            item['effective_price'] = item['price']
+    
     return items
 
 @api_router.post("/merch", response_model=MerchItem)
