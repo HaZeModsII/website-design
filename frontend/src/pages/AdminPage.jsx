@@ -115,16 +115,23 @@ export default function AdminPage() {
   const handleAddMerch = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API}/merch`, {
+      const payload = {
         ...newMerch,
         price: parseFloat(newMerch.price),
         stock: parseInt(newMerch.stock)
-      }, {
+      };
+      
+      // Only include sizes if array is not empty
+      if (payload.sizes && payload.sizes.length === 0) {
+        payload.sizes = null;
+      }
+      
+      await axios.post(`${API}/merch`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
       toast.success('Merch item added');
-      setNewMerch({ name: '', description: '', price: '', image_url: '', category: '', stock: '' });
+      setNewMerch({ name: '', description: '', price: '', image_url: '', category: '', stock: '', sizes: [] });
       fetchAdminData(token);
     } catch (error) {
       console.error('Error adding merch:', error);
