@@ -20,7 +20,7 @@ export default function HomePage() {
         <div className="mb-12 relative">
           <div className="logo-float">
             <img 
-              src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/5fjk2ztk_just%20head.png"
+              src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ka2d0c5n_colourskull.png"
               alt="Triple Barrel Racing Logo"
               className="w-64 sm:w-80 lg:w-96 h-auto logo-glow"
               data-testid="logo-image"
