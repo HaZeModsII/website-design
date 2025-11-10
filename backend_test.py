@@ -65,18 +65,18 @@ class BackendTester:
             return {}
         return {"Authorization": f"Bearer {self.admin_token}"}
     
-    def test_create_merch_with_sizes(self) -> bool:
-        """Test creating merch item WITH sizes"""
-        test_name = "Create Merch Item WITH Sizes"
+    def test_create_clothing_with_size_stock(self) -> bool:
+        """Test creating clothing item with size-specific stock"""
+        test_name = "Create Clothing Item with Size-Specific Stock"
         
         merch_data = {
-            "name": "Racing T-Shirt with Sizes",
-            "description": "Premium racing t-shirt available in multiple sizes",
+            "name": "Racing T-Shirt with Size Stock",
+            "description": "Premium racing t-shirt with individual size stock tracking",
             "price": 29.99,
             "image_url": "https://example.com/racing-tshirt.jpg",
             "category": "Apparel",
-            "stock": 50,
-            "sizes": ["S", "M", "L", "XL"]
+            "stock": 0,  # Should be ignored for sized items
+            "sizes": {"S": 10, "M": 15, "L": 5, "XL": 0}
         }
         
         try:
@@ -91,13 +91,14 @@ class BackendTester:
                 item = response.json()
                 self.created_items.append(item["id"])
                 
-                # Verify sizes field is present and correct
-                if "sizes" in item and item["sizes"] == ["S", "M", "L", "XL"]:
-                    self.log_result(test_name, True, "Item created successfully with sizes")
+                # Verify sizes field is dict with correct stock values
+                expected_sizes = {"S": 10, "M": 15, "L": 5, "XL": 0}
+                if "sizes" in item and item["sizes"] == expected_sizes:
+                    self.log_result(test_name, True, "Clothing item created successfully with size-specific stock")
                     return True
                 else:
                     self.log_result(test_name, False, "Item created but sizes field incorrect", 
-                                  {"expected_sizes": ["S", "M", "L", "XL"], "actual_sizes": item.get("sizes")})
+                                  {"expected_sizes": expected_sizes, "actual_sizes": item.get("sizes")})
                     return False
             else:
                 self.log_result(test_name, False, f"Failed to create item: {response.status_code}", 
@@ -105,7 +106,7 @@ class BackendTester:
                 return False
                 
         except Exception as e:
-            self.log_result(test_name, False, f"Error creating item with sizes: {str(e)}")
+            self.log_result(test_name, False, f"Error creating clothing item with size stock: {str(e)}")
             return False
     
     def test_create_merch_without_sizes(self) -> bool:
