@@ -17,13 +17,21 @@ export default function HomePage() {
       {/* Hero Section */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         {/* Logo with floating animation and glow */}
-        <div className="mb-12 relative">
-          <div className="logo-float">
+        <div className="mb-12 relative flex flex-col items-center">
+          <div className="logo-float mb-4">
             <img 
               src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ka2d0c5n_colourskull.png"
               alt="Triple Barrel Racing Logo"
               className="w-64 sm:w-80 lg:w-96 h-auto logo-glow"
               data-testid="logo-image"
+            />
+          </div>
+          <div className="logo-glow">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ctazltxf_whitetextarch.png"
+              alt="Triple Barrel Racing Text"
+              className="w-72 sm:w-96 lg:w-[28rem] h-auto"
+              data-testid="logo-text"
             />
           </div>
         </div>
