@@ -148,7 +148,7 @@ export default function StorePage() {
                   <p className="text-gray-400 mb-4 text-sm">{item.description}</p>
                   
                   {/* Size Selector - Only show if item has sizes */}
-                  {item.sizes && item.sizes.length > 0 && (
+                  {item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 && (
                     <div className="mb-4">
                       <label className="text-sm text-gray-400 mb-2 block">Select Size:</label>
                       <Select 
@@ -159,8 +159,14 @@ export default function StorePage() {
                           <SelectValue placeholder="Choose size" />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                          {item.sizes.map(size => (
-                            <SelectItem key={size} value={size}>{size}</SelectItem>
+                          {Object.entries(item.sizes).map(([size, stock]) => (
+                            <SelectItem 
+                              key={size} 
+                              value={size}
+                              disabled={stock === 0}
+                            >
+                              {size} {stock === 0 ? '(Out of Stock)' : `(${stock} available)`}
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -172,7 +178,12 @@ export default function StorePage() {
                     <Button
                       data-testid={`purchase-${item.id}-btn`}
                       onClick={() => handlePurchase(item)}
-                      disabled={item.stock === 0}
+                      disabled={
+                        // Disable if item with sizes has no stock for selected size, or non-sized item has no stock
+                        (item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0)
+                          ? !selectedSize[item.id] || item.sizes[selectedSize[item.id]] === 0
+                          : item.stock === 0
+                      }
                       className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{ fontFamily: 'Bebas Neue, sans-serif' }}
                     >
