@@ -220,6 +220,74 @@ export default function AdminPage() {
     }
   };
 
+  const handleEventImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setEventImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setEventImagePreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePartImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPartImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setPartImagePreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDriverImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setDriverImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setDriverImagePreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCarImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCarImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setCarImagePreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleBlogImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    setBlogImageFiles(files);
+    
+    // Create previews for all files
+    const previews = [];
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        previews.push(reader.result);
+        if (previews.length === files.length) {
+          setBlogImagePreviews(previews);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleSponsorImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSponsorImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setSponsorImagePreview(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddMerch = async (e) => {
     e.preventDefault();
     
