@@ -465,24 +465,32 @@ export default function AdminPage() {
 
             <div className="space-y-4">
               <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Current Items</h2>
-              {merchItems.map(item => (
-                <div key={item.id} className="drift-card p-4 rounded-lg flex justify-between items-center">
-                  <div>
-                    <h3 className="text-xl font-bold">{item.name}</h3>
-                    <p className="text-gray-400">${item.price} CAD - {item.category} - Stock: {item.stock}</p>
-                    {item.sizes && item.sizes.length > 0 && (
-                      <p className="text-blue-400 text-sm mt-1">Sizes: {item.sizes.join(', ')}</p>
-                    )}
+              {merchItems.map(item => {
+                const totalStock = item.sizes && typeof item.sizes === 'object' 
+                  ? Object.values(item.sizes).reduce((sum, stock) => sum + stock, 0)
+                  : item.stock;
+                
+                return (
+                  <div key={item.id} className="drift-card p-4 rounded-lg flex justify-between items-center">
+                    <div>
+                      <h3 className="text-xl font-bold">{item.name}</h3>
+                      <p className="text-gray-400">${item.price} CAD - {item.category} - Total Stock: {totalStock}</p>
+                      {item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 && (
+                        <p className="text-blue-400 text-sm mt-1">
+                          Sizes: {Object.entries(item.sizes).map(([size, stock]) => `${size} (${stock})`).join(', ')}
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      data-testid={`delete-merch-${item.id}-btn`}
+                      onClick={() => handleDeleteMerch(item.id)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Delete
+                    </Button>
                   </div>
-                  <Button
-                    data-testid={`delete-merch-${item.id}-btn`}
-                    onClick={() => handleDeleteMerch(item.id)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </TabsContent>
 
