@@ -14,7 +14,8 @@ export default function Navigation() {
           <img 
             src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
             alt="Triple Barrel Racing"
-            className="h-20 w-auto hover:opacity-80 transition-opacity"
+            className="h-8 w-auto hover:opacity-80 transition-opacity"
+            style={{ transform: 'scale(2.5)', transformOrigin: 'left center' }}
           />
         </Link>
 
