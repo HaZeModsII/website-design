@@ -34,9 +34,16 @@ export default function PartsPage() {
   };
 
   const categories = ['all', ...new Set(parts.map(part => part.category || 'Other'))];
-  const filteredParts = selectedCategory === 'all' 
-    ? parts 
-    : parts.filter(part => (part.category || 'Other') === selectedCategory);
+  
+  // Filter by category and search
+  const filteredParts = parts.filter(part => {
+    const matchesCategory = selectedCategory === 'all' || (part.category || 'Other') === selectedCategory;
+    const matchesSearch = searchQuery === '' || 
+      part.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      part.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      part.car_model.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   const getConditionBadge = (condition) => {
     const badges = {
