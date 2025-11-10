@@ -369,7 +369,7 @@ export default function AdminPage() {
         toast.success('Merch item added');
       }
       
-      setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false });
+      setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false, sale_percent: null });
       setImageFile(null);
       setImagePreview(null);
       fetchAdminData(token);
@@ -401,7 +401,7 @@ export default function AdminPage() {
 
   const handleCancelEdit = () => {
     setEditingMerch(null);
-    setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false });
+    setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false, sale_percent: null });
     setImageFile(null);
     setImagePreview(null);
   };
