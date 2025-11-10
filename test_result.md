@@ -159,3 +159,5 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Implemented size selection feature for merch items. Backend now supports optional sizes field. Admin panel has checkboxes for XS, S, M, L, XL, XXL, XXXL. Store page only shows size selector for items with sizes defined. Ready for backend testing."
+  - agent: "testing"
+    message: "Backend testing completed for sizes field implementation. All core functionality working correctly. Found minor issue: PUT /api/merch/{id} with sizes: null doesn't remove sizes due to backend filtering None values, but sizes: [] works correctly. 7/8 tests passed (87.5% success rate). All critical scenarios working: create with/without sizes, update to add sizes, update to remove sizes using empty array, backward compatibility confirmed."
