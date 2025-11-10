@@ -151,6 +151,12 @@ export default function StorePage() {
                     alt={item.name}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
+                  {/* Sale Badge */}
+                  {item.discount_percent > 0 && (
+                    <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
+                      {item.discount_percent}% OFF
+                    </div>
+                  )}
                   {/* Show OUT OF STOCK if all sizes are 0 or item stock is 0 */}
                   {((item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 
                       && Object.values(item.sizes).every(stock => stock === 0)) 
