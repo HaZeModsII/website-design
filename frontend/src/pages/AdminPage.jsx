@@ -947,14 +947,20 @@ export default function AdminPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label>Image URL</Label>
+                  <Label>Event Image</Label>
                   <Input
                     data-testid="event-image-input"
-                    value={newEvent.image_url}
-                    onChange={(e) => setNewEvent({...newEvent, image_url: e.target.value})}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleEventImageChange}
                     className="bg-gray-800 border-gray-700 text-white"
                     required
                   />
+                  {eventImagePreview && (
+                    <div className="mt-3">
+                      <img src={eventImagePreview} alt="Preview" className="w-32 h-32 object-cover rounded border-2 border-gray-700" />
+                    </div>
+                  )}
                 </div>
                 <div className="md:col-span-2">
                   <Label>Description</Label>
