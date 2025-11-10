@@ -818,13 +818,32 @@ export default function AdminPage() {
                   {inquiry.event_name && (
                     <p className="text-sm text-gray-400 mb-2">Event: {inquiry.event_name}</p>
                   )}
-                  {inquiry.item_details && (
-                    <div className="bg-blue-600/20 p-3 rounded border border-blue-500 mb-3">
-                      <p className="text-sm text-gray-300">
-                        <strong>Order Details:</strong> {inquiry.item_details}
-                      </p>
-                    </div>
-                  )}
+                  {inquiry.item_details && (() => {
+                    try {
+                      const details = JSON.parse(inquiry.item_details);
+                      return (
+                        <div className="bg-blue-600/20 p-4 rounded border border-blue-500 mb-3">
+                          <p className="text-sm font-bold text-white mb-2">Order Details:</p>
+                          <div className="text-sm text-gray-200 space-y-1">
+                            <p><strong>Item:</strong> {details.name}</p>
+                            <p><strong>Price:</strong> ${details.price} CAD</p>
+                            {details.selectedSize && <p><strong>Size:</strong> {details.selectedSize}</p>}
+                            {details.car_model && <p><strong>Model:</strong> {details.car_model}</p>}
+                            {details.year && <p><strong>Year:</strong> {details.year}</p>}
+                            {details.condition && <p><strong>Condition:</strong> {details.condition.replace('-', ' ').toUpperCase()}</p>}
+                          </div>
+                        </div>
+                      );
+                    } catch {
+                      return (
+                        <div className="bg-blue-600/20 p-3 rounded border border-blue-500 mb-3">
+                          <p className="text-sm text-gray-300">
+                            <strong>Order Details:</strong> {inquiry.item_details}
+                          </p>
+                        </div>
+                      );
+                    }
+                  })()}
                   <p className="text-gray-300">{inquiry.message}</p>
                 </div>
               ))
