@@ -143,7 +143,10 @@ export default function StorePage() {
                     alt={item.name}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
-                  {item.stock === 0 && (
+                  {/* Show OUT OF STOCK if all sizes are 0 or item stock is 0 */}
+                  {((item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 
+                      && Object.values(item.sizes).every(stock => stock === 0)) 
+                    || ((!item.sizes || Object.keys(item.sizes).length === 0) && item.stock === 0)) && (
                     <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
                       <span className="text-blue-500 text-2xl font-bold">OUT OF STOCK</span>
                     </div>
