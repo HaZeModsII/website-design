@@ -833,7 +833,7 @@ export default function AdminPage() {
                     value={newMerch.name}
                     onChange={(e) => setNewMerch({...newMerch, name: e.target.value})}
                     className="bg-gray-800 border-gray-700 text-white"
-                    required
+                    required={!editingMerch}
                   />
                 </div>
                 <div>
@@ -845,7 +845,7 @@ export default function AdminPage() {
                     value={newMerch.price}
                     onChange={(e) => setNewMerch({...newMerch, price: e.target.value})}
                     className="bg-gray-800 border-gray-700 text-white"
-                    required
+                    required={!editingMerch}
                   />
                 </div>
                 <div>
