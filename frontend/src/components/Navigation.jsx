@@ -10,13 +10,12 @@ export default function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" data-testid="nav-home-link">
-          <h2 
-            className="text-2xl font-bold text-blue-500 hover:text-blue-400 transition-colors"
-            style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-          >
-            TRIPLE BARREL RACING
-          </h2>
+        <Link to="/" data-testid="nav-home-link" className="flex items-center">
+          <img 
+            src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
+            alt="Triple Barrel Racing"
+            className="h-8 w-auto hover:opacity-80 transition-opacity"
+          />
         </Link>
 
         {/* Nav Links */}
