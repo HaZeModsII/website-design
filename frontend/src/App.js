@@ -22,6 +22,7 @@ function App() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/parts" element={<PartsPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
