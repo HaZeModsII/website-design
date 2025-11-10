@@ -1577,7 +1577,7 @@ export default function AdminPage() {
               <h2 className="text-2xl font-bold" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>Current Cars</h2>
               {cars.map(car => (
                 <div key={car.id} className="drift-card p-4 rounded-lg flex gap-4">
-                  <img src={car.image_url} alt={car.name} className="w-24 h-24 object-cover rounded" />
+                  <img src={getImageUrl(car.image_url)} alt={car.name} className="w-24 h-24 object-cover rounded" />
                   <div className="flex-1">
                     <h3 className="text-xl font-bold">{car.name}</h3>
                     <p className="text-blue-400">{car.year} {car.make} {car.model}</p>
