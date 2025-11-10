@@ -38,7 +38,8 @@ export default function AdminPage() {
     category: 'T-Shirts',
     stock: '',
     sizes: {},  // Object mapping size to stock: { "S": 10, "M": 15 }
-    featured: false
+    featured: false,
+    sale_percent: null
   });
   
   const [editingMerch, setEditingMerch] = useState(null);
