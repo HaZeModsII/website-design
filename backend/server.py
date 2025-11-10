@@ -927,8 +927,8 @@ async def upload_file(file: UploadFile = File(...), admin: bool = Depends(verify
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to upload file: {str(e)}")
     
-    # Return the URL path
-    return {"image_url": f"/uploads/{unique_filename}"}
+    # Return the URL path (with /api prefix for proper routing)
+    return {"image_url": f"/api/uploads/{unique_filename}"}
 
 # Driver Routes
 @api_router.get("/drivers", response_model=List[Driver])
