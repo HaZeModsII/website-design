@@ -429,10 +429,12 @@ export default function AdminPage() {
                               id={`stock-${size}`}
                               type="number"
                               min="0"
-                              value={newMerch.sizes[size]}
+                              placeholder="0"
+                              value={newMerch.sizes[size] === 0 ? '' : newMerch.sizes[size]}
                               onChange={(e) => {
                                 const newSizes = {...newMerch.sizes};
-                                newSizes[size] = parseInt(e.target.value) || 0;
+                                const value = e.target.value;
+                                newSizes[size] = value === '' ? 0 : parseInt(value);
                                 setNewMerch({...newMerch, sizes: newSizes});
                               }}
                               className="bg-gray-800 border-gray-700 text-white w-24"
