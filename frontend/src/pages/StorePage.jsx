@@ -207,17 +207,6 @@ export default function StorePage() {
           </div>
         )}
       </div>
-
-      <ContactModal 
-        open={contactModalOpen}
-        onClose={() => {
-          setContactModalOpen(false);
-          setSelectedItem(null);
-        }}
-        inquiryType="order"
-        prefilledMessage={selectedItem ? `I'd like to order: ${selectedItem.name}${selectedItem.selectedSize ? ` - Size: ${selectedItem.selectedSize}` : ''}` : ''}
-        itemDetails={selectedItem}
-      />
     </div>
   );
 }
