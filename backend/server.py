@@ -596,11 +596,11 @@ async def update_inquiry_status(inquiry_id: str, status_update: InquiryStatusUpd
     return {"message": "Status updated successfully"}
 
 # Square Client Setup
-from square.client import Client as SquareClient
+from square.client import Client
 
 def get_square_client():
     """Initialize Square client with environment credentials."""
-    return SquareClient(
+    return Client(
         access_token=os.environ.get('SQUARE_ACCESS_TOKEN', ''),
         environment=os.environ.get('SQUARE_ENVIRONMENT', 'sandbox')
     )
