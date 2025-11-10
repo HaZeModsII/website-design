@@ -712,6 +712,10 @@ export default function AdminPage() {
             <TabsTrigger value="merch" data-testid="merch-tab" className="data-[state=active]:bg-blue-600">Merchandise</TabsTrigger>
             <TabsTrigger value="events" data-testid="events-tab" className="data-[state=active]:bg-blue-600">Events</TabsTrigger>
             <TabsTrigger value="parts" data-testid="parts-tab" className="data-[state=active]:bg-blue-600">Parts</TabsTrigger>
+            <TabsTrigger value="drivers" data-testid="drivers-tab" className="data-[state=active]:bg-blue-600">Drivers</TabsTrigger>
+            <TabsTrigger value="cars" data-testid="cars-tab" className="data-[state=active]:bg-blue-600">Cars</TabsTrigger>
+            <TabsTrigger value="blog" data-testid="blog-tab" className="data-[state=active]:bg-blue-600">Blog</TabsTrigger>
+            <TabsTrigger value="sponsors" data-testid="sponsors-tab" className="data-[state=active]:bg-blue-600">Sponsors</TabsTrigger>
             <TabsTrigger value="orders" data-testid="orders-tab" className="data-[state=active]:bg-blue-600">Orders</TabsTrigger>
             <TabsTrigger value="inquiries" data-testid="inquiries-tab" className="data-[state=active]:bg-blue-600">Inquiries</TabsTrigger>
           </TabsList>
