@@ -40,6 +40,7 @@ class MerchItem(BaseModel):
     name: str
     description: str
     price: float
+    sale_price: Optional[float] = None  # Individual item sale price
     image_url: str
     category: str
     stock: int = 0
@@ -50,6 +51,7 @@ class MerchItemCreate(BaseModel):
     name: str
     description: str
     price: float
+    sale_price: Optional[float] = None
     image_url: str
     category: str
     stock: int = 0
@@ -59,10 +61,26 @@ class MerchItemUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     price: Optional[float] = None
+    sale_price: Optional[float] = None
     image_url: Optional[str] = None
     category: Optional[str] = None
     stock: Optional[int] = None
     sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
+
+# Sales Settings Models
+class SaleSettings(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = "sales_settings"  # Single document
+    site_wide_sale: bool = False
+    site_wide_discount_percent: float = 0.0
+    category_sales: dict = {}  # {"T-Shirts": 20.0, "Sweaters": 15.0}
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class SaleSettingsUpdate(BaseModel):
+    site_wide_sale: Optional[bool] = None
+    site_wide_discount_percent: Optional[float] = None
+    category_sales: Optional[dict] = None
 
 class Event(BaseModel):
     model_config = ConfigDict(extra="ignore")
