@@ -1,9 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    fetchFeaturedProducts();
+  }, []);
+
+  const fetchFeaturedProducts = async () => {
+    try {
+      const response = await axios.get(`${API}/merch`);
+      const featured = response.data.filter(item => item.featured);
+      setFeaturedProducts(featured);
+    } catch (error) {
+      console.error('Error fetching featured products:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">
