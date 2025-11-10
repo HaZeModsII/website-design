@@ -393,23 +393,27 @@ async def get_merch():
         if sales_settings:
             original_price = item['price']
             effective_price = original_price
+            applied_discount = 0
             
-            # Check individual item sale price first (highest priority)
-            if item.get('sale_price') and item['sale_price'] < original_price:
-                effective_price = item['sale_price']
+            # Check individual item sale percent first (highest priority)
+            if item.get('sale_percent') and item['sale_percent'] > 0:
+                applied_discount = item['sale_percent']
+                effective_price = original_price * (1 - applied_discount / 100)
             # Check category sale
             elif sales_settings.get('category_sales', {}).get(item['category']):
-                discount = sales_settings['category_sales'][item['category']]
-                effective_price = original_price * (1 - discount / 100)
+                applied_discount = sales_settings['category_sales'][item['category']]
+                effective_price = original_price * (1 - applied_discount / 100)
             # Check site-wide sale
             elif sales_settings.get('site_wide_sale') and sales_settings.get('site_wide_discount_percent'):
-                discount = sales_settings['site_wide_discount_percent']
-                effective_price = original_price * (1 - discount / 100)
+                applied_discount = sales_settings['site_wide_discount_percent']
+                effective_price = original_price * (1 - applied_discount / 100)
             
-            # Add computed effective price to response
+            # Add computed effective price and discount to response
             item['effective_price'] = round(effective_price, 2)
+            item['discount_percent'] = applied_discount
         else:
             item['effective_price'] = item['price']
+            item['discount_percent'] = 0
     
     return items
 
