@@ -102,16 +102,16 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "There is no size option when adding merch to the store"
+user_problem_statement: "There is no size option when adding merch to the store. Each size should have its own stock number, and total stock should be sum of all sizes."
 
 backend:
-  - task: "Add sizes field to MerchItem model"
+  - task: "Add size-specific stock management to MerchItem model"
     implemented: true
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
@@ -119,9 +119,12 @@ backend:
       - working: true
         agent: "testing"
         comment: "Backend API testing completed successfully. All core functionality verified: ✅ Create merch WITH sizes ✅ Create merch WITHOUT sizes ✅ Create merch with null sizes ✅ Update item to add sizes ✅ Update item to remove sizes (using empty array []) ✅ Backward compatibility ✅ Various size formats. Minor: PUT with sizes: null doesn't work due to backend filtering None values, but PUT with sizes: [] works correctly for removing sizes. All critical scenarios working as expected."
+      - working: true
+        agent: "main"
+        comment: "Changed sizes from List[str] to dict (size -> stock mapping). For clothing items, sizes field is { 'S': 10, 'M': 15, 'L': 5 }. For non-clothing items, use regular stock field. This allows individual stock tracking per size."
 
 frontend:
-  - task: "Add size selection checkboxes in Admin Panel"
+  - task: "Add size selection with per-size stock inputs in Admin Panel"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/AdminPage.jsx"
@@ -132,8 +135,11 @@ frontend:
       - working: true
         agent: "main"
         comment: "Added size checkboxes (XS, S, M, L, XL, XXL, XXXL) to merch form with optional selection. Updated state management and API calls to include sizes."
+      - working: true
+        agent: "main"
+        comment: "Restructured size UI: When size checkbox is selected, stock input appears next to it. Total stock calculated and displayed as sum of all size stocks. Regular stock field hidden when sizes are selected. Current items list shows size-specific stock (e.g., 'S (10), M (15), L (5)')."
   
-  - task: "Update Store Page to show dynamic sizes"
+  - task: "Update Store Page to show size availability and stock"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/StorePage.jsx"
@@ -144,6 +150,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "Updated size selector to only show when item.sizes exists. Display sizes from backend data instead of hardcoded values. Updated purchase validation to only require size selection for items with sizes."
+      - working: true
+        agent: "main"
+        comment: "Enhanced size selector to show stock per size (e.g., 'S (5 available)' or 'M (Out of Stock)'). Disabled out-of-stock sizes in dropdown. Updated BUY NOW button to disable if selected size is out of stock. OUT OF STOCK badge shows when all sizes have 0 stock. Purchase validation checks selected size stock."
 
 metadata:
   created_by: "main_agent"
