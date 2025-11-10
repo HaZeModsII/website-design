@@ -622,6 +622,30 @@ export default function AdminPage() {
     }
   };
 
+  // Sales settings handlers
+  const handleUpdateSalesSettings = async () => {
+    try {
+      await axios.put(`${API}/sales-settings`, salesSettings, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Sales settings updated');
+      fetchAdminData(token);
+    } catch (error) {
+      console.error('Error updating sales settings:', error);
+      toast.error('Failed to update sales settings');
+    }
+  };
+
+  const handleCategorySaleChange = (category, discount) => {
+    const newCategorySales = { ...salesSettings.category_sales };
+    if (discount === '' || discount === 0) {
+      delete newCategorySales[category];
+    } else {
+      newCategorySales[category] = parseFloat(discount);
+    }
+    setSalesSettings({ ...salesSettings, category_sales: newCategorySales });
+  };
+
 
   const handleDeleteMerch = async (id) => {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
