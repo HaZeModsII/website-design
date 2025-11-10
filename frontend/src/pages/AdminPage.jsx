@@ -268,9 +268,20 @@ export default function AdminPage() {
 
   const handleAddEvent = async (e) => {
     e.preventDefault();
+    
+    if (!eventImageFile) {
+      toast.error('Please select an image');
+      return;
+    }
+    
     try {
+      // Upload image first
+      const imageUrl = await handleImageUpload(eventImageFile);
+      if (!imageUrl) return;
+      
       await axios.post(`${API}/events`, {
         ...newEvent,
+        image_url: imageUrl,
         ticket_price: parseFloat(newEvent.ticket_price)
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -278,6 +289,8 @@ export default function AdminPage() {
       
       toast.success('Event added');
       setNewEvent({ name: '', description: '', date: '', location: '', image_url: '', ticket_price: '' });
+      setEventImageFile(null);
+      setEventImagePreview(null);
       fetchAdminData(token);
     } catch (error) {
       console.error('Error adding event:', error);
