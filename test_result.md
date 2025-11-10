@@ -101,3 +101,61 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "There is no size option when adding merch to the store"
+
+backend:
+  - task: "Add sizes field to MerchItem model"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added optional sizes field (List[str]) to MerchItem, MerchItemCreate, and MerchItemUpdate models"
+
+frontend:
+  - task: "Add size selection checkboxes in Admin Panel"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/AdminPage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added size checkboxes (XS, S, M, L, XL, XXL, XXXL) to merch form with optional selection. Updated state management and API calls to include sizes."
+  
+  - task: "Update Store Page to show dynamic sizes"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/StorePage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Updated size selector to only show when item.sizes exists. Display sizes from backend data instead of hardcoded values. Updated purchase validation to only require size selection for items with sizes."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Add size selection checkboxes in Admin Panel"
+    - "Update Store Page to show dynamic sizes"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Implemented size selection feature for merch items. Backend now supports optional sizes field. Admin panel has checkboxes for XS, S, M, L, XL, XXL, XXXL. Store page only shows size selector for items with sizes defined. Ready for backend testing."
