@@ -413,18 +413,42 @@ export default function AdminPage() {
                             } else {
                               delete newSizes[size];
                             }
+                            setNewMerch({...newMerch, sizes: newSizes});
                           }}
                         />
                         <label
                           htmlFor={`size-${size}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-300 cursor-pointer"
+                          className="text-sm font-medium w-12 text-gray-300 cursor-pointer"
                         >
                           {size}
                         </label>
+                        {size in newMerch.sizes && (
+                          <div className="flex items-center gap-2 flex-1">
+                            <Label htmlFor={`stock-${size}`} className="text-gray-400 text-sm">Stock:</Label>
+                            <Input
+                              id={`stock-${size}`}
+                              type="number"
+                              min="0"
+                              value={newMerch.sizes[size]}
+                              onChange={(e) => {
+                                const newSizes = {...newMerch.sizes};
+                                newSizes[size] = parseInt(e.target.value) || 0;
+                                setNewMerch({...newMerch, sizes: newSizes});
+                              }}
+                              className="bg-gray-800 border-gray-700 text-white w-24"
+                              data-testid={`stock-${size}-input`}
+                            />
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">Leave unchecked if item doesn't require size selection</p>
+                  {Object.keys(newMerch.sizes).length > 0 && (
+                    <p className="text-sm text-blue-400 mt-3">
+                      Total Stock: {Object.values(newMerch.sizes).reduce((sum, stock) => sum + stock, 0)}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-500 mt-2">Check sizes for clothing items and set stock per size. Leave unchecked for non-clothing items.</p>
                 </div>
                 <div className="md:col-span-2">
                   <Button 
