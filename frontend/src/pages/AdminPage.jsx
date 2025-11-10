@@ -163,7 +163,7 @@ export default function AdminPage() {
 
   const fetchAdminData = async (authToken) => {
     try {
-      const [merchRes, eventsRes, partsRes, inquiriesRes, driversRes, carsRes, blogRes, sponsorsRes] = await Promise.all([
+      const [merchRes, eventsRes, partsRes, inquiriesRes, driversRes, carsRes, blogRes, sponsorsRes, salesRes] = await Promise.all([
         axios.get(`${API}/merch`),
         axios.get(`${API}/events`),
         axios.get(`${API}/parts`),
@@ -173,7 +173,8 @@ export default function AdminPage() {
         axios.get(`${API}/drivers`),
         axios.get(`${API}/cars`),
         axios.get(`${API}/blog`),
-        axios.get(`${API}/sponsors`)
+        axios.get(`${API}/sponsors`),
+        axios.get(`${API}/sales-settings`)
       ]);
       
       setMerchItems(merchRes.data);
@@ -184,6 +185,7 @@ export default function AdminPage() {
       setCars(carsRes.data);
       setBlogPosts(blogRes.data);
       setSponsors(sponsorsRes.data);
+      setSalesSettings(salesRes.data);
     } catch (error) {
       console.error('Error fetching admin data:', error);
       toast.error('Failed to load data');
