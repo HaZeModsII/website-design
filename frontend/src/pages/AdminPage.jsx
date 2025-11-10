@@ -661,14 +661,16 @@ export default function AdminPage() {
     if (!window.confirm('Are you sure you want to delete this item?')) return;
     
     try {
-      await axios.delete(`${API}/merch/${id}`, {
+      const response = await axios.delete(`${API}/merch/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('Delete response:', response);
       toast.success('Item deleted');
       fetchAdminData(token);
     } catch (error) {
       console.error('Error deleting merch:', error);
-      toast.error('Failed to delete item');
+      console.error('Error details:', error.response?.data);
+      toast.error(error.response?.data?.detail || 'Failed to delete item');
     }
   };
 
