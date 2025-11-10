@@ -20,7 +20,7 @@ export default function HomePage() {
         <div className="mb-12 relative flex flex-col items-center">
           <div className="logo-float -mb-8">
             <img 
-              src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ka2d0c5n_colourskull.png"
+              src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/3debsbpu_fixedcolourskull.png"
               alt="Triple Barrel Racing Logo"
               className="w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow"
               data-testid="logo-image"
@@ -28,7 +28,7 @@ export default function HomePage() {
           </div>
           <div className="logo-glow">
             <img 
-              src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ctazltxf_whitetextarch.png"
+              src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
               alt="Triple Barrel Racing Text"
               className="w-72 sm:w-96 lg:w-[28rem] h-auto"
               data-testid="logo-text"
