@@ -125,7 +125,7 @@ export default function AboutPage() {
             {drivers.map(driver => (
               <div key={driver.id} className="drift-card rounded-lg overflow-hidden">
                 <img 
-                  src={driver.image_url} 
+                  src={getImageUrl(driver.image_url)} 
                   alt={driver.name}
                   className="w-full h-64 object-cover"
                 />
