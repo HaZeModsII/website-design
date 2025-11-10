@@ -381,7 +381,7 @@ export default function AdminPage() {
 
   const handleCancelEdit = () => {
     setEditingMerch(null);
-    setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {} });
+    setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false });
     setImageFile(null);
     setImagePreview(null);
   };
