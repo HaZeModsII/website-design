@@ -389,7 +389,8 @@ export default function AdminPage() {
       category: item.category,
       stock: item.stock.toString(),
       sizes: item.sizes || {},
-      featured: item.featured || false
+      featured: item.featured || false,
+      sale_percent: item.sale_percent || null
     });
     // Use getImageUrl to show the correct preview
     setImagePreview(getImageUrl(item.image_url));
