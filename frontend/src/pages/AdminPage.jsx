@@ -414,13 +414,19 @@ export default function AdminPage() {
                 </div>
                 <div>
                   <Label>Category</Label>
-                  <Input
+                  <select
                     data-testid="merch-category-input"
                     value={newMerch.category}
                     onChange={(e) => setNewMerch({...newMerch, category: e.target.value})}
-                    className="bg-gray-800 border-gray-700 text-white"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 text-white rounded"
                     required
-                  />
+                  >
+                    <option value="T-Shirts">T-Shirts</option>
+                    <option value="Hoodies">Hoodies</option>
+                    <option value="Hats">Hats</option>
+                    <option value="Stickers">Stickers</option>
+                    <option value="Accessories">Accessories</option>
+                  </select>
                 </div>
                 {/* Stock field - only show if no sizes selected */}
                 {Object.keys(newMerch.sizes).length === 0 && (
