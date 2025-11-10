@@ -35,23 +35,15 @@ export default function NotFoundPage() {
           Looks like you drifted off course! This page doesn't exist.
         </p>
         
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Action Button */}
+        <div className="flex justify-center">
           <Button
             data-testid="go-home-btn"
             onClick={() => navigate('/')}
-            className="drift-button px-8 py-6 text-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-none border-2 border-blue-500"
+            className="drift-button px-12 py-6 text-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold rounded-none border-2 border-blue-500"
             style={{ fontFamily: 'Bebas Neue, sans-serif' }}
           >
             GO HOME
-          </Button>
-          <Button
-            data-testid="go-store-btn"
-            onClick={() => navigate('/store')}
-            className="drift-button px-8 py-6 text-lg bg-transparent hover:bg-white/10 text-white font-bold rounded-none border-2 border-white"
-            style={{ fontFamily: 'Bebas Neue, sans-serif' }}
-          >
-            SHOP MERCH
           </Button>
         </div>
         
