@@ -128,27 +128,33 @@ backend:
   
   - task: "Multiple image support for merch items"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Changed MerchItem model from single image_url (str) to image_urls (List[str]). Updated MerchItemCreate and MerchItemUpdate models. Added GET /api/merch/{item_id} endpoint to fetch single item with sale price calculation. Ready for testing."
+      - working: true
+        agent: "testing"
+        comment: "Backend testing completed successfully for multiple image support. All core functionality verified: ✅ Create merch with multiple images (image_urls array) ✅ Create merch with empty images array ✅ Update existing merch to add/modify images ✅ GET /api/merch returns all items with image_urls array ✅ Backward compatibility confirmed - all existing items properly converted to new schema. 10/10 tests passed (100% success rate)."
   
   - task: "Product detail page API endpoint"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "main"
         comment: "Added GET /api/merch/{item_id} endpoint that returns single merch item with calculated effective_price and discount_percent based on sales settings. Ready for testing."
+      - working: true
+        agent: "testing"
+        comment: "Product detail page API endpoint testing completed successfully. GET /api/merch/{item_id} working correctly: ✅ Returns single merch item with all required fields (id, name, description, price, image_urls, category, stock, sizes) ✅ Includes calculated effective_price and discount_percent fields ✅ Sale price calculations working correctly (tested 20% individual item discount: $100 -> $80 effective price) ✅ Supports both sized and non-sized items. All functionality working as expected."
   
   - task: "Sale price functionality for merch items"
     implemented: true
