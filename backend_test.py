@@ -159,6 +159,160 @@ class BackendTester:
             self.log_result(test_name, False, f"Error creating item with empty images: {str(e)}")
             return False
     
+    def test_get_single_merch_item_with_sale_calculation(self) -> bool:
+        """Test GET /api/merch/{item_id} endpoint with sale price calculation"""
+        test_name = "Get Single Merch Item with Sale Price Calculation"
+        
+        # First create an item with sale_percent
+        merch_data = {
+            "name": "Racing Jacket On Sale",
+            "description": "Premium racing jacket with individual sale",
+            "price": 100.00,
+            "sale_percent": 20.0,  # 20% off
+            "image_urls": [
+                "https://example.com/jacket-main.jpg",
+                "https://example.com/jacket-side.jpg"
+            ],
+            "category": "Apparel",
+            "stock": 25,
+            "sizes": {"M": 8, "L": 10, "XL": 7}
+        }
+        
+        try:
+            # Create the item first
+            response = requests.post(
+                f"{self.base_url}/merch",
+                json=merch_data,
+                headers=self.get_auth_headers(),
+                timeout=10
+            )
+            
+            if response.status_code != 200:
+                self.log_result(test_name, False, "Failed to create test item for single item test")
+                return False
+            
+            item = response.json()
+            item_id = item["id"]
+            self.created_items.append(item_id)
+            
+            # Now test GET single item
+            response = requests.get(f"{self.base_url}/merch/{item_id}", timeout=10)
+            
+            if response.status_code == 200:
+                single_item = response.json()
+                
+                # Verify all required fields are present
+                required_fields = ["id", "name", "description", "price", "image_urls", "category", "stock", "sizes"]
+                sale_fields = ["effective_price", "discount_percent"]
+                
+                missing_fields = [field for field in required_fields if field not in single_item]
+                missing_sale_fields = [field for field in sale_fields if field not in single_item]
+                
+                if missing_fields:
+                    self.log_result(test_name, False, f"Missing required fields: {missing_fields}")
+                    return False
+                
+                if missing_sale_fields:
+                    self.log_result(test_name, False, f"Missing sale calculation fields: {missing_sale_fields}")
+                    return False
+                
+                # Verify sale calculations
+                expected_effective_price = 100.00 * (1 - 20.0 / 100)  # $80.00
+                expected_discount_percent = 20.0
+                
+                if (abs(single_item["effective_price"] - expected_effective_price) < 0.01 and 
+                    single_item["discount_percent"] == expected_discount_percent):
+                    self.log_result(test_name, True, 
+                                  f"Single item retrieved with correct sale calculations (${single_item['effective_price']}, {single_item['discount_percent']}% off)")
+                    return True
+                else:
+                    self.log_result(test_name, False, "Sale calculations incorrect", 
+                                  {"expected_price": expected_effective_price, "actual_price": single_item.get("effective_price"),
+                                   "expected_discount": expected_discount_percent, "actual_discount": single_item.get("discount_percent")})
+                    return False
+            else:
+                self.log_result(test_name, False, f"Failed to get single item: {response.status_code}", 
+                              {"response": response.text})
+                return False
+                
+        except Exception as e:
+            self.log_result(test_name, False, f"Error getting single merch item: {str(e)}")
+            return False
+    
+    def test_update_merch_images(self) -> bool:
+        """Test updating merch item to add/remove images from image_urls"""
+        test_name = "Update Merch Item Images"
+        
+        # First create an item with one image
+        merch_data = {
+            "name": "Racing Hoodie Photo Update",
+            "description": "Hoodie that will get more photos",
+            "price": 49.99,
+            "image_urls": ["https://example.com/hoodie-original.jpg"],
+            "category": "Apparel",
+            "stock": 30
+        }
+        
+        try:
+            # Create item
+            response = requests.post(
+                f"{self.base_url}/merch",
+                json=merch_data,
+                headers=self.get_auth_headers(),
+                timeout=10
+            )
+            
+            if response.status_code != 200:
+                self.log_result(test_name, False, "Failed to create initial item for image update test")
+                return False
+            
+            item = response.json()
+            item_id = item["id"]
+            self.created_items.append(item_id)
+            
+            # Now update to add more images
+            update_data = {
+                "image_urls": [
+                    "https://example.com/hoodie-front.jpg",
+                    "https://example.com/hoodie-back.jpg",
+                    "https://example.com/hoodie-detail.jpg",
+                    "https://example.com/hoodie-lifestyle.jpg"
+                ]
+            }
+            
+            response = requests.put(
+                f"{self.base_url}/merch/{item_id}",
+                json=update_data,
+                headers=self.get_auth_headers(),
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                updated_item = response.json()
+                
+                expected_images = [
+                    "https://example.com/hoodie-front.jpg",
+                    "https://example.com/hoodie-back.jpg",
+                    "https://example.com/hoodie-detail.jpg",
+                    "https://example.com/hoodie-lifestyle.jpg"
+                ]
+                
+                if updated_item.get("image_urls") == expected_images:
+                    self.log_result(test_name, True, "Successfully updated item images")
+                    return True
+                else:
+                    self.log_result(test_name, False, "Update succeeded but images incorrect", 
+                                  {"expected": expected_images, "actual": updated_item.get("image_urls")})
+                    return False
+            else:
+                self.log_result(test_name, False, f"Failed to update item: {response.status_code}", 
+                              {"response": response.text})
+                return False
+                
+        except Exception as e:
+            self.log_result(test_name, False, f"Error updating item images: {str(e)}")
+            return False
+    
     def test_create_merch_without_sizes(self) -> bool:
         """Test creating merch item WITHOUT sizes"""
         test_name = "Create Merch Item WITHOUT Sizes"
