@@ -143,95 +143,75 @@ export default function StorePage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredItems.map(item => (
-              <div key={item.id} className="drift-card rounded-lg overflow-hidden" data-testid={`merch-item-${item.id}`}>
-                <div className="aspect-square bg-gray-800 relative overflow-hidden">
-                  <img 
-                    src={getImageUrl(item.image_url)} 
-                    alt={item.name}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                  />
-                  {/* Sale Badge */}
-                  {item.discount_percent > 0 && (
-                    <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
-                      {item.discount_percent}% OFF
-                    </div>
-                  )}
-                  {/* Show OUT OF STOCK if all sizes are 0 or item stock is 0 */}
-                  {((item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 
-                      && Object.values(item.sizes).every(stock => stock === 0)) 
-                    || ((!item.sizes || Object.keys(item.sizes).length === 0) && item.stock === 0)) && (
-                    <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
-                      <span className="text-blue-500 text-2xl font-bold">OUT OF STOCK</span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-2" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
-                    {item.name}
-                  </h3>
-                  <p className="text-gray-400 mb-4 text-sm">{item.description}</p>
-                  
-                  {/* Size Selector - Only show if item has sizes */}
-                  {item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 && (
-                    <div className="mb-4">
-                      <label className="text-sm text-gray-400 mb-2 block">Select Size:</label>
-                      <Select 
-                        value={selectedSize[item.id] || ''} 
-                        onValueChange={(value) => setSelectedSize({...selectedSize, [item.id]: value})}
-                      >
-                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white" data-testid={`size-select-${item.id}`}>
-                          <SelectValue placeholder="Choose size" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                          {Object.entries(item.sizes).map(([size, stock]) => (
-                            <SelectItem 
-                              key={size} 
-                              value={size}
-                              disabled={stock === 0}
-                            >
-                              {size} {stock === 0 ? '(Out of Stock)' : ''}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      {item.effective_price && item.effective_price < item.price ? (
-                        <div>
-                          <span className="text-3xl font-bold text-red-500">${item.effective_price} CAD</span>
-                          <div className="flex items-center gap-2 mt-1">
-                            <span className="text-sm text-gray-400 line-through">${item.price} CAD</span>
-                            <span className="text-sm text-red-400 font-bold">
-                              SAVE ${(item.price - item.effective_price).toFixed(2)}!
-                            </span>
-                          </div>
-                        </div>
-                      ) : (
-                        <span className="text-3xl font-bold text-blue-500">${item.price} CAD</span>
-                      )}
-                    </div>
-                    <Button
-                      data-testid={`purchase-${item.id}-btn`}
-                      onClick={() => handlePurchase(item)}
-                      disabled={
-                        // Disable if item with sizes has no stock for selected size, or non-sized item has no stock
-                        (item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0)
-                          ? !selectedSize[item.id] || item.sizes[selectedSize[item.id]] === 0
-                          : item.stock === 0
-                      }
-                      className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            {filteredItems.map(item => {
+              // Get first image from image_urls array, fallback to empty string
+              const mainImage = Array.isArray(item.image_urls) && item.image_urls.length > 0 
+                ? item.image_urls[0] 
+                : '';
+              
+              return (
+                <div key={item.id} className="drift-card rounded-lg overflow-hidden" data-testid={`merch-item-${item.id}`}>
+                  {/* Clickable Image to navigate to product detail */}
+                  <div 
+                    className="aspect-square bg-gray-800 relative overflow-hidden cursor-pointer"
+                    onClick={() => navigate(`/product/${item.id}`)}
+                  >
+                    <img 
+                      src={getImageUrl(mainImage)} 
+                      alt={item.name}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                    {/* Sale Badge */}
+                    {item.discount_percent > 0 && (
+                      <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
+                        {item.discount_percent}% OFF
+                      </div>
+                    )}
+                    {/* Show OUT OF STOCK if all sizes are 0 or item stock is 0 */}
+                    {((item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0 
+                        && Object.values(item.sizes).every(stock => stock === 0)) 
+                      || ((!item.sizes || Object.keys(item.sizes).length === 0) && item.stock === 0)) && (
+                      <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
+                        <span className="text-blue-500 text-2xl font-bold">OUT OF STOCK</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <h3 
+                      className="text-2xl font-bold mb-2 cursor-pointer hover:text-blue-400 transition-colors" 
                       style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                      onClick={() => navigate(`/product/${item.id}`)}
                     >
-                      BUY NOW
-                    </Button>
+                      {item.name}
+                    </h3>
+                    <p className="text-gray-400 mb-4 text-sm line-clamp-2">{item.description}</p>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {item.effective_price && item.effective_price < item.price ? (
+                          <div>
+                            <span className="text-3xl font-bold text-red-500">${item.effective_price} CAD</span>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-sm text-gray-400 line-through">${item.price} CAD</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-3xl font-bold text-blue-500">${item.price} CAD</span>
+                        )}
+                      </div>
+                      <Button
+                        data-testid={`view-details-${item.id}-btn`}
+                        onClick={() => navigate(`/product/${item.id}`)}
+                        className="drift-button px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none border-2 border-blue-500"
+                        style={{ fontFamily: 'Bebas Neue, sans-serif' }}
+                      >
+                        VIEW DETAILS
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
