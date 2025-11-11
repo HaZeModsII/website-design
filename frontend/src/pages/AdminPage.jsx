@@ -231,17 +231,19 @@ export default function AdminPage() {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
       setImageFiles(files);
-      // Create previews for all files
-      const previews = [];
-      files.forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          previews.push(reader.result);
-          if (previews.length === files.length) {
-            setImagePreviews(previews);
-          }
-        };
-        reader.readAsDataURL(file);
+      // Create previews for all files using Promise.all
+      const previewPromises = files.map(file => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+      
+      Promise.all(previewPromises).then(previews => {
+        setImagePreviews(previews);
       });
     }
   };
