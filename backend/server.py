@@ -41,7 +41,7 @@ class MerchItem(BaseModel):
     description: str
     price: float
     sale_percent: Optional[float] = None  # Individual item sale percentage (e.g., 20 for 20% off)
-    image_url: str
+    image_urls: List[str] = []  # Multiple product images
     category: str
     stock: int = 0
     sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
@@ -56,7 +56,7 @@ class MerchItemCreate(BaseModel):
     description: str
     price: float
     sale_percent: Optional[float] = None
-    image_url: str
+    image_urls: List[str] = []  # Multiple product images
     category: str
     stock: int = 0
     sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
@@ -67,7 +67,7 @@ class MerchItemUpdate(BaseModel):
     description: Optional[str] = None
     price: Optional[float] = None
     sale_percent: Optional[float] = None
-    image_url: Optional[str] = None
+    image_urls: Optional[List[str]] = None  # Multiple product images
     category: Optional[str] = None
     stock: Optional[int] = None
     sizes: Optional[dict] = None  # Dictionary mapping size to stock count: {"S": 10, "M": 15}
