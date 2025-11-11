@@ -252,7 +252,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Sale price functionality testing completed"
+    - "Multiple image support for merch items"
+    - "Product detail page API endpoint"
+    - "Multiple image upload support in Admin Panel"
+    - "Create Product Detail Page with image gallery"
+    - "Update Store Page to navigate to product detail"
+    - "Update HomePage featured products for image_urls"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
