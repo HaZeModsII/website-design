@@ -39,7 +39,6 @@ export default function HomePage() {
       
       {/* Animated background elements */}
   
-    {/* Hero Logo Section */}
       <div className="relative w-[48rem] h-[48rem] mx-auto logo-float">
         {/* Main Logo */}
         <img 
@@ -58,7 +57,6 @@ export default function HomePage() {
         />
       </div>
       
-
         {/* Tagline */}
         <p className="text-xl sm:text-2xl text-gray-400 mb-12 text-center max-w-2xl">
           Underground Drift Culture · Street Racing · Pure Adrenaline
