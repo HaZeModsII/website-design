@@ -693,23 +693,23 @@ class BackendTester:
         test_cases = [
             {
                 "name": "Standard Clothing Sizes",
-                "sizes": ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
-                "description": "Standard clothing size range"
+                "sizes": {"XS": 5, "S": 10, "M": 15, "L": 12, "XL": 8, "XXL": 5, "XXXL": 2},
+                "description": "Standard clothing size range with stock"
             },
             {
                 "name": "Numeric Sizes",
-                "sizes": ["32", "34", "36", "38", "40"],
-                "description": "Numeric sizes for pants/waist"
+                "sizes": {"32": 8, "34": 12, "36": 15, "38": 10, "40": 6},
+                "description": "Numeric sizes for pants/waist with stock"
             },
             {
                 "name": "Mixed Format Sizes",
-                "sizes": ["Small", "Medium", "Large", "X-Large"],
-                "description": "Full word size descriptions"
+                "sizes": {"Small": 10, "Medium": 15, "Large": 12, "X-Large": 8},
+                "description": "Full word size descriptions with stock"
             },
             {
                 "name": "Single Size",
-                "sizes": ["One Size Fits All"],
-                "description": "Single size option"
+                "sizes": {"One Size Fits All": 25},
+                "description": "Single size option with stock"
             }
         ]
         
