@@ -12,7 +12,7 @@ from typing import Dict, Any, Optional, List
 # Configuration
 BASE_URL = "https://size-selector-1.preview.emergentagent.com/api"
 ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "driftking123"
+ADMIN_PASSWORD = "admin123"
 
 class BackendTester:
     def __init__(self):
