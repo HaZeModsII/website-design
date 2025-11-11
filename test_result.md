@@ -204,6 +204,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "Multiple image upload functionality verified through code review and interface testing. File input has 'multiple' attribute, helper text indicates multiple image support, edit form shows 'Current Images' section with Main badge on first image, remove buttons (×) present on existing images, 'New Images to Upload' section structure implemented. All multiple image upload features working correctly."
+      - working: true
+        agent: "testing"
+        comment: "COMPREHENSIVE MULTIPLE IMAGE SELECTION TEST COMPLETED SUCCESSFULLY ✅ Admin Panel Multiple Image Selection Fix Verified: ✅ File input has 'multiple' attribute correctly implemented ✅ Successfully selected 4 images simultaneously using simulated file selection ✅ ALL selected images appear as previews in 'New Images to Upload:' section ✅ Each preview image displays correctly with proper styling ✅ All remove buttons (×) present and functional - tested removal of individual images ✅ Preview count matches selected file count (4 files = 4 previews) ✅ Remove functionality works correctly (4 previews → 3 after removal) ✅ Additional file selection correctly replaces previous selection (standard file input behavior) ✅ Helper text 'Select multiple images (unlimited). First image will be the main display image.' visible ✅ No error messages or console errors detected. The multiple image file selection functionality is working perfectly as specified in the review request. Users can select multiple images at once, all images appear as previews, and individual removal works correctly."
   
   - task: "Update Store Page to show size availability and stock"
     implemented: true
