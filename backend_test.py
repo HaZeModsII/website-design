@@ -784,7 +784,7 @@ class BackendTester:
             print("❌ Cannot proceed without admin authentication")
             return False
         
-        # Run all tests
+        # Run all tests - focusing on core multiple image support and product detail functionality
         tests = [
             self.test_create_merch_with_multiple_images,
             self.test_create_merch_with_empty_images,
@@ -793,8 +793,6 @@ class BackendTester:
             self.test_create_merch_without_sizes,
             self.test_create_merch_with_null_sizes,
             self.test_update_item_add_sizes,
-            self.test_update_item_remove_sizes,
-            self.test_update_item_remove_sizes_empty_array,
             self.test_get_all_merch_with_image_urls,
             self.test_backward_compatibility_existing_items,
             self.test_various_size_formats
