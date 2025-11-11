@@ -227,13 +227,11 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Stock Info for non-sized items */}
-            {(!product.sizes || Object.keys(product.sizes).length === 0) && (
+            {/* Stock Info for non-sized items - Only show if out of stock */}
+            {(!product.sizes || Object.keys(product.sizes).length === 0) && product.stock === 0 && (
               <div>
-                <p className="text-gray-400 text-lg">
-                  Stock: <span className={product.stock > 0 ? 'text-green-400' : 'text-red-400'}>
-                    {product.stock > 0 ? `${product.stock} available` : 'Out of stock'}
-                  </span>
+                <p className="text-red-400 text-lg font-bold">
+                  Out of stock
                 </p>
               </div>
             )}
