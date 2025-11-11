@@ -38,21 +38,9 @@ export default function HomePage() {
       <div className="tire-marks" />
       
       {/* Animated background elements */}
-      <div className="relative logo-float">
-        <img 
-          src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/3debsbpu_fixedcolourskull.png"
-          alt="Triple Barrel Racing Logo"
-          className="w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow mx-auto"
-          data-testid="logo-image"
-        />
-        <img 
-          src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
-          alt="Triple Barrel Racing Text"
-          className="w-72 sm:w-96 lg:w-[28rem] h-auto logo-glow mx-auto -mt-8"
-          data-testid="logo-text"
-        />
-      </div>
-
+      <div className="absolute top-20 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      
       {/* Hero Section */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         {/* Logo with floating animation and glow */}
