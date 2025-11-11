@@ -475,7 +475,7 @@ class BackendTester:
             "image_url": "https://example.com/jacket.jpg",
             "category": "Apparel",
             "stock": 20,
-            "sizes": ["M", "L", "XL", "XXL"]
+            "sizes": {"M": 5, "L": 8, "XL": 4, "XXL": 3}
         }
         
         try:
