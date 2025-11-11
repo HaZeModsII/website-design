@@ -589,9 +589,9 @@ class BackendTester:
             self.log_result(test_name, False, f"Error updating item with empty array: {str(e)}")
             return False
     
-    def test_get_all_merch_backward_compatibility(self) -> bool:
-        """Test that GET /api/merch returns all items including those with and without sizes"""
-        test_name = "GET All Merch - Backward Compatibility"
+    def test_get_all_merch_with_image_urls(self) -> bool:
+        """Test that GET /api/merch returns all items with image_urls array instead of image_url"""
+        test_name = "GET All Merch - Image URLs Array Support"
         
         try:
             response = requests.get(f"{self.base_url}/merch", timeout=10)
@@ -600,13 +600,34 @@ class BackendTester:
                 items = response.json()
                 
                 if isinstance(items, list):
-                    # Check that we can handle items with and without sizes
-                    items_with_sizes = [item for item in items if item.get("sizes")]
-                    items_without_sizes = [item for item in items if not item.get("sizes")]
+                    # Check that all items have image_urls field (array) and effective_price/discount_percent
+                    items_with_image_urls = 0
+                    items_with_sale_fields = 0
                     
-                    self.log_result(test_name, True, 
-                                  f"Successfully retrieved {len(items)} items ({len(items_with_sizes)} with sizes, {len(items_without_sizes)} without sizes)")
-                    return True
+                    for item in items:
+                        # Check for image_urls field
+                        if "image_urls" in item and isinstance(item["image_urls"], list):
+                            items_with_image_urls += 1
+                        
+                        # Check for sale calculation fields
+                        if "effective_price" in item and "discount_percent" in item:
+                            items_with_sale_fields += 1
+                    
+                    if len(items) > 0:
+                        image_urls_percentage = (items_with_image_urls / len(items)) * 100
+                        sale_fields_percentage = (items_with_sale_fields / len(items)) * 100
+                        
+                        if image_urls_percentage == 100 and sale_fields_percentage == 100:
+                            self.log_result(test_name, True, 
+                                          f"All {len(items)} items have image_urls array and sale calculation fields")
+                            return True
+                        else:
+                            self.log_result(test_name, False, 
+                                          f"Not all items have required fields: {image_urls_percentage:.1f}% have image_urls, {sale_fields_percentage:.1f}% have sale fields")
+                            return False
+                    else:
+                        self.log_result(test_name, True, "No items in database - test passed by default")
+                        return True
                 else:
                     self.log_result(test_name, False, "Response is not a list", {"response_type": type(items)})
                     return False
@@ -617,6 +638,51 @@ class BackendTester:
                 
         except Exception as e:
             self.log_result(test_name, False, f"Error getting all merch items: {str(e)}")
+            return False
+    
+    def test_backward_compatibility_existing_items(self) -> bool:
+        """Test backward compatibility with existing items that might have old image_url field"""
+        test_name = "Backward Compatibility with Existing Items"
+        
+        try:
+            response = requests.get(f"{self.base_url}/merch", timeout=10)
+            
+            if response.status_code == 200:
+                items = response.json()
+                
+                if isinstance(items, list) and len(items) > 0:
+                    # Check that all items work properly regardless of whether they were created with old or new schema
+                    compatibility_issues = []
+                    
+                    for item in items:
+                        # Each item should have image_urls (array), not image_url (string)
+                        if "image_url" in item and "image_urls" not in item:
+                            compatibility_issues.append(f"Item {item.get('id', 'unknown')} has old image_url field")
+                        
+                        # Each item should have effective_price and discount_percent
+                        if "effective_price" not in item:
+                            compatibility_issues.append(f"Item {item.get('id', 'unknown')} missing effective_price")
+                        
+                        if "discount_percent" not in item:
+                            compatibility_issues.append(f"Item {item.get('id', 'unknown')} missing discount_percent")
+                    
+                    if not compatibility_issues:
+                        self.log_result(test_name, True, f"All {len(items)} existing items are compatible with new schema")
+                        return True
+                    else:
+                        self.log_result(test_name, False, f"Found {len(compatibility_issues)} compatibility issues", 
+                                      {"issues": compatibility_issues[:5]})  # Show first 5 issues
+                        return False
+                else:
+                    self.log_result(test_name, True, "No existing items to check - test passed")
+                    return True
+            else:
+                self.log_result(test_name, False, f"Failed to get merch items: {response.status_code}", 
+                              {"response": response.text})
+                return False
+                
+        except Exception as e:
+            self.log_result(test_name, False, f"Error checking backward compatibility: {str(e)}")
             return False
     
     def test_various_size_formats(self) -> bool:
