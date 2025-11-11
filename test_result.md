@@ -102,7 +102,10 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "There is no size option when adding merch to the store. Each size should have its own stock number, and total stock should be sum of all sizes."
+user_problem_statement: "Multiple issues to resolve:
+1. There is no size option when adding merch to the store. Each size should have its own stock number, and total stock should be sum of all sizes. (COMPLETED)
+2. When a customer visits the merch tab and selects an item, it should open a product detail page with multiple photos and full information.
+3. Admin should be able to upload multiple photos when adding a merch item."
 
 backend:
   - task: "Add size-specific stock management to MerchItem model"
