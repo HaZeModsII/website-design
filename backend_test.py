@@ -431,9 +431,9 @@ class BackendTester:
             item_id = item["id"]
             self.created_items.append(item_id)
             
-            # Now update to add sizes
+            # Now update to add sizes (dict format: size -> stock)
             update_data = {
-                "sizes": ["XS", "XXL", "XXXL"]
+                "sizes": {"XS": 5, "XXL": 8, "XXXL": 3}
             }
             
             response = requests.put(
