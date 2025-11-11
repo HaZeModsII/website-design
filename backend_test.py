@@ -774,9 +774,9 @@ class BackendTester:
                 print(f"   ⚠️  Error deleting item {item_id}: {str(e)}")
     
     def run_all_tests(self):
-        """Run all backend tests for sizes field implementation"""
-        print("🚀 Starting Backend API Tests for Sizes Field Implementation")
-        print("=" * 70)
+        """Run all backend tests for multiple image support and product detail page"""
+        print("🚀 Starting Backend API Tests for Multiple Image Support & Product Detail Page")
+        print("=" * 80)
         
         # Authenticate first
         if not self.authenticate_admin():
