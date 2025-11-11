@@ -34,7 +34,7 @@ export default function AdminPage() {
     name: '',
     description: '',
     price: '',
-    image_url: '',
+    image_urls: [],
     category: 'T-Shirts',
     stock: '',
     sizes: {},  // Object mapping size to stock: { "S": 10, "M": 15 }
@@ -43,8 +43,8 @@ export default function AdminPage() {
   });
   
   const [editingMerch, setEditingMerch] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [uploadingImage, setUploadingImage] = useState(false);
   
   // Event image state
