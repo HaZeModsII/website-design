@@ -824,7 +824,7 @@ class BackendTester:
         print(f"📈 Success Rate: {(passed/(passed+failed)*100):.1f}%")
         
         if failed == 0:
-            print("\n🎉 ALL TESTS PASSED! Sizes field implementation is working correctly.")
+            print("\n🎉 ALL TESTS PASSED! Multiple image support and product detail page functionality is working correctly.")
             return True
         else:
             print(f"\n⚠️  {failed} test(s) failed. Please review the issues above.")
