@@ -126,6 +126,30 @@ backend:
         agent: "main"
         comment: "Changed sizes from List[str] to dict (size -> stock mapping). For clothing items, sizes field is { 'S': 10, 'M': 15, 'L': 5 }. For non-clothing items, use regular stock field. This allows individual stock tracking per size."
   
+  - task: "Multiple image support for merch items"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Changed MerchItem model from single image_url (str) to image_urls (List[str]). Updated MerchItemCreate and MerchItemUpdate models. Added GET /api/merch/{item_id} endpoint to fetch single item with sale price calculation. Ready for testing."
+  
+  - task: "Product detail page API endpoint"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Added GET /api/merch/{item_id} endpoint that returns single merch item with calculated effective_price and discount_percent based on sales settings. Ready for testing."
+  
   - task: "Sale price functionality for merch items"
     implemented: true
     working: true
