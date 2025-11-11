@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend API Testing for Triple Barrel Racing - Size-Specific Stock Management
-Tests the restructured sizes field as dict (size -> stock mapping)
+Backend API Testing for Triple Barrel Racing - Multiple Image Support & Product Detail Page
+Tests multiple image support (image_urls array) and product detail page functionality
 """
 
 import requests
