@@ -24,7 +24,6 @@ export default function StorePage() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSize, setSelectedSize] = useState({});
 
   useEffect(() => {
     fetchMerch();
@@ -52,30 +51,6 @@ export default function StorePage() {
       item.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
-
-  const handlePurchase = (item) => {
-    // Only check for size if item has sizes defined
-    if (item.sizes && typeof item.sizes === 'object' && Object.keys(item.sizes).length > 0) {
-      const size = selectedSize[item.id];
-      if (!size) {
-        toast.error('Please select a size');
-        return;
-      }
-      if (item.sizes[size] === 0) {
-        toast.error('Selected size is out of stock');
-        return;
-      }
-      // Navigate to checkout with item and selected size
-      navigate('/checkout', { state: { item, selectedSize: size } });
-    } else {
-      if (item.stock === 0) {
-        toast.error('Item is out of stock');
-        return;
-      }
-      // Navigate to checkout with item (no size)
-      navigate('/checkout', { state: { item } });
-    }
-  };
 
   if (loading) {
     return (
