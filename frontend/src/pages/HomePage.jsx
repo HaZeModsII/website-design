@@ -38,7 +38,8 @@ export default function HomePage() {
       <div className="tire-marks" />
       
       {/* Animated background elements */}
-      {/* Hero Logo Section */}
+  
+    {/* Hero Logo Section */}
       <div className="relative w-[48rem] h-[48rem] mx-auto logo-float">
         {/* Main Logo */}
         <img 
@@ -47,25 +48,16 @@ export default function HomePage() {
           className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow"
           data-testid="logo-image"
         />
+      
+        {/* Text Logo */}
+        <img 
+          src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
+          alt="Triple Barrel Racing Text"
+          className="absolute top-[28rem] left-1/2 transform -translate-x-1/2 w-72 sm:w-96 lg:w-[28rem] h-auto logo-glow"
+          data-testid="logo-text"
+        />
       </div>
-
-      {/* Hero Section */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Logo with floating animation and glow */}
-        <div className="mb-12 relative logo-float">
-          <img 
-            src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/3debsbpu_fixedcolourskull.png"
-            alt="Triple Barrel Racing Logo"
-            className="w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow mx-auto"
-            data-testid="logo-image"
-          />
-          <img 
-            src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
-            alt="Triple Barrel Racing Text"
-            className="w-72 sm:w-96 lg:w-[28rem] h-auto logo-glow mx-auto"
-            data-testid="logo-text"
-          />
-        </div>
+      
 
         {/* Tagline */}
         <p className="text-xl sm:text-2xl text-gray-400 mb-12 text-center max-w-2xl">
