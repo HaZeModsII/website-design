@@ -785,13 +785,17 @@ class BackendTester:
         
         # Run all tests
         tests = [
-            self.test_create_merch_with_sizes,
+            self.test_create_merch_with_multiple_images,
+            self.test_create_merch_with_empty_images,
+            self.test_get_single_merch_item_with_sale_calculation,
+            self.test_update_merch_images,
             self.test_create_merch_without_sizes,
             self.test_create_merch_with_null_sizes,
             self.test_update_item_add_sizes,
             self.test_update_item_remove_sizes,
             self.test_update_item_remove_sizes_empty_array,
-            self.test_get_all_merch_backward_compatibility,
+            self.test_get_all_merch_with_image_urls,
+            self.test_backward_compatibility_existing_items,
             self.test_various_size_formats
         ]
         
