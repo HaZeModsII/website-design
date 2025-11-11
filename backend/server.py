@@ -420,6 +420,42 @@ async def get_merch():
     
     return items
 
+@api_router.get("/merch/{item_id}", response_model=MerchItem)
+async def get_merch_item(item_id: str):
+    item = await db.merch.find_one({"id": item_id}, {"_id": 0})
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    
+    if isinstance(item.get('created_at'), str):
+        item['created_at'] = datetime.fromisoformat(item['created_at'])
+    
+    # Get sales settings
+    sales_settings = await db.sales_settings.find_one({"id": "sales_settings"}, {"_id": 0})
+    
+    # Calculate effective price with sales priority
+    original_price = item['price']
+    effective_price = original_price
+    applied_discount = 0
+    
+    if item.get('sale_percent'):
+        # Individual item sale has highest priority
+        applied_discount = item['sale_percent']
+        effective_price = original_price * (1 - applied_discount / 100)
+    elif sales_settings and sales_settings.get('category_sales', {}).get(item['category']):
+        # Category sale
+        applied_discount = sales_settings['category_sales'][item['category']]
+        effective_price = original_price * (1 - applied_discount / 100)
+    elif sales_settings and sales_settings.get('site_wide_sale') and sales_settings.get('site_wide_discount_percent'):
+        # Site-wide sale
+        applied_discount = sales_settings['site_wide_discount_percent']
+        effective_price = original_price * (1 - applied_discount / 100)
+    
+    # Add computed effective price and discount to response
+    item['effective_price'] = round(effective_price, 2)
+    item['discount_percent'] = applied_discount
+    
+    return MerchItem(**item)
+
 @api_router.post("/merch", response_model=MerchItem)
 async def create_merch(item: MerchItemCreate, admin: bool = Depends(verify_admin)):
     merch_obj = MerchItem(**item.model_dump())
