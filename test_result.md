@@ -181,6 +181,18 @@ frontend:
         agent: "main"
         comment: "Restructured size UI: When size checkbox is selected, stock input appears next to it. Total stock calculated and displayed as sum of all size stocks. Regular stock field hidden when sizes are selected. Current items list shows size-specific stock (e.g., 'S (10), M (15), L (5)')."
   
+  - task: "Multiple image upload support in Admin Panel"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/AdminPage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Updated admin merch form to support multiple image uploads. Changed from single imageFile to imageFiles array and imagePreviews array. Added file input with 'multiple' attribute. Shows existing images with remove buttons when editing. Shows new image previews before upload. Displays 'Main' badge on first image. Uploads all images sequentially and stores as image_urls array. Ready for testing."
+  
   - task: "Update Store Page to show size availability and stock"
     implemented: true
     working: true
@@ -195,6 +207,42 @@ frontend:
       - working: true
         agent: "main"
         comment: "Enhanced size selector to show stock per size (e.g., 'S (5 available)' or 'M (Out of Stock)'). Disabled out-of-stock sizes in dropdown. Updated BUY NOW button to disable if selected size is out of stock. OUT OF STOCK badge shows when all sizes have 0 stock. Purchase validation checks selected size stock."
+  
+  - task: "Create Product Detail Page with image gallery"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/ProductDetailPage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Created new ProductDetailPage component with image gallery, size selection, and purchase functionality. Features: Main image display with thumbnail navigation, sale badges, out-of-stock overlays, size selector with stock info, full product description, price display with sale calculations, BUY NOW button. Added route /product/:productId in App.js. Ready for testing."
+  
+  - task: "Update Store Page to navigate to product detail"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/StorePage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Updated StorePage to make merch items clickable. Removed inline size selection and purchase button. Changed to 'VIEW DETAILS' button that navigates to /product/:id. Image and title also clickable. Uses first image from image_urls array for grid display. Ready for testing."
+  
+  - task: "Update HomePage featured products for image_urls"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/HomePage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "Updated HomePage featured products section to use image_urls[0] instead of image_url. Maintains backward compatibility with array check. Ready for testing."
 
 metadata:
   created_by: "main_agent"
