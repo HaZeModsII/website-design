@@ -937,18 +937,68 @@ export default function AdminPage() {
                   </div>
                 )}
                 <div className="md:col-span-2">
-                  <Label>Product Image {editingMerch && '(Optional - leave empty to keep current)'}</Label>
+                  <Label>Product Images {editingMerch && '(Optional - add more images)'}</Label>
                   <Input
                     data-testid="merch-image-input"
                     type="file"
                     accept="image/*"
+                    multiple
                     onChange={handleImageChange}
                     className="bg-gray-800 border-gray-700 text-white"
-                    required={!editingMerch}
+                    required={!editingMerch && newMerch.image_urls.length === 0}
                   />
-                  {imagePreview && (
+                  <p className="text-xs text-gray-500 mt-1">Select multiple images (unlimited). First image will be the main display image.</p>
+                  
+                  {/* Show existing images when editing */}
+                  {editingMerch && newMerch.image_urls && newMerch.image_urls.length > 0 && (
                     <div className="mt-3">
-                      <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded border-2 border-gray-700" />
+                      <Label className="text-sm text-gray-400 mb-2 block">Current Images:</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {newMerch.image_urls.map((url, index) => (
+                          <div key={index} className="relative">
+                            <img 
+                              src={getImageUrl(url)} 
+                              alt={`Current ${index + 1}`} 
+                              className="w-24 h-24 object-cover rounded border-2 border-gray-700" 
+                            />
+                            {index === 0 && (
+                              <span className="absolute top-0 left-0 bg-blue-600 text-white text-xs px-1 rounded-br">Main</span>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveExistingImage(index)}
+                              className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-700"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Show new image previews */}
+                  {imagePreviews.length > 0 && (
+                    <div className="mt-3">
+                      <Label className="text-sm text-gray-400 mb-2 block">New Images to Upload:</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {imagePreviews.map((preview, index) => (
+                          <div key={index} className="relative">
+                            <img 
+                              src={preview} 
+                              alt={`Preview ${index + 1}`} 
+                              className="w-24 h-24 object-cover rounded border-2 border-blue-500" 
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveImage(index)}
+                              className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-700"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
