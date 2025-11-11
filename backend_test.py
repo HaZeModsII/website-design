@@ -446,12 +446,13 @@ class BackendTester:
             if response.status_code == 200:
                 updated_item = response.json()
                 
-                if updated_item.get("sizes") == ["XS", "XXL", "XXXL"]:
+                expected_sizes = {"XS": 5, "XXL": 8, "XXXL": 3}
+                if updated_item.get("sizes") == expected_sizes:
                     self.log_result(test_name, True, "Successfully added sizes to existing item")
                     return True
                 else:
                     self.log_result(test_name, False, "Update succeeded but sizes incorrect", 
-                                  {"expected": ["XS", "XXL", "XXXL"], "actual": updated_item.get("sizes")})
+                                  {"expected": expected_sizes, "actual": updated_item.get("sizes")})
                     return False
             else:
                 self.log_result(test_name, False, f"Failed to update item: {response.status_code}", 
