@@ -38,17 +38,17 @@ export default function HomePage() {
       <div className="tire-marks" />
       
       {/* Animated background elements */}
-      <div className="relative logo-float">
+      <div className="relative logo-float w-[48rem] h-[48rem] mx-auto">
         <img 
           src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/3debsbpu_fixedcolourskull.png"
           alt="Triple Barrel Racing Logo"
-          className="w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow mx-auto"
+          className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow"
           data-testid="logo-image"
         />
         <img 
           src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
           alt="Triple Barrel Racing Text"
-          className="w-72 sm:w-96 lg:w-[28rem] h-auto logo-glow mx-auto -mt-8"
+          className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 sm:w-96 lg:w-[28rem] h-auto logo-glow"
           data-testid="logo-text"
         />
       </div>
