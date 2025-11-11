@@ -219,7 +219,7 @@ export default function ProductDetailPage() {
                         disabled={stock === 0}
                         className="text-lg"
                       >
-                        {size} {stock > 0 ? `(${stock} available)` : '(Out of Stock)'}
+                        {size} {stock === 0 ? '(Out of Stock)' : ''}
                       </SelectItem>
                     ))}
                   </SelectContent>
