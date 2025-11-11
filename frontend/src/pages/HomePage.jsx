@@ -36,20 +36,29 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black relative overflow-hidden">
       {/* Tire marks background */}
       <div className="tire-marks" />
-
-      {/* Hero Logo Section */}
-      <div className="relative w-[48rem] h-[48rem] mx-auto logo-float">
-        {/* Main Logo */}
-        <img 
-          src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/3debsbpu_fixedcolourskull.png"
-          alt="Triple Barrel Racing Logo"
-          className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow"
-          data-testid="logo-image"
-        />
-      </div>
-
+      
+      {/* Animated background elements */}
+      <div className="absolute top-20 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      
       {/* Hero Section */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+        {/* Logo with floating animation and glow */}
+        <div className="mb-12 relative logo-float">
+          <img 
+            src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/3debsbpu_fixedcolourskull.png"
+            alt="Triple Barrel Racing Logo"
+            className="w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow mx-auto"
+            data-testid="logo-image"
+          />
+          <img 
+            src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
+            alt="Triple Barrel Racing Text"
+            className="w-72 sm:w-96 lg:w-[28rem] h-auto logo-glow mx-auto"
+            data-testid="logo-text"
+          />
+        </div>
+
         {/* Tagline */}
         <p className="text-xl sm:text-2xl text-gray-400 mb-12 text-center max-w-2xl">
           Underground Drift Culture · Street Racing · Pure Adrenaline
@@ -79,34 +88,35 @@ export default function HomePage() {
                         alt={product.name}
                         className="w-full h-48 object-cover"
                       />
-                      {product.discount_percent > 0 && (
-                        <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
-                          {product.discount_percent}% OFF
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
-                        {product.name}
-                      </h3>
-                      <div className="flex justify-between items-center">
-                        {product.effective_price && product.effective_price < product.price ? (
-                          <div>
-                            <div className="text-2xl font-bold text-red-500">${product.effective_price}</div>
-                            <div className="text-xs text-gray-400 line-through">${product.price}</div>
-                          </div>
-                        ) : (
-                          <span className="text-2xl font-bold text-blue-500">${product.price}</span>
-                        )}
-                        <span className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded">FEATURED</span>
+                    {product.discount_percent > 0 && (
+                      <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
+                        {product.discount_percent}% OFF
                       </div>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'Bebas Neue, sans-serif' }}>
+                      {product.name}
+                    </h3>
+                    <div className="flex justify-between items-center">
+                      {product.effective_price && product.effective_price < product.price ? (
+                        <div>
+                          <div className="text-2xl font-bold text-red-500">${product.effective_price}</div>
+                          <div className="text-xs text-gray-400 line-through">${product.price}</div>
+                        </div>
+                      ) : (
+                        <span className="text-2xl font-bold text-blue-500">${product.price}</span>
+                      )}
+                      <span className="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded">FEATURED</span>
                     </div>
                   </div>
+                </div>
                 );
               })}
             </div>
           </div>
         )}
+
       </div>
 
       {/* About Section */}
