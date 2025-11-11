@@ -407,16 +407,16 @@ export default function AdminPage() {
       name: item.name,
       description: item.description,
       price: item.price.toString(),
-      image_url: item.image_url,
+      image_urls: item.image_urls || [],
       category: item.category,
       stock: item.stock.toString(),
       sizes: item.sizes || {},
       featured: item.featured || false,
       sale_percent: item.sale_percent || null
     });
-    // Use getImageUrl to show the correct preview
-    setImagePreview(getImageUrl(item.image_url));
-    setImageFile(null);
+    // Clear new image uploads
+    setImageFiles([]);
+    setImagePreviews([]);
     
     // Scroll to form
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -424,9 +424,9 @@ export default function AdminPage() {
 
   const handleCancelEdit = () => {
     setEditingMerch(null);
-    setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false, sale_percent: null });
-    setImageFile(null);
-    setImagePreview(null);
+    setNewMerch({ name: '', description: '', price: '', image_urls: [], category: 'T-Shirts', stock: '', sizes: {}, featured: false, sale_percent: null });
+    setImageFiles([]);
+    setImagePreviews([]);
   };
 
   const handleAddEvent = async (e) => {
