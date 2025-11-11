@@ -46,14 +46,6 @@ export default function HomePage() {
           className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[32rem] sm:w-[40rem] lg:w-[48rem] h-auto logo-glow"
           data-testid="logo-image"
         />
-
-        {/* Text Logo */}
-        <img 
-          src="https://customer-assets.emergentagent.com/job_jdm-legends-2/artifacts/ehzw5qae_fixedwhitetext.png"
-          alt="Triple Barrel Racing Text"
-          className="absolute top-[28rem] left-1/2 transform -translate-x-1/2 w-72 sm:w-96 lg:w-[28rem] h-auto logo-glow"
-          data-testid="logo-text"
-        />
       </div>
 
       {/* Hero Section */}
