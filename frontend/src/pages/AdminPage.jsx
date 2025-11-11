@@ -329,31 +329,35 @@ export default function AdminPage() {
   const handleAddMerch = async (e) => {
     e.preventDefault();
     
-    // For add mode, image is required. For edit mode, it's optional
-    if (!editingMerch && !imageFile) {
-      toast.error('Please select an image');
+    // For add mode, at least one image is required. For edit mode, it's optional
+    if (!editingMerch && imageFiles.length === 0 && newMerch.image_urls.length === 0) {
+      toast.error('Please select at least one image');
       return;
     }
     
     try {
-      let imageUrl = newMerch.image_url; // Keep existing image if editing
+      let imageUrls = [...(newMerch.image_urls || [])]; // Keep existing images if editing
       
-      // Upload new image if file is selected
-      if (imageFile) {
-        imageUrl = await handleImageUpload(imageFile);
-        if (!imageUrl) {
-          toast.error('Failed to upload image');
-          return;
+      // Upload new images if files are selected
+      if (imageFiles.length > 0) {
+        setUploadingImage(true);
+        for (const file of imageFiles) {
+          const uploadedUrl = await handleImageUpload(file);
+          if (uploadedUrl) {
+            imageUrls.push(uploadedUrl);
+          }
         }
-      } else if (!editingMerch) {
-        // If adding new item and no file selected (shouldn't happen due to check above)
-        toast.error('Please select an image');
+        setUploadingImage(false);
+      }
+      
+      if (imageUrls.length === 0) {
+        toast.error('Please add at least one image');
         return;
       }
       
       const payload = {
         ...newMerch,
-        image_url: imageUrl
+        image_urls: imageUrls
       };
       
       // Only include price if it's set
@@ -380,16 +384,16 @@ export default function AdminPage() {
         toast.success('Merch item updated');
         setEditingMerch(null);
       } else {
-        // Add new item
+        // Create new item
         await axios.post(`${API}/merch`, payload, {
           headers: { Authorization: `Bearer ${token}` }
         });
         toast.success('Merch item added');
       }
       
-      setNewMerch({ name: '', description: '', price: '', image_url: '', category: 'T-Shirts', stock: '', sizes: {}, featured: false, sale_percent: null });
-      setImageFile(null);
-      setImagePreview(null);
+      setNewMerch({ name: '', description: '', price: '', image_urls: [], category: 'T-Shirts', stock: '', sizes: {}, featured: false, sale_percent: null });
+      setImageFiles([]);
+      setImagePreviews([]);
       fetchAdminData(token);
     } catch (error) {
       console.error('Error saving merch:', error);
