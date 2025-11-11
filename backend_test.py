@@ -65,18 +65,22 @@ class BackendTester:
             return {}
         return {"Authorization": f"Bearer {self.admin_token}"}
     
-    def test_create_clothing_with_size_stock(self) -> bool:
-        """Test creating clothing item with size-specific stock"""
-        test_name = "Create Clothing Item with Size-Specific Stock"
+    def test_create_merch_with_multiple_images(self) -> bool:
+        """Test creating merch item with multiple images in image_urls array"""
+        test_name = "Create Merch Item with Multiple Images"
         
         merch_data = {
-            "name": "Racing T-Shirt with Size Stock",
-            "description": "Premium racing t-shirt with individual size stock tracking",
+            "name": "Racing T-Shirt Multi-Photo",
+            "description": "Premium racing t-shirt with multiple product photos",
             "price": 29.99,
-            "image_url": "https://example.com/racing-tshirt.jpg",
+            "image_urls": [
+                "https://example.com/racing-tshirt-front.jpg",
+                "https://example.com/racing-tshirt-back.jpg", 
+                "https://example.com/racing-tshirt-detail.jpg"
+            ],
             "category": "Apparel",
-            "stock": 0,  # Should be ignored for sized items
-            "sizes": {"S": 10, "M": 15, "L": 5, "XL": 0}
+            "stock": 50,
+            "sizes": {"S": 10, "M": 15, "L": 20, "XL": 5}
         }
         
         try:
@@ -91,14 +95,18 @@ class BackendTester:
                 item = response.json()
                 self.created_items.append(item["id"])
                 
-                # Verify sizes field is dict with correct stock values
-                expected_sizes = {"S": 10, "M": 15, "L": 5, "XL": 0}
-                if "sizes" in item and item["sizes"] == expected_sizes:
-                    self.log_result(test_name, True, "Clothing item created successfully with size-specific stock")
+                # Verify image_urls field is array with correct URLs
+                expected_images = [
+                    "https://example.com/racing-tshirt-front.jpg",
+                    "https://example.com/racing-tshirt-back.jpg", 
+                    "https://example.com/racing-tshirt-detail.jpg"
+                ]
+                if "image_urls" in item and item["image_urls"] == expected_images:
+                    self.log_result(test_name, True, "Item created successfully with multiple images")
                     return True
                 else:
-                    self.log_result(test_name, False, "Item created but sizes field incorrect", 
-                                  {"expected_sizes": expected_sizes, "actual_sizes": item.get("sizes")})
+                    self.log_result(test_name, False, "Item created but image_urls field incorrect", 
+                                  {"expected_images": expected_images, "actual_images": item.get("image_urls")})
                     return False
             else:
                 self.log_result(test_name, False, f"Failed to create item: {response.status_code}", 
@@ -106,7 +114,49 @@ class BackendTester:
                 return False
                 
         except Exception as e:
-            self.log_result(test_name, False, f"Error creating clothing item with size stock: {str(e)}")
+            self.log_result(test_name, False, f"Error creating item with multiple images: {str(e)}")
+            return False
+    
+    def test_create_merch_with_empty_images(self) -> bool:
+        """Test creating merch item with empty image_urls array"""
+        test_name = "Create Merch Item with Empty Images Array"
+        
+        merch_data = {
+            "name": "Racing Sticker Pack No Images",
+            "description": "Collection of racing stickers - images to be added later",
+            "price": 9.99,
+            "image_urls": [],  # Empty array
+            "category": "Accessories",
+            "stock": 100
+        }
+        
+        try:
+            response = requests.post(
+                f"{self.base_url}/merch",
+                json=merch_data,
+                headers=self.get_auth_headers(),
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                item = response.json()
+                self.created_items.append(item["id"])
+                
+                # Verify image_urls field is empty array
+                if "image_urls" in item and item["image_urls"] == []:
+                    self.log_result(test_name, True, "Item created successfully with empty images array")
+                    return True
+                else:
+                    self.log_result(test_name, False, "Item created but image_urls field incorrect", 
+                                  {"expected": [], "actual": item.get("image_urls")})
+                    return False
+            else:
+                self.log_result(test_name, False, f"Failed to create item: {response.status_code}", 
+                              {"response": response.text})
+                return False
+                
+        except Exception as e:
+            self.log_result(test_name, False, f"Error creating item with empty images: {str(e)}")
             return False
     
     def test_create_merch_without_sizes(self) -> bool:
