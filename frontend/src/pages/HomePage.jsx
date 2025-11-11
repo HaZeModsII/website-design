@@ -71,18 +71,23 @@ export default function HomePage() {
               FEATURED PRODUCTS
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredProducts.slice(0, 3).map(product => (
-                <div 
-                  key={product.id}
-                  onClick={() => navigate('/store')}
-                  className="drift-card rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform"
-                >
-                  <div className="relative">
-                    <img 
-                      src={getImageUrl(product.image_url)} 
-                      alt={product.name}
-                      className="w-full h-48 object-cover"
-                    />
+              {featuredProducts.slice(0, 3).map(product => {
+                const mainImage = Array.isArray(product.image_urls) && product.image_urls.length > 0 
+                  ? product.image_urls[0] 
+                  : '';
+                
+                return (
+                  <div 
+                    key={product.id}
+                    onClick={() => navigate('/store')}
+                    className="drift-card rounded-lg overflow-hidden cursor-pointer hover:scale-105 transition-transform"
+                  >
+                    <div className="relative">
+                      <img 
+                        src={getImageUrl(mainImage)} 
+                        alt={product.name}
+                        className="w-full h-48 object-cover"
+                      />
                     {product.discount_percent > 0 && (
                       <div className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded-full font-bold text-sm">
                         {product.discount_percent}% OFF
